@@ -31,8 +31,8 @@
 	"autoload": {
 		"classmap": [ "src/" ],
 		"files": [
-			"src/MvcCore/Ext/Model/Db/FuncHelpers/Table.php",
-			"src/MvcCore/Ext/Model/Db/FuncHelpers/Columns.php"
+			"src/MvcCore/Ext/Models/Db/FuncHelpers/Table.php",
+			"src/MvcCore/Ext/Models/Db/FuncHelpers/Columns.php"
 		]
 	},
 	"minimum-stability": "dev"
