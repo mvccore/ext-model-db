@@ -10,8 +10,8 @@
  * @copyright	Copyright (c) 2016 Tom Flídr (https://github.com/mvccore/mvccore)
  * @license  https://mvccore.github.io/docs/mvccore/5.0.0/LICENCE.md
  */
-
-namespace MvcCore\Ext\Models\Dbs\Attrs;
+	 
+namespace MvcCore\Ext\Models\Db\Attrs;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class KeyUnique {
