@@ -66,19 +66,22 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement
 	 * @return \MvcCore\Ext\Models\Db\Statement
 	 */
 	public static function Prepare ($sql, $connectionNameOrConfig = NULL, $driverOptions = [\MvcCore\Ext\Models\Db\IStatement::AUTO_CLOSE]) {
+		list(,$callerInfo) = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+
+		if (!isset($callerInfo['class']))
+			throw new \RuntimeException(
+				"Database static statement preparing has to be called from class only."
+			);
+
+		$fullClassName = '\\' . ltrim($callerInfo['class']);
+
 		/** @var $connection \MvcCore\Ext\Models\Db\Connection */
 		try {
-			$connection = \MvcCore\Model::GetConnection($connectionNameOrConfig, TRUE);
+			$connection = $fullClassName::GetConnection($connectionNameOrConfig, TRUE);
 		} catch (\Throwable $e) {
 			if ($connectionNameOrConfig === NULL) {
-				list(,$callerInfo) = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-
-				if (!isset($callerInfo['class']))
-					throw new \RuntimeException(
-						"Database static statement preparing has to be called from class only."
-					);
-	
-				$getMetaDataMethod = new \ReflectionMethod(ltrim($callerInfo['class']), 'getMetaData');
+				
+				$getMetaDataMethod = new \ReflectionMethod($fullClassName, 'getMetaData');
 				$getMetaDataMethod->setAccessible(TRUE);
 				list(/*$metaData*/, $connAttrArgs) = $getMetaDataMethod->invokeArgs(
 					NULL, [0, [\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_CONNECTIONS]]
@@ -88,7 +91,7 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement
 					$connectionNameOrConfig = $connAttrArgs[0];
 				if ($connectionNameOrConfig !== NULL) {
 					/** @var $connection \MvcCore\Ext\Models\Db\Connection */
-					$connection = \MvcCore\Model::GetConnection($connectionNameOrConfig, TRUE);
+					$connection = $fullClassName::GetConnection($connectionNameOrConfig, TRUE);
 				} else {
 					throw $e;
 				}
@@ -97,6 +100,7 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement
 				throw $e;
 			}
 		}
+		
 		return $connection->Prepare($sql, $driverOptions ?: []);
 	}
 

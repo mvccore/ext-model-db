@@ -14,6 +14,8 @@
 namespace MvcCore\Ext\Models\Db\Model;
 
 trait ProviderResource {
+	
+	protected static $providerConnectionClass = '\\MvcCore\\Ext\\Models\\Db\\Connection';
 
 	/**
 	 * Database provider specific resource class instance with universal SQL statements.

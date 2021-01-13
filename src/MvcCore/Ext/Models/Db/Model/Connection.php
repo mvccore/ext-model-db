@@ -27,9 +27,13 @@ trait Connection {
 	 */
 	public static function GetConnection ($connectionNameOrConfig = NULL, $strict = TRUE) {
 		/** @var $connection \MvcCore\Ext\Models\Db\Connection */
+		$defaultConnectionClassOrig = static::$defaultConnectionClass;
+		static::$defaultConnectionClass = static::$providerConnectionClass;
+		$error = NULL;
 		try {
 			$connection = self::GetProviderConnection($connectionNameOrConfig, TRUE);
 		} catch (\Throwable $e) {
+			$error = $e;
 			if ($connectionNameOrConfig === NULL) {
 				list(,$callerInfo) = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
 
@@ -49,14 +53,13 @@ trait Connection {
 				if ($connectionNameOrConfig !== NULL) {
 					/** @var $connection \MvcCore\Ext\Models\Db\Connection */
 					$connection = \MvcCore\Model::GetConnection($connectionNameOrConfig, TRUE);
-				} else {
-					throw $e;
+					$error = NULL;
 				}
-
-			} else {
-				throw $e;
 			}
 		}
+		if ($error !== NULL)
+			throw $error;
+		static::$defaultConnectionClass = $defaultConnectionClassOrig;
 		return $connection;
 	}
 }
