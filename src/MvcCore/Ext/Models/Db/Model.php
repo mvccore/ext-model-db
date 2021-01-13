@@ -25,5 +25,5 @@ implements	\MvcCore\IModel,
 	use \MvcCore\Model\Comparers;
 	use \MvcCore\Model\Converters;
 	
-	use \MvcCore\Ext\Models\Model\Features;
+	use \MvcCore\Ext\Models\Db\Model\Features;
 }

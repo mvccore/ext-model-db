@@ -23,17 +23,17 @@ trait ProviderResource {
 
 	/**
 	 * Database provider specific resource class instance with universal SQL statements.
-	 * @var \MvcCore\Ext\Models\Db\Providers\Resources\Base
+	 * @var \MvcCore\Ext\Models\Db\Providers\Resource
 	 */
 	protected static $editProviderResource = NULL;
 
 	/**
 	 * Get database provider specific resource class instance with universal SQL statements.
-	 * @return \MvcCore\Ext\Models\Db\Providers\Resources\Base
+	 * @return \MvcCore\Ext\Models\Db\Providers\Resource
 	 */
 	protected static function getEditProviderResource () {
 		if (self::$editProviderResource === NULL)
-			self::$editProviderResource = new \MvcCore\Ext\Models\Db\Providers\Resources\Base;
+			self::$editProviderResource = new \MvcCore\Ext\Models\Db\Providers\Resource;
 		return self::$editProviderResource;
 	}
 }

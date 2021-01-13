@@ -28,6 +28,18 @@ implements	\MvcCore\Model\IConstants,
 	/** @var array */
 	protected $options;
 
+	/**
+	 * `TRUE` for multi statements connection type.
+	 * @var bool
+	 */
+	protected $multiStatements = FALSE;
+	
+	/**
+	 *  Database server version in "PHP-standardized" version number string.
+	 * @var string|NULL
+	 */
+	protected $version = NULL;
+
 	/** @var bool */
 	protected $inTransaction = FALSE;
 	/** @var string */
@@ -143,6 +155,15 @@ implements	\MvcCore\Model\IConstants,
 	public function Quote ($string , $paramType = \PDO::PARAM_STR) {
 		return $this->provider->quote($string, $paramType);
 	}
+	
+	/**
+	 * @inheritDocs
+	 * @param string $identifierName
+	 * @return string
+	 */
+	public function QuoteName ($identifierName) {
+		return "'{$identifierName}'";
+	}
 
 
 
@@ -165,7 +186,21 @@ implements	\MvcCore\Model\IConstants,
 		return $this->provider->setAttribute($attribute , $value);
 	}
 
+	/**
+	 * @inheritDocs
+	 * @return null|string
+	 */
+	public function GetVersion () {
+		return $this->version;
+	}
 
+	/**
+	 * @inheritDocs
+	 * @return bool|null
+	 */
+	public function IsMutliStatements () {
+		return $this->mutliStatements;
+	}
 
 	/**
 	 * @inheritDocs

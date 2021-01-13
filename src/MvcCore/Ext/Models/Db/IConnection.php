@@ -72,6 +72,14 @@ interface IConnection {
 	 * @return string
 	 */
 	public function Quote ($string , $paramType = \PDO::PARAM_STR);
+	
+	/**
+	 * Quote database identifier by provider specfic way, 
+	 * usually table or column name.
+	 * @param string $identifierName
+	 * @return string
+	 */
+	public function QuoteName ($identifierName);
 
 
 	
@@ -89,8 +97,18 @@ interface IConnection {
 	 * @return bool
 	 */
 	public function SetAttribute ($attribute , $value);
+	
+	/**
+	 * Return database server version in "PHP-standardized" version number string.
+	 * @return null|string
+	 */
+	public function GetVersion ();
 
-
+	/**
+	 * Return `TRUE` for multi statements connection type.
+	 * @return bool|null
+	 */
+	public function IsMutliStatements ();
 
 	/**
 	 * Return internal `\PDO` database connection instance.

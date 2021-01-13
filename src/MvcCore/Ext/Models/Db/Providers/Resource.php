@@ -11,9 +11,9 @@
  * @license  https://mvccore.github.io/docs/mvccore/5.0.0/LICENCE.md
  */
 
-namespace MvcCore\Ext\Models\Db\Providers\Resources;
+namespace MvcCore\Ext\Models\Db\Providers;
 
-class		Base
+class		Resource
 implements	\MvcCore\Model\IConstants,
 			\MvcCore\Ext\Models\Db\Model\IConstants {
 	
@@ -37,20 +37,28 @@ implements	\MvcCore\Model\IConstants,
 	 *										second is affected rows count. 
 	 */
 	public function Insert ($connNameOrIndex, $tableName, $dataColumns, $className) {
+		$sqlItems = [];
 		$params = [];
 		$index = 0;
-		foreach ($dataColumns as $dataColumnValue) {
+		$conn = self::GetConnection($connNameOrIndex);
+
+		foreach ($dataColumns as $dataColumnName => $dataColumnValue) {
+			$sqlItems[] = $conn::QuoteName($dataColumnName);
 			$params[":p{$index}"] = $dataColumnValue;
 			$index++;
 		}
-		$sql = "INSERT INTO {$tableName} (" . implode(", ", array_keys($dataColumns)) . 
-			") VALUES (" . implode(", ", array_keys($params)) . ");";
+		
+		$tableName = $conn::QuoteName($tableName);
+		$sql = "INSERT INTO {$tableName} (" 
+			. implode(", ", $sqlItems) 
+			. ") VALUES (" 
+			. implode(", ", array_keys($params)) 
+			. ");";
 
 		$success = FALSE;
 		$error = NULL;
 
 		$transName = 'INSERT:'.str_replace('\\', '_', $className);
-		$conn = self::GetConnection($connNameOrIndex);
 		try {
 			$conn->BeginTransaction(0, $transName);
 
@@ -98,19 +106,23 @@ implements	\MvcCore\Model\IConstants,
 		$whereSqlItems = [];
 		$params = [];
 		$index = 0;
+		$conn = self::GetConnection($connNameOrIndex);
+
 		foreach ($dataColumns as $dataColumnName => $dataColumnValue) {
-			$setSqlItems[] = "{$dataColumnName} = :p{$index}";
+			$setSqlItems[] = $conn::QuoteName($dataColumnName) . " = :p{$index}";
 			$params[":p{$index}"] = $dataColumnValue;
 			$index++;
 		}
 		foreach ($keyColumns as $keyColumnName => $keyColumnValue) {
-			$whereSqlItems[] = "{$keyColumnName} = :p{$index}";
+			$whereSqlItems[] = $conn::QuoteName($keyColumnName) . " = :p{$index}";
 			$params[":p{$index}"] = $keyColumnValue;
 			$index++;
 		}
 
-		$sql = "UPDATE {$tableName} SET " . implode(", ", $setSqlItems) . 
-			" WHERE " . implode(" AND ", $whereSqlItems) . ";";
+		$tableName = $conn::QuoteName($tableName);
+		$sql = "UPDATE {$tableName}"
+			. " SET " . implode(", ", $setSqlItems)
+			. " WHERE " . implode(" AND ", $whereSqlItems) . ";";
 		
 		$reader = self::GetConnection($connNameOrIndex)
 			->Prepare($sql)
@@ -135,15 +147,22 @@ implements	\MvcCore\Model\IConstants,
 		$sqlItems = [];
 		$params = [];
 		$index = 0;
+		$conn = self::GetConnection($connNameOrIndex);
+
 		foreach ($keyColumns as $keyColumnName => $keyColumnValue) {
-			$sqlItems[] = "{$keyColumnName} = :p{$index}";
+			$sqlItems[] = $conn::QuoteName($keyColumnName) . " = :p{$index}";
 			$params[":p{$index}"] = $keyColumnValue;
 			$index++;
 		}
-		$sql = "DELETE FROM {$tableName} WHERE " . implode(" AND ", $sqlItems) . ";";
-		$reader = self::GetConnection($connNameOrIndex)
+
+		$tableName = $conn::QuoteName($tableName);
+		$sql = "DELETE FROM {$tableName} "
+			. "WHERE " . implode(" AND ", $sqlItems) . ";";
+
+		$reader = $conn
 			->Prepare($sql)
 			->Execute($params);
+
 		return [
 			$reader->GetExecResult(), 
 			$reader->GetRowsCount()

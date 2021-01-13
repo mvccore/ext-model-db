@@ -181,7 +181,7 @@ trait Manipulation {
 		if (isset($allValues[$propDbColumnName]))
 			unset($allValues[$propDbColumnName]);
 		
-		/** @var $providerResource \MvcCore\Ext\Models\Db\Providers\Resources\Base */
+		/** @var $providerResource \MvcCore\Ext\Models\Db\Providers\Resource */
 		$providerResource = static::getEditProviderResource();
 		list (
 			$success, $affectedRows, $rawNewId, $error
@@ -231,8 +231,8 @@ trait Manipulation {
 			$context, $metaData, $primaryKeyColumnsIndexes, $uniqueKeyColumnsIndexes
 		);
 		$dataColumns = array_diff_assoc($touchedValues, $keysColumns);
-
-		/** @var $providerResource \MvcCore\Ext\Models\Db\Providers\Resources\Base */
+		
+		/** @var $providerResource \MvcCore\Ext\Models\Db\Providers\Resource */
 		$providerResource = static::getEditProviderResource();
 		list (
 			$success, $affectedRows
@@ -264,7 +264,7 @@ trait Manipulation {
 			$context, $metaData, $primaryKeyColumnsIndexes, $uniqueKeyColumnsIndexes
 		);
 		
-		/** @var $providerResource \MvcCore\Ext\Models\Db\Providers\Resources\Base */
+		/** @var $providerResource \MvcCore\Ext\Models\Db\Providers\Resource */
 		$providerResource = static::getEditProviderResource();
 		list (
 			$success, $affectedRows
