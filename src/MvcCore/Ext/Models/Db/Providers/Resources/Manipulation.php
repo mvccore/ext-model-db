@@ -32,12 +32,12 @@ trait Manipulation {
 		$conn = self::GetConnection($connNameOrIndex);
 
 		foreach ($dataColumns as $dataColumnName => $dataColumnValue) {
-			$sqlItems[] = $conn::QuoteName($dataColumnName);
+			$sqlItems[] = $conn->QuoteName($dataColumnName);
 			$params[":p{$index}"] = $dataColumnValue;
 			$index++;
 		}
 		
-		$tableName = $conn::QuoteName($tableName);
+		$tableName = $conn->QuoteName($tableName);
 		$sql = "INSERT INTO {$tableName} (" 
 			. implode(", ", $sqlItems) 
 			. ") VALUES (" 
@@ -98,17 +98,17 @@ trait Manipulation {
 		$conn = self::GetConnection($connNameOrIndex);
 
 		foreach ($dataColumns as $dataColumnName => $dataColumnValue) {
-			$setSqlItems[] = $conn::QuoteName($dataColumnName) . " = :p{$index}";
+			$setSqlItems[] = $conn->QuoteName($dataColumnName) . " = :p{$index}";
 			$params[":p{$index}"] = $dataColumnValue;
 			$index++;
 		}
 		foreach ($keyColumns as $keyColumnName => $keyColumnValue) {
-			$whereSqlItems[] = $conn::QuoteName($keyColumnName) . " = :p{$index}";
+			$whereSqlItems[] = $conn->QuoteName($keyColumnName) . " = :p{$index}";
 			$params[":p{$index}"] = $keyColumnValue;
 			$index++;
 		}
 
-		$tableName = $conn::QuoteName($tableName);
+		$tableName = $conn->QuoteName($tableName);
 		$sql = "UPDATE {$tableName}"
 			. " SET " . implode(", ", $setSqlItems)
 			. " WHERE " . implode(" AND ", $whereSqlItems) . ";";
@@ -139,12 +139,12 @@ trait Manipulation {
 		$conn = self::GetConnection($connNameOrIndex);
 
 		foreach ($keyColumns as $keyColumnName => $keyColumnValue) {
-			$sqlItems[] = $conn::QuoteName($keyColumnName) . " = :p{$index}";
+			$sqlItems[] = $conn->QuoteName($keyColumnName) . " = :p{$index}";
 			$params[":p{$index}"] = $keyColumnValue;
 			$index++;
 		}
 
-		$tableName = $conn::QuoteName($tableName);
+		$tableName = $conn->QuoteName($tableName);
 		$sql = "DELETE FROM {$tableName} "
 			. "WHERE " . implode(" AND ", $sqlItems) . ";";
 
