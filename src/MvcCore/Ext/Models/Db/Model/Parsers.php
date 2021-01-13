@@ -73,7 +73,7 @@ trait Parsers {
 				if (count($formatArgs) > 0) {
 					$dateTime = static::parseToDateTime($rawValue, $formatArgs);
 				} else {
-					$dateTime = static::parseToDateTimeDefault($rawValue, 'Y-m-d H:i:s.u');
+					$dateTime = static::parseToDateTimeDefault($rawValue, '+Y-m-d H:i:s');
 				}
 				if ($dateTime instanceof \DateTime) {
 					$rawValue = $dateTime;
@@ -105,12 +105,11 @@ trait Parsers {
 		} else {
 			$dateTimeStr = (string) $rawValue;
 		}
-		$dateTime = \date_create_from_format($dateTimeFormat, $dateTimeStr);
-		if ($dateTime !== FALSE && isset($formatArgs[1])) {
-			try {
-				$dateTime->setTimezone(new \DateTimeZone((string) $formatArgs[1]));
-			} catch (\Exception $e) {	
-			}
+		if (isset($formatArgs[1])) {
+			$timeZone = new \DateTimeZone((string) $formatArgs[1]);
+			$dateTime = \date_create_from_format($dateTimeFormat, $dateTimeStr, $timeZone);
+		} else {
+			$dateTime = \date_create_from_format($dateTimeFormat, $dateTimeStr);
 		}
 		return $dateTime;
 	}
