@@ -30,6 +30,7 @@ implements	\MvcCore\Model\IConstants,
 
 	/**
 	 * `TRUE` for multi statements connection type.
+	 * @see https://stackoverflow.com/questions/38305108/disable-multiple-statements-in-php-pdo
 	 * @var bool
 	 */
 	protected $multiStatements = FALSE;
