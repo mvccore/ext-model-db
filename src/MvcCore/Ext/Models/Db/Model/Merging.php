@@ -29,11 +29,11 @@ trait Merging {
 			\MvcCore\Model\MetaData::parseMetaDataProperty as parseMetaDataPropertyBase;
 	}
 	
-	use \MvcCore\Model\Persers,
+	use \MvcCore\Model\Parsers,
 		\MvcCore\Ext\Models\Db\Model\Parsers {
-			\MvcCore\Ext\Models\Db\Model\Parsers::parseToTypes insteadof \MvcCore\Model\Persers;
-			\MvcCore\Ext\Models\Db\Model\Parsers::parseToType insteadof \MvcCore\Model\Persers;
-			\MvcCore\Ext\Models\Db\Model\Parsers::parseToDateTime insteadof \MvcCore\Model\Persers;
-			\MvcCore\Model\Persers::parseToDateTime as parseToDateTimeDefault;
+			\MvcCore\Ext\Models\Db\Model\Parsers::parseToTypes insteadof \MvcCore\Model\Parsers;
+			\MvcCore\Ext\Models\Db\Model\Parsers::parseToType insteadof \MvcCore\Model\Parsers;
+			\MvcCore\Ext\Models\Db\Model\Parsers::parseToDateTime insteadof \MvcCore\Model\Parsers;
+			\MvcCore\Model\Parsers::parseToDateTime as parseToDateTimeDefault;
 	}
 }
