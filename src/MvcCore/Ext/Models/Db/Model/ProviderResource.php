@@ -15,6 +15,10 @@ namespace MvcCore\Ext\Models\Db\Model;
 
 trait ProviderResource {
 	
+	/**
+	 * Connection class full name, specific for each extension.
+	 * @var string
+	 */
 	protected static $providerConnectionClass = '\\MvcCore\\Ext\\Models\\Db\\Connection';
 
 	/**
