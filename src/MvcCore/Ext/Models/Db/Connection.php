@@ -13,19 +13,38 @@
 
 namespace MvcCore\Ext\Models\Db;
 
-abstract class Connection 
+class		Connection 
 implements	\MvcCore\Model\IConstants,
 			\MvcCore\Ext\Models\Db\IConnection
 {
-	/** @var \PDO */
+	/**
+	 * `\PDO` connection provider instance.
+	 * @var \PDO
+	 */
 	protected $provider = NULL;
-	/** @var string */
+
+	/**
+	 * PDO driver specific connection string (it may contains crendentials in come cases).
+	 * @var string
+	 */
 	protected $dsn;
-	/** @var string */
+
+	/**
+	 * Connection user name, always not used in file databases without authentication.
+	 * @var string
+	 */
 	protected $username;
-	/** @var string */
+
+	/**
+	 * Database password, it's stored in memory all the time for reconnection purposes.
+	 * @var string
+	 */
 	protected $password;
-	/** @var array */
+
+	/**
+	 * `\PDO` constructor connection options.
+	 * @var array
+	 */
 	protected $options;
 
 	/**
@@ -41,16 +60,36 @@ implements	\MvcCore\Model\IConstants,
 	 */
 	protected $version = NULL;
 
-	/** @var bool */
+	/**
+	 * Boolean about if current connection is inside transaction or not.
+	 * @var bool
+	 */
 	protected $inTransaction = FALSE;
-	/** @var string */
+	
+	/**
+	 * If current connection is inside transaction, this could contains 
+	 * current transaction name, else it's `NULL`.
+	 * @var string
+	 */
 	protected $transactionName = NULL;
 
-	/** @var int|NULL */
+	/**
+	 * Retry attemps total count to reconnect by system configuration (if implemented).
+	 * @var int|NULL
+	 */
 	protected $retryAttemptsTotal = NULL;
-	/** @var int */
+
+	/**
+	 * Retry attemps counter.
+	 * @var int
+	 */
 	protected $retryAttempts = 0;
-	/** @var float */
+
+	/**
+	 * Delay to wait before next reconnect in seconds, it coulds contain
+	 * miliseconds after decimal point.
+	 * @var float
+	 */
 	protected $retryDelay = 0;
 	
 
@@ -240,36 +279,63 @@ implements	\MvcCore\Model\IConstants,
 	 * @param string $name
 	 * @return bool
 	 */
-	public abstract function BeginTransaction ($flags = 0, $name = NULL);
+	public function BeginTransaction ($flags = 0, $name = NULL) {
+		return $this->provider->beginTransaction();
+	}
 
 	/**
 	 * @inheritDocs
 	 * @param int $flags
 	 * @return bool
 	 */
-	public abstract function Commit ($flags = 0);
+	public function Commit ($flags = 0) {
+		return $this->provider->commit();
+	}
 
 	/**
 	 * @inheritDocs
 	 * @param int $flags
 	 * @return bool
 	 */
-	public abstract function RollBack ($flags = 0);
+	public function RollBack ($flags = 0) {
+		return $this->provider->rollBack();
+	}
 
 
 
 	/**
 	 * Connect into database with `\PDO` provider with possibly configured retries.
 	 * @return \PDO
+	 * @return \PDO
 	 */
-	protected abstract function connect ();
+	protected function connect () {
+		$this->provider = new \PDO(
+			$this->dsn, $this->username, $this->password, $this->options
+		);
+		$this->setUpConnectionSpecifics();
+		return $this->provider;
+	}
+
+	/**
+	 * Set up connection specific properties depends on this driver.
+	 * @return void
+	 */
+	protected function setUpConnectionSpecifics () {
+		$serverVersionConst = '\PDO::ATTR_SERVER_VERSION';
+		$serverVersionConstVal = defined($serverVersionConst) 
+			? constant($serverVersionConst) 
+			: 0;
+		$this->version = $this->provider->getAttribute($serverVersionConstVal);
+	}
 	
 	/**
 	 * Check if given exception is about connection lost.
 	 * @param \Throwable $e 
 	 * @return bool
 	 */
-	protected abstract function isConnectionLost (\Throwable $e);
+	protected function isConnectionLost (\Throwable $e) {
+		return FALSE;
+	}
 
 	/**
 	 * Try to invoke methods `prepare()` or `query()` or `exec()` on internal `\PDO` 
