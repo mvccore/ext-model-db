@@ -186,7 +186,7 @@ trait Manipulation {
 		list (
 			$success, $affectedRows, $rawNewId, $error
 		) = $providerResource->Insert(
-			$connectionArgs[0], $tableArgs[0], $allValues, get_class($context)
+			$connectionArgs[0], $tableArgs[0], $allValues, get_class($context), $propDbColumnName
 		);
 
 		if ($success && $affectedRows > 0) {

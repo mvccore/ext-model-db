@@ -16,6 +16,12 @@ namespace MvcCore\Ext\Models\Db\Model;
 trait ProviderResource {
 	
 	/**
+	 * Provider specific driver name.
+	 * @var string|NULL
+	 */
+	protected static $providerDriverName = NULL;
+
+	/**
 	 * Connection class full name, specific for each extension.
 	 * @var string
 	 */

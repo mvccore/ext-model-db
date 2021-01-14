@@ -67,39 +67,27 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement
 	 */
 	public static function Prepare ($sql, $connectionNameOrConfig = NULL, $driverOptions = [\MvcCore\Ext\Models\Db\IStatement::AUTO_CLOSE]) {
 		list(,$callerInfo) = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-
+		
 		if (!isset($callerInfo['class']))
 			throw new \RuntimeException(
 				"Database static statement preparing has to be called from class only."
 			);
 
 		$fullClassName = '\\' . ltrim($callerInfo['class']);
+		
+		if ($connectionNameOrConfig === NULL) {
+			
+			$getMetaDataMethod = new \ReflectionMethod($fullClassName, 'getMetaData');
+			$getMetaDataMethod->setAccessible(TRUE);
+			list(/*$metaData*/, $connAttrArgs) = $getMetaDataMethod->invokeArgs(
+				NULL, [0, [\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_CONNECTIONS]]
+			);
 
-		/** @var $connection \MvcCore\Ext\Models\Db\Connection */
-		try {
-			$connection = $fullClassName::GetConnection($connectionNameOrConfig, TRUE);
-		} catch (\Throwable $e) {
-			if ($connectionNameOrConfig === NULL) {
-				
-				$getMetaDataMethod = new \ReflectionMethod($fullClassName, 'getMetaData');
-				$getMetaDataMethod->setAccessible(TRUE);
-				list(/*$metaData*/, $connAttrArgs) = $getMetaDataMethod->invokeArgs(
-					NULL, [0, [\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_CONNECTIONS]]
-				);
-
-				if ($connAttrArgs > 0) 
-					$connectionNameOrConfig = $connAttrArgs[0];
-				if ($connectionNameOrConfig !== NULL) {
-					/** @var $connection \MvcCore\Ext\Models\Db\Connection */
-					$connection = $fullClassName::GetConnection($connectionNameOrConfig, TRUE);
-				} else {
-					throw $e;
-				}
-
-			} else {
-				throw $e;
-			}
+			if ($connAttrArgs > 0) 
+				$connectionNameOrConfig = $connAttrArgs[0];
 		}
+		
+		$connection = $fullClassName::GetConnection($connectionNameOrConfig, TRUE);
 		
 		return $connection->Prepare($sql, $driverOptions ?: []);
 	}

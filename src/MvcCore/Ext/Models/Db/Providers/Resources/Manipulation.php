@@ -22,10 +22,11 @@ trait Manipulation {
 	 * @param array $dataColumns			Data to use in insert clause, keys are 
 	 *										column names, values are column values.
 	 * @param string $className				model class full name.
+	 * @param string $autoIncrColumnName	Auto increment column name.
 	 * @return array						First item is boolean result, 
 	 *										second is affected rows count. 
 	 */
-	public function Insert ($connNameOrIndex, $tableName, $dataColumns, $className) {
+	public function Insert ($connNameOrIndex, $tableName, $dataColumns, $className, $autoIncrColumnName) {
 		$sqlItems = [];
 		$params = [];
 		$index = 0;
@@ -49,7 +50,7 @@ trait Manipulation {
 
 		$transName = 'INSERT:'.str_replace('\\', '_', $className);
 		try {
-			$conn->BeginTransaction(0, $transName);
+			$conn->BeginTransaction(16, $transName); // 16 means read write
 
 			$reader = $conn
 				->Prepare($sql)
