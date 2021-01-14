@@ -263,8 +263,6 @@ implements	\MvcCore\Model\IConstants,
 		];
 	}
 	
-	
-
 	/**
 	 * @inheritDocs
 	 * @return bool
@@ -280,6 +278,9 @@ implements	\MvcCore\Model\IConstants,
 	 * @return bool
 	 */
 	public function BeginTransaction ($flags = 0, $name = NULL) {
+		if ($name !== NULL) 
+			$this->transactionName = $name;
+		$this->inTransaction = TRUE;
 		return $this->provider->beginTransaction();
 	}
 
@@ -289,7 +290,10 @@ implements	\MvcCore\Model\IConstants,
 	 * @return bool
 	 */
 	public function Commit ($flags = 0) {
-		return $this->provider->commit();
+		$result = $this->provider->commit();
+		$this->inTransaction = FALSE;
+		$this->transactionName = NULL;
+		return $result;
 	}
 
 	/**
@@ -298,10 +302,11 @@ implements	\MvcCore\Model\IConstants,
 	 * @return bool
 	 */
 	public function RollBack ($flags = 0) {
-		return $this->provider->rollBack();
+		$result = $this->provider->rollBack();
+		$this->inTransaction = FALSE;
+		$this->transactionName = NULL;
+		return $result;
 	}
-
-
 
 	/**
 	 * Connect into database with `\PDO` provider with possibly configured retries.
@@ -434,6 +439,7 @@ implements	\MvcCore\Model\IConstants,
 					\MvcCore\Debug::BarDump($params, 'Params:');
 				}
 			}
+			\MvcCore\Debug::BarDump($this, 'Connection:');
 			throw $error->getPrevious();
 		} else {
 			throw $error;
