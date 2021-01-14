@@ -44,7 +44,7 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement
 
 	/**
 	 * Data reader wrapper, depends on exection call type.
-	 * @var Database\Reader|Readers\Multiple|Readers\Stream|Readers\Single|Readers\Execution
+	 * @var Db\Reader|Readers\Multiple|Readers\Stream|Readers\Single|Readers\Execution
 	 */
 	protected $reader = NULL;
 
