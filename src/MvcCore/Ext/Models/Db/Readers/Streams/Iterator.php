@@ -13,8 +13,11 @@
 
 namespace MvcCore\Ext\Models\Db\Readers\Streams;
 
-class Iterator implements \MvcCore\Ext\Models\Db\Readers\Streams\IIterator
-{
+class		Iterator 
+implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
+			\Iterator,
+			\Countable {
+
 	#region Properties
 
 	/**
@@ -417,4 +420,26 @@ class Iterator implements \MvcCore\Ext\Models\Db\Readers\Streams\IIterator
 	}
 
 	#endregion \Iterator
+
+
+	#region \Countable
+
+	/**
+	 * The number of all items in the stream iterator.
+	 * It is only available after the first iterator loop is executed.
+	 * @throws \RuntimeException 
+	 * @return int
+	 */
+	public function count () {
+		if ($this->index !== NULL && $this->valid === FALSE) 
+			return $this->index + 1;
+		throw new \RuntimeException(
+			"The number of all items in the stream iterator is not ".
+			"available before all items are iterated. The number ".
+			"of iterator items is only available after the first ".
+			"iterator loop is executed."
+		);
+	}
+
+	#endregion \Countable
 }

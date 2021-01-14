@@ -13,7 +13,7 @@
 
 namespace MvcCore\Ext\Models\Db\Readers\Streams;
 
-interface IIterator extends \Iterator
+interface IIterator
 {
 	/**
 	 * Internal constant to complete result items as custom instances.
