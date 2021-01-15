@@ -11,7 +11,7 @@
  * @license  https://mvccore.github.io/docs/mvccore/5.0.0/LICENCE.md
  */
 
-namespace MvcCore\Ext\Models\Db\Misc;
+namespace MvcCore\Ext\Models\Db;
 
 class Exception extends \Exception
 {
@@ -23,7 +23,7 @@ class Exception extends \Exception
 
 	/**
 	 * @param \Throwable $e 
-	 * @return \MvcCore\Ext\Models\Db\Misc\Exception
+	 * @return \MvcCore\Ext\Models\Db\Exception
 	 */
 	public static function Create (\Throwable $e) {
 		return new static (
@@ -62,7 +62,7 @@ class Exception extends \Exception
 
 	/**
 	 * @param string|NULL $query
-	 * @return \MvcCore\Ext\Models\Db\Misc\Exception
+	 * @return \MvcCore\Ext\Models\Db\Exception
 	 */
 	public function setQuery ($query) {
 		$this->query = $query;
@@ -71,7 +71,7 @@ class Exception extends \Exception
 
 	/**
 	 * @param array|null $params
-	 * @return \MvcCore\Ext\Models\Db\Misc\Exception
+	 * @return \MvcCore\Ext\Models\Db\Exception
 	 */
 	public function setParams ($params) {
 		$this->params = $params;

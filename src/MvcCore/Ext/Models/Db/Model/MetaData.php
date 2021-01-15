@@ -152,9 +152,13 @@ trait MetaData {
 			$classTables		=> NULL,
 		];
 
+
+		// complete properties base and extended metadata:
 		$phpWithTypes = PHP_VERSION_ID >= 70400;
 		$classType = new \ReflectionClass($classFullName);
 		$props = $classType->getProperties($accessModFlags);
+		$toolClass = \MvcCore\Application::GetInstance()->GetToolClass();
+		$attributesAnotation = $toolClass::GetAttributesAnotations();
 		/** @var $prop \ReflectionProperty */
 		$index = 0;
 		foreach ($props as $prop) {
@@ -164,7 +168,9 @@ trait MetaData {
 				isset(static::$protectedProperties[$prop->name])
 			) continue;
 
-			$resultItem = static::parseMetaDataProperty($prop, $phpWithTypes);
+			$resultItem = static::parseMetaDataProperty(
+				$prop, $phpWithTypes, $toolClass, $attributesAnotation
+			);
 			
 			$propsMetaData[$index] = $resultItem;
 
@@ -208,13 +214,24 @@ trait MetaData {
 			$index++;
 		}
 
-		$classAttrsArgs = \MvcCore\Ext\Models\Db\Misc\Reflection::GetClassAttrsArgs(
-			$classType
-		);
+		// complete class extended metadata:
+		$attrsClassesNames = [
+			'connections'	=> '\\MvcCore\\Ext\\Models\\Db\\Attrs\\Connection',
+			'tables'		=> '\\MvcCore\\Ext\\Models\\Db\\Attrs\\Table',
+		];
+		$toolsMethod = $attributesAnotation ? 'GetAttrCtorArgs' : 'GetPhpDocsTagArgs';
+		$classAttrsArgs = new \stdClass;
+		foreach ($attrsClassesNames as $key => $attrClassName) 
+			$classAttrsArgs->{$key} = $toolClass::{$toolsMethod}(
+				$classType, ($attributesAnotation
+					? mb_substr($attrClassName, 1)
+					: $attrClassName::PHP_DOCS_TAG_NAME)
+			);
 		if (isset($classAttrsArgs->connections)) 
 			$propsAdditionalMaps[$classConnections] = $classAttrsArgs->connections;
 		if (isset($classAttrsArgs->tables)) 
 			$propsAdditionalMaps[$classTables] = $classAttrsArgs->tables;
+
 
 		return [$propsMetaData, $propsAdditionalMaps];
 	}
@@ -233,16 +250,32 @@ trait MetaData {
 	 *								of the unique key in database.
 	 * @param \ReflectionProperty $prop 
 	 * @param bool $phpWithTypes 
+	 * @param string $toolClass 
+	 * @param bool $attributesAnotation
 	 * @return array
 	 */
-	protected static function parseMetaDataProperty (\ReflectionProperty $prop, $phpWithTypes) {
+	protected static function parseMetaDataProperty (\ReflectionProperty $prop, $phpWithTypes, $toolClass, $attributesAnotation) {
 		// array with records under sequential indexes 0, 1, 2:
 		$result = static::parseMetaDataPropertyBase($prop, $phpWithTypes);
 		
 		// source code property name to index 3:
 		$result[3] = $prop->name;
 
-		$propAttrs = \MvcCore\Ext\Models\Db\Misc\Reflection::GetClassPropertyAttrsArgs($prop);
+		// complete extended metadata:
+		$attrsClassesNames = [
+			'columnName'	=> '\\MvcCore\\Ext\\Models\\Db\\Attrs\\Column',
+			'columnFormat'	=> '\\MvcCore\\Ext\\Models\\Db\\Attrs\\Format',
+			'keyPrimary'	=> '\\MvcCore\\Ext\\Models\\Db\\Attrs\\KeyPrimary',
+			'keyUnique'		=> '\\MvcCore\\Ext\\Models\\Db\\Attrs\\KeyUnique',
+		];
+		$toolsMethod = $attributesAnotation ? 'GetAttrCtorArgs' : 'GetPhpDocsTagArgs';
+		$propAttrs = new \stdClass;
+		foreach ($attrsClassesNames as $key => $attrClassName) 
+			$propAttrs->{$key} = $toolClass::{$toolsMethod}(
+				$prop, ($attributesAnotation
+					? mb_substr($attrClassName, 1)
+					: $attrClassName::PHP_DOCS_TAG_NAME)
+			);
 		
 		// database column name to index 4:
 		$result[4] = isset($propAttrs->columnName) && count($propAttrs->columnName) > 0

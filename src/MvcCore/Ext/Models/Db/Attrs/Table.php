@@ -15,6 +15,10 @@ namespace MvcCore\Ext\Models\Db\Attrs;
 
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_FUNCTION)]
 class Table {
+	
+	const PHP_DOCS_TAG_NAME = '@table';
+
+	
 	/**
 	 * Define this param to declare table name or table names 
 	 * for whole class, where could be used static helper functions

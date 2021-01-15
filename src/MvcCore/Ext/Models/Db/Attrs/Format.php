@@ -15,6 +15,9 @@ namespace MvcCore\Ext\Models\Db\Attrs;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class Format {
+	
+	const PHP_DOCS_TAG_NAME = '@format';
+
 	/**
 	 * Define this param for any additional value conversion 
 	 * from database to code and back.

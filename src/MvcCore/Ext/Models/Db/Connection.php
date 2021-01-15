@@ -389,7 +389,7 @@ implements	\MvcCore\Model\IConstants,
 				throw new \Exception($errInfo[2] ?: $dbErrorMsg, intval($errInfo[0]));
 			}
 		} catch (\Throwable $e) {
-			$exception = \MvcCore\Ext\Models\Db\Misc\Exception::Create($e)
+			$exception = \MvcCore\Ext\Models\Db\Exception::Create($e)
 				->setQuery($query);
 			$providerResult = NULL;
 		}
@@ -417,7 +417,7 @@ implements	\MvcCore\Model\IConstants,
 	 */
 	protected function handleError (\Throwable $error) {
 		$isDev = \MvcCore\Application::GetInstance()->GetEnvironment()->IsDevelopment();
-		if ($isDev && $error instanceof \MvcCore\Ext\Models\Db\Misc\Exception) {
+		if ($isDev && $error instanceof \MvcCore\Ext\Models\Db\Exception) {
 			$query = $error->getQuery();
 			$params = array_merge([], $error->getParams() ?: []);
 			if (count($params) === 0) {

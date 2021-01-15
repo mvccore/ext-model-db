@@ -16,6 +16,8 @@ namespace MvcCore\Ext\Models\Db\Attrs;
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class Column {
 
+	const PHP_DOCS_TAG_NAME = '@column';
+
 	/**
 	 * Define database column name.
 	 * @param string $name

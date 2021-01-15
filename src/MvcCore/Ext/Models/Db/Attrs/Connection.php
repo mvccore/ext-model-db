@@ -15,6 +15,9 @@ namespace MvcCore\Ext\Models\Db\Attrs;
 
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_FUNCTION)]
 class Connection {
+	
+	const PHP_DOCS_TAG_NAME = '@connection';
+
 	/**
 	 * Define this param to declare connection 
 	 * name or index for whole class, where could be 

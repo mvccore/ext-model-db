@@ -15,6 +15,9 @@ namespace MvcCore\Ext\Models\Db\Attrs;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class KeyPrimary {
+	
+	const PHP_DOCS_TAG_NAME = '@keyPrimary';
+
 	/**
 	 * Define this param if column is used in primary key.
 	 * Optionally you can set auto increment feature (`TRUE` by default).

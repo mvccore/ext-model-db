@@ -1,4 +1,4 @@
-<?php<?php
+<?php
 
 /**
  * MvcCore
@@ -15,6 +15,10 @@ namespace MvcCore\Ext\Models\Db\Attrs;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class KeyUnique {
+	
+	const PHP_DOCS_TAG_NAME = '@keyUnique';
+
+	
 	/**
 	 * Define this param if column is used in any unique key.
 	 * Optionally you can set database key name.
