@@ -7,14 +7,14 @@
  * For the full copyright and license information, please view
  * the LICENSE.md file that are distributed with this source code.
  *
- * @copyright	Copyright (c) 2016 Tom Flídr (https://github.com/mvccore/mvccore)
+ * @copyright	Copyright (c) 2016 Tom Flidr (https://github.com/mvccore)
  * @license  https://mvccore.github.io/docs/mvccore/5.0.0/LICENCE.md
  */
 
 namespace MvcCore\Ext\Models\Db\Readers\Streams;
 
-interface IIterator
-{
+interface IIterator {
+
 	/**
 	 * Internal constant to complete result items as custom instances.
 	 * @var string
@@ -48,19 +48,19 @@ interface IIterator
 
 	/**
 	 * Return reader object wrapper.
-	 * @return \MvcCore\Ext\Models\Db\Readers\IStream
+	 * @return \MvcCore\Ext\Models\Db\Readers\Stream
 	 */
 	public function GetReader ();
 	
 	/**
 	 * Return sql statement object wrapper.
-	 * @return \MvcCore\Ext\Models\Db\IStatement
+	 * @return \MvcCore\Ext\Models\Db\Statement
 	 */
 	public function GetStatement ();
 
 	/**
 	 * Return database connection object wrapper.
-	 * @return \MvcCore\Ext\Models\Db\IConnection
+	 * @return \MvcCore\Ext\Models\Db\Connection
 	 */
 	public function GetConnection ();
 

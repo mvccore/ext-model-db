@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view
  * the LICENSE.md file that are distributed with this source code.
  *
- * @copyright	Copyright (c) 2016 Tom Flídr (https://github.com/mvccore/mvccore)
+ * @copyright	Copyright (c) 2016 Tom Flidr (https://github.com/mvccore)
  * @license  https://mvccore.github.io/docs/mvccore/5.0.0/LICENCE.md
  */
 
@@ -42,7 +42,7 @@ interface IStatement {
 
 	/**
 	 * Return connection wrapper instance.
-	 * @return \MvcCore\Ext\Models\Db\IConnection
+	 * @return \MvcCore\Ext\Models\Db\Connection
 	 */
 	public function GetConnection ();
 
@@ -74,7 +74,7 @@ interface IStatement {
 	 * Set execution params.
 	 * @param array $params Query params array, it could be sequential or associative array. 
 	 *						This parameter can be used as an infinite argument for the function.
-	 * @return \MvcCore\Ext\Models\Db\IStatement
+	 * @return \MvcCore\Ext\Models\Db\Statement
 	 */
 	public function SetParams ($params = []);
 
@@ -115,7 +115,7 @@ interface IStatement {
 	 * returns multiple rows reader object.
 	 * @param array $params Query params array, it could be sequential or associative array. 
 	 *						This parameter can be used as an infinite argument for the function.
-	 * @return \MvcCore\Ext\Models\Db\Readers\IMultiple
+	 * @return \MvcCore\Ext\Models\Db\Readers\Multiple
 	 */
 	public function FetchAll ($params = []);
 	
@@ -125,7 +125,7 @@ interface IStatement {
 	 * only returns multiple rows stream reader object.
 	 * @param array $params Query params array, it could be sequential or associative array. 
 	 *						This parameter can be used as an infinite argument for the function.
-	 * @return \MvcCore\Ext\Models\Db\Readers\IStream
+	 * @return \MvcCore\Ext\Models\Db\Readers\Stream
 	 */
 	public function StreamAll ($params = []);
 	
@@ -135,7 +135,7 @@ interface IStatement {
 	 * returns single row reader object.
 	 * @param array $params Query params array, it could be sequential or associative array. 
 	 *						This parameter can be used as an infinite argument for the function.
-	 * @return \MvcCore\Ext\Models\Db\Readers\ISingle
+	 * @return \MvcCore\Ext\Models\Db\Readers\Single
 	 */
 	public function FetchOne ($params = []);
 	
@@ -144,7 +144,7 @@ interface IStatement {
 	 * returns execution reader object.
 	 * @param array $params Query params array, it could be sequential or associative array. 
 	 *						This parameter can be used as an infinite argument for the function.
-	 * @return \MvcCore\Ext\Models\Db\Readers\IExecution
+	 * @return \MvcCore\Ext\Models\Db\Readers\Execution
 	 */
 	public function Execute ($params = []);
 }

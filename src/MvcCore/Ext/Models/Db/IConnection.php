@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view
  * the LICENSE.md file that are distributed with this source code.
  *
- * @copyright	Copyright (c) 2016 Tom Flídr (https://github.com/mvccore/mvccore)
+ * @copyright	Copyright (c) 2016 Tom Flidr (https://github.com/mvccore)
  * @license  https://mvccore.github.io/docs/mvccore/5.0.0/LICENCE.md
  */
 
@@ -35,7 +35,7 @@ interface IConnection {
 	 * Prepares a statement for execution and returns a statement object.
 	 * @param string|\string[] $sql 
 	 * @param int|string $connectionIndexOrName 
-	 * @return \MvcCore\Ext\Models\Db\IStatement
+	 * @return \MvcCore\Ext\Models\Db\Statement
 	 */
 	public function Prepare ($sql, $connectionIndexOrName = NULL);
 
@@ -43,7 +43,7 @@ interface IConnection {
 	 * Executes an SQL statement and returns a statement object.
 	 * @param string|\string[] $sql
 	 * @throws \Throwable
-	 * @return \MvcCore\Ext\Models\Db\IStatement
+	 * @return \MvcCore\Ext\Models\Db\Statement
 	 */
 	public function Query ($sql, $connectionIndexOrName = NULL);
 	
@@ -51,7 +51,7 @@ interface IConnection {
 	 * Execute an SQL statement and returns a reader object.
 	 * @param string|\string[] $sql
 	 * @throws \Throwable
-	 * @return \MvcCore\Ext\Models\Db\Readers\IExecution
+	 * @return \MvcCore\Ext\Models\Db\Readers\Execution
 	 */
 	public function Execute ($sql, $connectionIndexOrName = NULL);
 
