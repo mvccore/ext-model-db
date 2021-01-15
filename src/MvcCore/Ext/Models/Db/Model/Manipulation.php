@@ -183,10 +183,11 @@ trait Manipulation {
 		
 		/** @var $providerResource \MvcCore\Ext\Models\Db\Providers\Resource */
 		$providerResource = static::getEditProviderResource();
+		$connectionNameOrIndex = isset($connectionArgs[0]) ? $connectionArgs[0] : NULL;
 		list (
 			$success, $affectedRows, $rawNewId, $error
 		) = $providerResource->Insert(
-			$connectionArgs[0], $tableArgs[0], $allValues, get_class($context), $propDbColumnName
+			$connectionNameOrIndex, $tableArgs[0], $allValues, get_class($context), $propDbColumnName
 		);
 
 		if ($success && $affectedRows > 0) {
@@ -234,10 +235,11 @@ trait Manipulation {
 		
 		/** @var $providerResource \MvcCore\Ext\Models\Db\Providers\Resource */
 		$providerResource = static::getEditProviderResource();
+		$connectionNameOrIndex = isset($connectionArgs[0]) ? $connectionArgs[0] : NULL;
 		list (
 			$success, $affectedRows
 		) = $providerResource->Update(
-			$connectionArgs[0], $tableArgs[0], $keysColumns, $dataColumns
+			$connectionNameOrIndex, $tableArgs[0], $keysColumns, $dataColumns
 		);
 		
 		return $success && $affectedRows > 0;
@@ -266,10 +268,11 @@ trait Manipulation {
 		
 		/** @var $providerResource \MvcCore\Ext\Models\Db\Providers\Resource */
 		$providerResource = static::getEditProviderResource();
+		$connectionNameOrIndex = isset($connectionArgs[0]) ? $connectionArgs[0] : NULL;
 		list (
 			$success, $affectedRows
 		) = $providerResource->Delete(
-			$connectionArgs[0], $tableArgs[0], $keysColumns
+			$connectionNameOrIndex, $tableArgs[0], $keysColumns
 		);
 		
 		return $success && $affectedRows > 0;
