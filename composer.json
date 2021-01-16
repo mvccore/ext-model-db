@@ -3,17 +3,17 @@
 	"type": "library",
 	"description": "MvcCore - Extension - Model - Database - base model database extension with base and abstract classes and interfaces to work with sql queries in more comfortable API.",
 	"keywords": [
-		"mvc", 
-		"mvccore", 
-		"framework", 
-		"extension", 
-		"plugin", 
-		"plug-in", 
-		"ext", 
+		"mvc",
+		"mvccore",
+		"framework",
+		"extension",
+		"plugin",
+		"plug-in",
+		"ext",
 		"model",
-		"db", 
-		"database", 
-		"abstract", 
+		"db",
+		"database",
+		"abstract",
 		"interface"
 	],
 	"license": ["BSD-3-Clause"],
@@ -23,13 +23,15 @@
 	}],
 	"require": {
 		"php": ">=5.4.0",
-		"mvccore/mvccore": "dev-master"
+		"mvccore/mvccore": "^5.0"
 	},
 	"suggest": {
 		"mvccore/ext-cache-*": "MvcCore cache extensions to speed up operations driven by class anotations."
 	},
 	"autoload": {
-		"classmap": [ "src/" ],
+		"classmap": [
+			"src/"
+		],
 		"files": [
 			"src/MvcCore/Ext/Models/Db/FuncHelpers/Table.php",
 			"src/MvcCore/Ext/Models/Db/FuncHelpers/Columns.php"
