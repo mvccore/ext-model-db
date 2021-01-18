@@ -132,6 +132,8 @@ implements	\MvcCore\Model\IConstants,
 		
 		try {
 			$this->connect();
+		} catch (\Exception $e) { // backward compatibility
+			$this->reConnectIfNecessaryOrThrownError($e);
 		} catch (\Throwable $e) {
 			$this->reConnectIfNecessaryOrThrownError($e);
 		}
@@ -388,6 +390,10 @@ implements	\MvcCore\Model\IConstants,
 				$errInfo = $this->statement->errorInfo();
 				throw new \Exception($errInfo[2] ?: $dbErrorMsg, intval($errInfo[0]));
 			}
+		} catch (\Exception $e) { // backward compatibility
+			$exception = \MvcCore\Ext\Models\Db\Exception::Create($e)
+				->setQuery($query);
+			$providerResult = NULL;
 		} catch (\Throwable $e) {
 			$exception = \MvcCore\Ext\Models\Db\Exception::Create($e)
 				->setQuery($query);
@@ -534,6 +540,8 @@ implements	\MvcCore\Model\IConstants,
 				usleep($this->retryDelay * 1000000);
 			try {
 				$this->connect();
+			} catch (\Exception $e) { // backward compatibility
+				$this->reConnectIfNecessaryOrThrownError($e);
 			} catch (\Throwable $e) {
 				$this->reConnectIfNecessaryOrThrownError($e);
 			}

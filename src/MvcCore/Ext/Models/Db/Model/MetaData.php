@@ -155,6 +155,7 @@ trait MetaData {
 
 		// complete properties base and extended metadata:
 		$phpWithTypes = PHP_VERSION_ID >= 70400;
+		$phpWithUnionTypes = PHP_VERSION_ID >= 80000;
 		$classType = new \ReflectionClass($classFullName);
 		$props = $classType->getProperties($accessModFlags);
 		$toolClass = \MvcCore\Application::GetInstance()->GetToolClass();
@@ -169,7 +170,7 @@ trait MetaData {
 			) continue;
 
 			$resultItem = static::parseMetaDataProperty(
-				$prop, $phpWithTypes, $toolClass, $attributesAnotation
+				$prop, $phpWithTypes, $phpWithUnionTypes, $toolClass, $attributesAnotation
 			);
 			
 			$propsMetaData[$index] = $resultItem;
@@ -232,7 +233,6 @@ trait MetaData {
 		if (isset($classAttrsArgs->tables)) 
 			$propsAdditionalMaps[$classTables] = $classAttrsArgs->tables;
 
-
 		return [$propsMetaData, $propsAdditionalMaps];
 	}
 
@@ -250,13 +250,14 @@ trait MetaData {
 	 *								of the unique key in database.
 	 * @param \ReflectionProperty $prop 
 	 * @param bool $phpWithTypes 
+	 * @param bool $phpWithUnionTypes
 	 * @param string $toolClass 
 	 * @param bool $attributesAnotation
 	 * @return array
 	 */
-	protected static function parseMetaDataProperty (\ReflectionProperty $prop, $phpWithTypes, $toolClass, $attributesAnotation) {
+	protected static function parseMetaDataProperty (\ReflectionProperty $prop, $phpWithTypes, $phpWithUnionTypes, $toolClass, $attributesAnotation) {
 		// array with records under sequential indexes 0, 1, 2:
-		$result = static::parseMetaDataPropertyBase($prop, $phpWithTypes);
+		$result = static::parseMetaDataPropertyBase($prop, $phpWithTypes, $phpWithUnionTypes);
 		
 		// source code property name to index 3:
 		$result[3] = $prop->name;
