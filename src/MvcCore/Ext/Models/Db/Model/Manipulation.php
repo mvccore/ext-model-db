@@ -294,11 +294,6 @@ trait Manipulation {
 				\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_TABLES
 			]
 		);
-		if (!isset($metaDataCollections[4]) && static::$defaultConnectionName === NULL) {
-			throw new \InvalidArgumentException(
-				"[".get_called_class()."] No database connection name decorated."
-			);
-		}
 		if (!isset($metaDataCollections[5]))
 			throw new \InvalidArgumentException(
 				"[".get_called_class()."] No database table name decorated."
