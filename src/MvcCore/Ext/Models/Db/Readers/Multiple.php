@@ -48,7 +48,6 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 			$item->SetValues($rawItem, $readingFlags);
 			$result[$itemKey] = $item;
 		}
-		$this->cleanUpData();
 		return $result;
 	}
 
@@ -72,7 +71,6 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 				settype($itemKey, $keyType);
 			$result[$itemKey] = $rawItem;
 		}
-		$this->cleanUpData();
 		return $result;
 	}
 
@@ -96,7 +94,6 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 				settype($itemKey, $keyType);
 			$result[$itemKey] = (object) $rawItem;
 		}
-		$this->cleanUpData();
 		return $result;
 	}
 
@@ -128,7 +125,6 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 				settype($itemValue, $valueType);
 			$result[$itemKey] = $itemValue;
 		}
-		$this->cleanUpData();
 		return $result;
 	}
 
@@ -153,7 +149,6 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 				settype($itemKey, $keyType);
 			$result[$itemKey] = $valueCompleter($rawItem, $rawKey);
 		}
-		$this->cleanUpData();
 		return $result;
 	}
 
@@ -167,5 +162,15 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 		if (is_array($this->rawData)) 
 			return count($this->rawData);
 		return 0; // In this place, `$this->rawData` is always `FALSE`
+	}
+	
+	/**
+	 * @inheritDocs
+	 * @return array
+	 */
+	public function GetRawData () {
+		if ($this->rawData === NULL)
+			$this->fetchRawData(FALSE);
+		return $this->rawData;
 	}
 }

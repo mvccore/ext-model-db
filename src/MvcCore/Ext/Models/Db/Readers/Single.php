@@ -36,7 +36,6 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 		/** @var $result \MvcCore\Ext\Models\Db\Model */
 		$result = $type->newInstanceWithoutConstructor();
 		$result->SetValues($this->rawData, $readingFlags);
-		$this->cleanUpData();
 		return $result;
 	}
 
@@ -49,7 +48,6 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 			$this->fetchRawData(TRUE);
 		if (!$this->rawData) return NULL;
 		$result = $this->rawData;
-		$this->cleanUpData();
 		return $result;
 	}
 
@@ -62,7 +60,6 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 			$this->fetchRawData(TRUE);
 		if (!$this->rawData) return NULL;
 		$result = (object) $this->rawData;
-		$this->cleanUpData();
 		return $result;
 	}
 
@@ -82,7 +79,6 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 		$itemValue = $this->rawData[$valueColumnName];
 		if ($valueType !== NULL)
 			settype($itemValue, $valueType);
-		$this->cleanUpData();
 		return $itemValue;
 	}
 
@@ -95,7 +91,6 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 		if ($this->rawData === NULL)
 			$this->fetchRawData(TRUE);
 		$result = $valueCompleter($this->rawData);
-		$this->cleanUpData();
 		return $result;
 	}
 
@@ -109,5 +104,17 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 		if (is_array($this->rawData)) 
 			return 1;
 		return 0; // In this place, `$this->rawData` is always `FALSE`
+	}
+
+	/**
+	 * @inheritDocs
+	 * @return array|NULL
+	 */
+	public function GetRawData () {
+		if ($this->rawData === NULL)
+			$this->fetchRawData(TRUE);
+		return is_array($this->rawData)
+			? $this->rawData
+			: NULL;
 	}
 }

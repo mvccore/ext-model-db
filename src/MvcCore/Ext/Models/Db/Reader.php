@@ -63,7 +63,7 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 
 	/**
 	 * @inheritDocs
-	 * @return array
+	 * @return array|NULL
 	 */
 	public function GetRawData () {
 		return $this->rawData;
@@ -76,7 +76,6 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 	public function GetStatement () {
 		return $this->statement;
 	}
-
 
 
 	/**
@@ -183,15 +182,6 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 			}
 		}
 		return $this;
-	}
-
-	/**
-	 * Clean up property `rawData` after reading is finished.
-	 * This function is not used in stream reader.
-	 * @return void
-	 */
-	protected function cleanUpData () {
-		$this->rawData = NULL;
 	}
 
 	/**
