@@ -61,4 +61,11 @@ interface IMultiple extends \MvcCore\Ext\Models\Db\IReader {
 	 * @return \mixed[]
 	 */
 	public function ToAny (callable $valueCompleter, $keyColumnName = NULL, $keyType = NULL);
+
+	/**
+	 * Returns the number of loaded rows by SQL statement,
+	 * it could be `0` or more.
+	 * @return int
+	 */
+	public function GetRowsCount ();
 }

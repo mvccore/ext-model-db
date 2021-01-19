@@ -24,7 +24,8 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 	 * @return \object
 	 */
 	public function ToInstance ($fullClassName, $readingFlags = 0) {
-		$this->fetchRawData(TRUE);
+		if ($this->rawData === NULL)
+			$this->fetchRawData(TRUE);
 		if (!$this->rawData) return NULL;
 		$type = new \ReflectionClass($fullClassName);
 		if (!$type->hasMethod('SetValues'))
@@ -44,7 +45,8 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 	 * @return array
 	 */
 	public function ToArray () {
-		$this->fetchRawData(TRUE);
+		if ($this->rawData === NULL)
+			$this->fetchRawData(TRUE);
 		if (!$this->rawData) return NULL;
 		$result = $this->rawData;
 		$this->cleanUpData();
@@ -56,7 +58,8 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 	 * @return \stdClass
 	 */
 	public function ToObject () {
-		$this->fetchRawData(TRUE);
+		if ($this->rawData === NULL)
+			$this->fetchRawData(TRUE);
 		if (!$this->rawData) return NULL;
 		$result = (object) $this->rawData;
 		$this->cleanUpData();
@@ -70,7 +73,8 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 	 * @return bool|float|int|null|string
 	 */
 	public function ToScalar ($valueColumnName, $valueType = NULL) {
-		$this->fetchRawData(TRUE);
+		if ($this->rawData === NULL)
+			$this->fetchRawData(TRUE);
 		if (
 			!$this->rawData ||
 			!array_key_exists($valueColumnName, $this->rawData)
@@ -88,9 +92,22 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 	 * @return mixed
 	 */
 	public function ToAny (callable $valueCompleter) {
-		$this->fetchRawData(TRUE);
+		if ($this->rawData === NULL)
+			$this->fetchRawData(TRUE);
 		$result = $valueCompleter($this->rawData);
 		$this->cleanUpData();
 		return $result;
+	}
+
+	/**
+	 * @inheritDocs
+	 * @return int
+	 */
+	public function GetRowsCount () {
+		if ($this->rawData === NULL)
+			$this->fetchRawData(TRUE);
+		if (is_array($this->rawData)) 
+			return 1;
+		return 0; // In this place, `$this->rawData` is always `FALSE`
 	}
 }

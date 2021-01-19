@@ -54,4 +54,10 @@ interface ISingle extends \MvcCore\Ext\Models\Db\IReader {
 	 */
 	public function ToAny (callable $valueCompleter);
 
+	/**
+	 * Returns the number of loaded rows by SQL statement,
+	 * it's always `0` or `1`.
+	 * @return int
+	 */
+	public function GetRowsCount ();
 }

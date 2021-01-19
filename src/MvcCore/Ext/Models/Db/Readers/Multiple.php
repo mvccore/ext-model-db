@@ -26,7 +26,8 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 	 * @return \object[]
 	 */
 	public function ToInstances ($fullClassName, $readingFlags = 0, $keyColumnName = NULL, $keyType = NULL) {
-		$this->fetchRawData(FALSE);
+		if ($this->rawData === NULL)
+			$this->fetchRawData(FALSE);
 		$result = [];
 		$retypeKey = $keyType !== NULL;
 		$useRawKey = $keyColumnName === NULL;
@@ -58,7 +59,8 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 	 * @return \array[]
 	 */
 	public function ToArrays ($keyColumnName = NULL, $keyType = NULL) {
-		$this->fetchRawData(FALSE);
+		if ($this->rawData === NULL)
+			$this->fetchRawData(FALSE);
 		$result = [];
 		$retypeKey = $keyType !== NULL;
 		$useRawKey = $keyColumnName === NULL;
@@ -81,7 +83,8 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 	 * @return \stdClass[]
 	 */
 	public function ToObjects ($keyColumnName = NULL, $keyType = NULL) {
-		$this->fetchRawData(FALSE);
+		if ($this->rawData === NULL)
+			$this->fetchRawData(FALSE);
 		$result = [];
 		$retypeKey = $keyType !== NULL;
 		$useRawKey = $keyColumnName === NULL;
@@ -106,7 +109,8 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 	 * @return \int[]|\float[]|\string[]|\bool[]|NULL
 	 */
 	public function ToScalars ($valueColumnName, $valueType = NULL, $keyColumnName = NULL, $keyType = NULL) {
-		$this->fetchRawData(FALSE);
+		if ($this->rawData === NULL)
+			$this->fetchRawData(FALSE);
 		$result = [];
 		$retypeKey = $keyType !== NULL;
 		$retypeValue = $valueType !== NULL;
@@ -136,7 +140,8 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 	 * @return array
 	 */
 	public function ToAny (callable $valueCompleter, $keyColumnName = NULL, $keyType = NULL) {
-		$this->fetchRawData(FALSE);
+		if ($this->rawData === NULL)
+			$this->fetchRawData(FALSE);
 		$result = [];
 		$retypeKey = $keyType !== NULL;
 		$useRawKey = $keyColumnName === NULL;
@@ -150,5 +155,17 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 		}
 		$this->cleanUpData();
 		return $result;
+	}
+
+	/**
+	 * @inheritDocs
+	 * @return int
+	 */
+	public function GetRowsCount () {
+		if ($this->rawData === NULL)
+			$this->fetchRawData(FALSE);
+		if (is_array($this->rawData)) 
+			return count($this->rawData);
+		return 0; // In this place, `$this->rawData` is always `FALSE`
 	}
 }
