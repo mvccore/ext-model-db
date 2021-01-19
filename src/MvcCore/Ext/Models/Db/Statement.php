@@ -110,7 +110,30 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 		$this->driverOptions = $driverOptions;
 	}
 
-
+	/**
+	 * Return array of all instance or static local properties,
+	 * where `\PDOStatement` is replaced with simple array.
+	 * @return array
+	 */
+	public function __debugInfo () {
+		$connType = new \ReflectionClass($this);
+		$props = $connType->getProperties(
+			\ReflectionProperty::IS_PRIVATE |
+			\ReflectionProperty::IS_PROTECTED |
+			\ReflectionProperty::IS_PUBLIC |
+			\ReflectionProperty::IS_STATIC
+		);
+		$result = [];
+		foreach ($props as $prop) {
+			if (!$prop->isPublic()) 
+				$prop->setAccessible(TRUE);
+			$propName = $prop->getName();
+			$result[$propName] = $propName === 'providerStatement'
+				? get_object_vars($this->providerStatement)
+				: $prop->getValue($this);
+		}
+		return $result;
+	}
 
 	/**
 	 * @inheritDocs
