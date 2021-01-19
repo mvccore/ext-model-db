@@ -170,7 +170,7 @@ trait MetaData {
 			) continue;
 
 			$resultItem = static::parseMetaDataProperty(
-				$prop, $phpWithTypes, $phpWithUnionTypes, $toolClass, $attributesAnotation
+				$prop, [$phpWithTypes, $phpWithUnionTypes, $toolClass, $attributesAnotation]
 			);
 			
 			$propsMetaData[$index] = $resultItem;
@@ -249,15 +249,13 @@ trait MetaData {
 	 * - `8`	`bool|string|NULL`	`TRUE` if column is in unique key or name 
 	 *								of the unique key in database.
 	 * @param \ReflectionProperty $prop 
-	 * @param bool $phpWithTypes 
-	 * @param bool $phpWithUnionTypes
-	 * @param string $toolClass 
-	 * @param bool $attributesAnotation
+	 * @param array $params [bool $phpWithTypes, bool $phpWithUnionTypes, string $toolClass, bool $attributesAnotation]
 	 * @return array
 	 */
-	protected static function parseMetaDataProperty (\ReflectionProperty $prop, $phpWithTypes, $phpWithUnionTypes, $toolClass, $attributesAnotation) {
+	protected static function parseMetaDataProperty (\ReflectionProperty $prop, $params) {
+		list ($phpWithTypes, $phpWithUnionTypes, $toolClass, $attributesAnotation) = $params;
 		// array with records under sequential indexes 0, 1, 2:
-		$result = static::parseMetaDataPropertyBase($prop, $phpWithTypes, $phpWithUnionTypes);
+		$result = static::parseMetaDataPropertyBase($prop, $params);
 		
 		// source code property name to index 3:
 		$result[3] = $prop->name;
