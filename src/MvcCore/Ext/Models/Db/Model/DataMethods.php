@@ -55,7 +55,7 @@ trait DataMethods {
 			list(
 				$propIsPrivate, /*$propAllowNulls*/, /*$propTypes*/, 
 				/*$propCodeName*/, $propDbColumnName, $propFormatArgs/*,
-				$propPrimaryKey, $propAutoIncrement, $propUniqueKey*/
+				$propPrimaryKey, $propAutoIncrement, $propUniqueKey, $hasDefaultValue*/
 			) = $metaData[$metaDataIndex];
 
 			$propValue = NULL;
@@ -137,7 +137,7 @@ trait DataMethods {
 				list(
 					$propIsPrivate, $propAllowNulls, $propTypes,
 					$propCodeName, /*$propDbColumnName*/, $propFormatArgs/*,
-					$propPrimaryKey, $propAutoIncrement, $propUniqueKey*/
+					$propPrimaryKey, $propAutoIncrement, $propUniqueKey, $hasDefaultValue*/
 				) = $metaData[$metaDataIndex];
 
 				if (!$propAllowNulls && $isNull) continue;
@@ -235,7 +235,7 @@ trait DataMethods {
 			list(
 				$propIsPrivate, /*$propAllowNulls*/, /*$propTypes*/, 
 				/*$propCodeName*/, $propDbColumnName, $propFormatArgs/*,
-				$propPrimaryKey, $propAutoIncrement, $propUniqueKey*/
+				$propPrimaryKey, $propAutoIncrement, $propUniqueKey, $hasDefaultValue*/
 			) = $metaData[$metaDataIndex];
 
 			$initialValue = NULL;

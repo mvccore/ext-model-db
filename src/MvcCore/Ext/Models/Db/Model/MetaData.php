@@ -38,6 +38,7 @@ trait MetaData {
 	 * - `8`    `bool|string|NULL`  `TRUE` if column is in unique key or name 
 	 *                              of the unique key in database.
 	 *                              private properties manipulation.
+	 * - `9`    `bool`              `TRUE` if property has defined default value.
 	 * 
 	 * Possible reading flags:
 	 *  - `\MvcCore\IModel::PROPS_INHERIT`
@@ -178,7 +179,7 @@ trait MetaData {
 			list(
 				/*$propIsPrivate*/, /*$propAllowNulls*/, /*$propTypes*/,
 				$propCodeName, $propDbColumnName, /*$propFormatArgs*/,
-				$propPrimaryKey, $propAutoIncrement, $propUniqueKey
+				$propPrimaryKey, $propAutoIncrement, $propUniqueKey/*, $hasDefaultValue*/
 			) = $resultItem;
 
 			$propsAdditionalMaps[$propsByCodeKey][$propCodeName] = $index;
@@ -238,16 +239,17 @@ trait MetaData {
 
 	/**
 	 * Return array with property metadata:
-	 * - `0`	`boolean`			`TRUE` for private property.
-	 * - `1'	`boolean`			`TRUE` to allow `NULL` values.
-	 * - `2`	`string[]`			Property types from code or from doc comments or empty array.
-	 * - `3`	`string`			PHP code property name.
-	 * - `4`	`string|NULL`		Database column name (if defined) or `NULL`.
-	 * - `5`	`mixed`				Additional convertsion data  (if defined) or `NULL`.
-	 * - `6`	`bool`				`TRUE` if column is in primary key.
-	 * - `7`	`bool`				`TRUE` if column has auto increment feature.
-	 * - `8`	`bool|string|NULL`	`TRUE` if column is in unique key or name 
-	 *								of the unique key in database.
+	 * - `0`    `boolean`           `TRUE` for private property.
+	 * - `1'    `boolean`           `TRUE` to allow `NULL` values.
+	 * - `2`    `string[]`          Property types from code or from doc comments or empty array.
+	 * - `3`    `string`            PHP code property name.
+	 * - `4`    `string|NULL`	    Database column name (if defined) or `NULL`.
+	 * - `5`    `mixed`             Additional convertsion data  (if defined) or `NULL`.
+	 * - `6`    `bool`              `TRUE` if column is in primary key.
+	 * - `7`    `bool`              `TRUE` if column has auto increment feature.
+	 * - `8`    `bool|string|NULL`  `TRUE` if column is in unique key or name 
+	 *                              of the unique key in database.
+	 * - `9`    `bool`              `TRUE` if property has defined default value.
 	 * @param \ReflectionProperty $prop 
 	 * @param array $params [bool $phpWithTypes, bool $phpWithUnionTypes, string $toolClass, bool $attributesAnotation]
 	 * @return array
@@ -308,6 +310,9 @@ trait MetaData {
 			$result[8] = is_array($propAttrs->keyUnique) && count($propAttrs->keyUnique) > 0
 				? ($propAttrs->keyUnique[0] === '' ? TRUE : $propAttrs->keyUnique[0])
 				: TRUE;
+
+		// property has default value to index 9:
+		$result[9] = $prop->hasDefaultValue();
 
 		return $result;
 	}
