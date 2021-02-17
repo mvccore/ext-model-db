@@ -82,8 +82,8 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	/**
 	 * Internal constructor to create stream iterator.
 	 * @param \MvcCore\Ext\Models\Db\Readers\Stream $reader
-	 * @param string $completerName
-	 * @param array $completerArguments
+	 * @param string                                $completerName
+	 * @param array                                 $completerArguments
 	 */
 	public function __construct (\MvcCore\Ext\Models\Db\Readers\IStream $reader, $completerName, $completerArguments) {
 		// Store provider statement object into current context to fetch rows from database:
@@ -143,7 +143,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 
 	/**
 	 * Prepare instance completer internal properties.
-	 * @param array $completerArguments 
+	 * @param  array $completerArguments 
 	 * @return void
 	 */
 	protected function prepareInstances (& $completerArguments) {
@@ -168,7 +168,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	
 	/**
 	 * Prepare array completer internal properties.
-	 * @param array $completerArguments 
+	 * @param  array $completerArguments 
 	 * @return void
 	 */
 	protected function prepareArrays (& $completerArguments) {
@@ -177,7 +177,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	
 	/**
 	 * Prepare objects completer internal properties.
-	 * @param array $completerArguments 
+	 * @param  array $completerArguments 
 	 * @return void
 	 */
 	protected function prepareObjects (& $completerArguments) {
@@ -186,7 +186,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 
 	/**
 	 * Prepare arrays or objects completer internal properties.
-	 * @param array $completerArguments 
+	 * @param  array $completerArguments 
 	 * @return void
 	 */
 	protected function prepareArraysAndObjects (& $completerArguments) {
@@ -203,7 +203,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	
 	/**
 	 * Prepare scalars completer internal properties.
-	 * @param array $completerArguments 
+	 * @param  array $completerArguments 
 	 * @return void
 	 */
 	protected function prepareScalars (& $completerArguments) {
@@ -223,7 +223,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	
 	/**
 	 * Prepare any types completer internal properties.
-	 * @param array $completerArguments 
+	 * @param  array $completerArguments 
 	 * @return void
 	 */
 	protected function prepareAny (& $completerArguments) {
@@ -246,8 +246,8 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 
 	/**
 	 * Instances result value completer.
-	 * @param int|float|string|bool $rawKey 
-	 * @param array $rawRow 
+	 * @param  int|float|string|bool $rawKey 
+	 * @param  array                 $rawRow 
 	 * @return array
 	 */
 	protected function toInstances ($rawKey, & $rawRow) {
@@ -268,8 +268,8 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	
 	/**
 	 * Arrays result value completer.
-	 * @param int|float|string|bool $rawKey 
-	 * @param array $rawRow 
+	 * @param  int|float|string|bool $rawKey 
+	 * @param  array                 $rawRow 
 	 * @return array
 	 */
 	protected function toArrays ($rawKey, & $rawRow) {
@@ -287,8 +287,8 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	
 	/**
 	 * Objects result value completer.
-	 * @param int|float|string|bool $rawKey 
-	 * @param array $rawRow 
+	 * @param  int|float|string|bool $rawKey 
+	 * @param  array                 $rawRow 
 	 * @return array
 	 */
 	protected function toObjects ($rawKey, & $rawRow) {
@@ -306,8 +306,8 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	
 	/**
 	 * Scalars result value completer.
-	 * @param int|float|string|bool $rawKey 
-	 * @param array $rawRow 
+	 * @param  int|float|string|bool $rawKey 
+	 * @param  array                 $rawRow 
 	 * @return array
 	 */
 	protected function toScalars ($rawKey, & $rawRow) {
@@ -330,8 +330,8 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	
 	/**
 	 * Any types result value completer.
-	 * @param int|float|string|bool $rawKey 
-	 * @param array $rawRow 
+	 * @param  int|float|string|bool $rawKey 
+	 * @param  array                 $rawRow 
 	 * @return array
 	 */
 	protected function toAny ($rawKey, & $rawRow) {

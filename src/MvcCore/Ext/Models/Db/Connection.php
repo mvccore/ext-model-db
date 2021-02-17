@@ -103,10 +103,10 @@ implements	\MvcCore\Model\IConstants,
 
 	/**
 	 * Creates a PDO instance representing a connection to a database.
-	 * @param string $dsn
-	 * @param string $username
-	 * @param string $password
-	 * @param array $options
+	 * @param  string $dsn
+	 * @param  string $username
+	 * @param  string $password
+	 * @param  array  $options
 	 * @throws \Throwable
 	 */
 	public function __construct ($dsn, $username = NULL, $password = NULL, array $options = []) {
@@ -166,8 +166,8 @@ implements	\MvcCore\Model\IConstants,
 	
 	/**
 	 * @inheritDocs
-	 * @param string|\string[] $statement
-	 * @param array $driverOptions
+	 * @param  string|\string[] $statement
+	 * @param  array            $driverOptions
 	 * @throws \Throwable
 	 * @return \MvcCore\Ext\Models\Db\Statement
 	 */
@@ -178,7 +178,7 @@ implements	\MvcCore\Model\IConstants,
 
 	/**
 	 * @inheritDocs
-	 * @param string|\string[] $sql
+	 * @param  string|\string[] $sql
 	 * @throws \Throwable
 	 * @return \MvcCore\Ext\Models\Db\Statement
 	 */
@@ -189,7 +189,7 @@ implements	\MvcCore\Model\IConstants,
 	
 	/**
 	 * @inheritDocs
-	 * @param string|\string[] $sql
+	 * @param  string|\string[] $sql
 	 * @throws \Throwable
 	 * @return \MvcCore\Ext\Models\Db\Readers\Execution
 	 */
@@ -202,8 +202,8 @@ implements	\MvcCore\Model\IConstants,
 
 	/**
 	 * @inheritDocs
-	 * @param string|NULL $sequenceName
-	 * @param string|NULL $targetType
+	 * @param  string|NULL $sequenceName
+	 * @param  string|NULL $targetType
 	 * @return int|float|string|NULL
 	 */
 	public function LastInsertId ($sequenceName = NULL, $targetType = NULL) {
@@ -215,8 +215,8 @@ implements	\MvcCore\Model\IConstants,
 	
 	/**
 	 * @inheritDocs
-	 * @param string $string
-	 * @param int $parameter_type
+	 * @param  string $string
+	 * @param  int    $paramType
 	 * @return string
 	 */
 	public function Quote ($string , $paramType = \PDO::PARAM_STR) {
@@ -225,7 +225,7 @@ implements	\MvcCore\Model\IConstants,
 	
 	/**
 	 * @inheritDocs
-	 * @param string $identifierName
+	 * @param  string $identifierName
 	 * @return string
 	 */
 	public function QuoteName ($identifierName) {
@@ -241,7 +241,7 @@ implements	\MvcCore\Model\IConstants,
 
 	/**
 	 * @inheritDocs
-	 * @param int $attribute
+	 * @param  int $attribute
 	 * @return mixed
 	 */
 	public function GetAttribute ($attribute) {
@@ -250,8 +250,8 @@ implements	\MvcCore\Model\IConstants,
 
 	/**
 	 * @inheritDocs
-	 * @param int $attribute
-	 * @param mixed $value
+	 * @param  int   $attribute
+	 * @param  mixed $value
 	 * @return bool
 	 */
 	public function SetAttribute ($attribute, $value) {
@@ -305,8 +305,8 @@ implements	\MvcCore\Model\IConstants,
 
 	/**
 	 * @inheritDocs
-	 * @param int $flags
-	 * @param string $name
+	 * @param  int    $flags
+	 * @param  string $name
 	 * @return bool
 	 */
 	public function BeginTransaction ($flags = 0, $name = NULL) {
@@ -318,7 +318,7 @@ implements	\MvcCore\Model\IConstants,
 
 	/**
 	 * @inheritDocs
-	 * @param int $flags
+	 * @param  int $flags
 	 * @return bool
 	 */
 	public function Commit ($flags = 0) {
@@ -330,7 +330,7 @@ implements	\MvcCore\Model\IConstants,
 
 	/**
 	 * @inheritDocs
-	 * @param int $flags
+	 * @param  int $flags
 	 * @return bool
 	 */
 	public function RollBack ($flags = 0) {
@@ -342,7 +342,6 @@ implements	\MvcCore\Model\IConstants,
 
 	/**
 	 * Connect into database with `\PDO` provider with possibly configured retries.
-	 * @return \PDO
 	 * @return \PDO
 	 */
 	protected function connect () {
@@ -367,7 +366,7 @@ implements	\MvcCore\Model\IConstants,
 	
 	/**
 	 * Check if given exception is about connection lost.
-	 * @param \Throwable $e 
+	 * @param  \Throwable $e 
 	 * @return bool
 	 */
 	protected function isConnectionLost (\Throwable $e) {
@@ -379,10 +378,10 @@ implements	\MvcCore\Model\IConstants,
 	 * provider instance and if there has been any exception or any error thrown with 
 	 * message like: `... server has gone away ...`, try to reconnect from PHP and try 
 	 * to process given method with arguments again by configured retry count.
-	 * @param string $method
-	 * @param array $args
-	 * @param bool $executeProvider
-	 * @param bool $returnReader
+	 * @param  string $method
+	 * @param  array  $args
+	 * @param  bool   $executeProvider
+	 * @param  bool   $returnReader
 	 * @throws \Throwable
 	 * @return \MvcCore\Ext\Models\Db\Statement|\MvcCore\Ext\Models\Db\Readers\Execution
 	 */
@@ -448,7 +447,7 @@ implements	\MvcCore\Model\IConstants,
 
 	/**
 	 * Log given exception and print query with params on development.
-	 * @param \Throwable $error 
+	 * @param  \Throwable $error 
 	 * @throws \Throwable 
 	 */
 	protected function handleError (\Throwable $error) {
@@ -485,8 +484,8 @@ implements	\MvcCore\Model\IConstants,
 	/**
 	 * Replace all params in query to dump query with values on development env.
 	 * Return array with success boolean and replaced query.
-	 * @param string $query 
-	 * @param array $params 
+	 * @param  string $query 
+	 * @param  array  $params 
 	 * @return array
 	 */
 	protected function devDumpQueryWithParams ($query, $params) {
@@ -555,7 +554,7 @@ implements	\MvcCore\Model\IConstants,
 
 	/**
 	 * Try to reconnect, if connection has been lost.
-	 * @param \Throwable $e
+	 * @param  \Throwable $e
 	 * @throws \Throwable
 	 * @return \PDO|NULL
 	 */

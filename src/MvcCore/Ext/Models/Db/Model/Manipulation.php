@@ -17,8 +17,8 @@ trait Manipulation {
 
 	/**
 	 * @inheritDocs
-	 * @param $createNew bool|NULL
-	 * @param int $propsFlags
+	 * @param  bool|NULL $createNew
+	 * @param  int       $propsFlags
 	 * @throws \InvalidArgumentException|\Throwable
 	 * @return bool
 	 */
@@ -31,7 +31,7 @@ trait Manipulation {
 
 	/**
 	 * @inheritDocs
-	 * @param int $propsFlags
+	 * @param  int $propsFlags
 	 * @throws \InvalidArgumentException 
 	 * @return bool
 	 */
@@ -44,7 +44,7 @@ trait Manipulation {
 
 	/**
 	 * @inheritDocs
-	 * @param int $propsFlags
+	 * @param  int $propsFlags
 	 * @throws \InvalidArgumentException|\Throwable
 	 * @return bool
 	 */
@@ -57,7 +57,7 @@ trait Manipulation {
 
 	/**
 	 * @inheritDocs
-	 * @param int $propsFlags
+	 * @param  int $propsFlags
 	 * @throws \InvalidArgumentException|\Throwable
 	 * @return bool
 	 */
@@ -70,7 +70,7 @@ trait Manipulation {
 
 	/**
 	 * @inheritDocs
-	 * @param int $propsFlags 
+	 * @param  int $propsFlags 
 	 * @throws \InvalidArgumentException|\Throwable
 	 * @return bool
 	 */
@@ -87,10 +87,10 @@ trait Manipulation {
 	 * Process instance database SQL INSERT or UPDATE by automaticly founded key data.
 	 * Return `TRUE` if there is inserted or updated 1 or more rows or return 
 	 * `FALSE` if there is no row inserted or updated. Thrown an exception in any database error.
-	 * @param \MvcCore\Ext\Models\Db\Model $context 
-	 * @param bool|NULL $createNew 
-	 * @param int $propsFlags 
-	 * @param array $metaDataCollections 
+	 * @param  \MvcCore\Ext\Models\Db\Model $context 
+	 * @param  bool|NULL                    $createNew 
+	 * @param  int                          $propsFlags 
+	 * @param  array                        $metaDataCollections 
 	 * @throws \InvalidArgumentException|\Throwable
 	 * @return bool
 	 */
@@ -109,9 +109,9 @@ trait Manipulation {
 	 * database by property with anotated auto increment column.
 	 * If property is not initialized or if it has `NULL` value, than 
 	 * model instance is recognized as new and `TRUE` is returned, `FALSE` otherwise.
-	 * @param \MvcCore\Ext\Models\Db\Model $context 
-	 * @param int $propsFlags 
-	 * @param array $metaDataCollections 
+	 * @param  \MvcCore\Ext\Models\Db\Model $context 
+	 * @param  int                          $propsFlags 
+	 * @param  array                        $metaDataCollections 
 	 * @throws \InvalidArgumentException
 	 * @return bool
 	 */
@@ -153,9 +153,9 @@ trait Manipulation {
 	 * Process instance database SQL INSERT by automaticly founded key data.
 	 * Return `TRUE` if there is updated 1 or more rows or return 
 	 * `FALSE` if there is no row updated. Thrown an exception in any database error.
-	 * @param \MvcCore\Ext\Models\Db\Model $context 
-	 * @param int $propsFlags 
-	 * @param array $metaDataCollections 
+	 * @param  \MvcCore\Ext\Models\Db\Model $context 
+	 * @param  int                          $propsFlags 
+	 * @param  array                        $metaDataCollections 
 	 * @throws \Throwable
 	 * @return bool
 	 */
@@ -209,9 +209,9 @@ trait Manipulation {
 	 * Process instance database SQL UPDATE by automaticly founded key data.
 	 * Return `TRUE` if there is updated 1 or more rows or return 
 	 * `FALSE` if there is no row updated. Thrown an exception in any database error.
-	 * @param \MvcCore\Ext\Models\Db\Model $context 
-	 * @param int $propsFlags 
-	 * @param array $metaDataCollections 
+	 * @param  \MvcCore\Ext\Models\Db\Model $context 
+	 * @param  int                          $propsFlags 
+	 * @param  array                        $metaDataCollections 
 	 * @throws \InvalidArgumentException|\Throwable
 	 * @return bool
 	 */
@@ -249,9 +249,9 @@ trait Manipulation {
 	 * Process instance database SQL DELETE by automaticly founded key data.
 	 * Return `TRUE` if there is removed more than 1 row or return 
 	 * `FALSE` if there is no row removed. Thrown an exception in any database error.
-	 * @param \MvcCore\Ext\Models\Db\Model $context 
-	 * @param int $propsFlags 
-	 * @param array $metaDataCollections 
+	 * @param  \MvcCore\Ext\Models\Db\Model $context 
+	 * @param  int                          $propsFlags 
+	 * @param  array                        $metaDataCollections 
 	 * @throws \InvalidArgumentException|\Throwable
 	 * @return bool
 	 */
@@ -281,7 +281,7 @@ trait Manipulation {
 	/**
 	 * Complete all necessary meta data collections 
 	 * for any edit operation from cache, once.
-	 * @param int $propsFlags 
+	 * @param  int $propsFlags 
 	 * @return array [$metaData, $autoIncrementIndex, $primaryKeyColumnsIndexes, $uniqueKeyColumnsIndexes, $connectionArgs, $tableArgs]
 	 */
 	protected static function getEditMetaDataCollections ($propsFlags = 0) {
@@ -308,10 +308,10 @@ trait Manipulation {
 	 * possible, then try to complete property/properties with unique key 
 	 * anotation, if there value(s) exist(s). If there is not possible to 
 	 * complete any key data, thrown an invalid argument excaption.
-	 * @param \MvcCore\Ext\Models\Db\Model $context 
-	 * @param array $metaData 
-	 * @param array $primaryKeyColumnsIndexes 
-	 * @param array $uniqueKeyColumnsIndexes 
+	 * @param  \MvcCore\Ext\Models\Db\Model $context 
+	 * @param  array                        $metaData 
+	 * @param  array                        $primaryKeyColumnsIndexes 
+	 * @param  array                        $uniqueKeyColumnsIndexes 
 	 * @throws \InvalidArgumentException 
 	 * @return array
 	 */
@@ -350,10 +350,10 @@ trait Manipulation {
 	 * anotation collection about primary or unique keys.
 	 * Return result as boolean about success key identification and
 	 * array with collected key data.
-	 * @param \MvcCore\Ext\Models\Db\Model $context 
-	 * @param array $metaData 
-	 * @param array $keyColsIndexes 
-	 * @return array [bool, array]
+	 * @param  \MvcCore\Ext\Models\Db\Model $context 
+	 * @param  array                        $metaData 
+	 * @param  array                        $keyColsIndexes 
+	 * @return array                        [bool, array]
 	 */
 	protected static function getEditKeysData ($context, $metaData, $keyColsIndexes) {
 		$success = TRUE;

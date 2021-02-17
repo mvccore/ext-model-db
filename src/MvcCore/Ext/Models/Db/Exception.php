@@ -22,7 +22,7 @@ class Exception extends \Exception {
 	protected $params = NULL;
 
 	/**
-	 * @param \Throwable $e 
+	 * @param  \Throwable $e 
 	 * @return \MvcCore\Ext\Models\Db\Exception
 	 */
 	public static function Create (\Throwable $e) {
@@ -34,11 +34,11 @@ class Exception extends \Exception {
 	}
 
 	/**
-	 * @param string $message 
-	 * @param int|NULL $code 
+	 * @param string          $message 
+	 * @param int|NULL        $code 
 	 * @param \Throwable|NULL $previous 
-	 * @param string|NULL $query 
-	 * @param array|NULL $params 
+	 * @param string|NULL     $query 
+	 * @param array|NULL      $params 
 	 */
 	public function __construct ($message = "", $code = 0, $previous = NULL, $query = NULL, $params = NULL) {
 		parent::__construct($message, $code, $previous);
@@ -61,7 +61,7 @@ class Exception extends \Exception {
 	}
 
 	/**
-	 * @param string|NULL $query
+	 * @param  string|NULL $query
 	 * @return \MvcCore\Ext\Models\Db\Exception
 	 */
 	public function setQuery ($query) {
@@ -70,7 +70,7 @@ class Exception extends \Exception {
 	}
 
 	/**
-	 * @param array|null $params
+	 * @param  array|null $params
 	 * @return \MvcCore\Ext\Models\Db\Exception
 	 */
 	public function setParams ($params) {

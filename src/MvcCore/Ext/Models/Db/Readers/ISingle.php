@@ -17,8 +17,8 @@ interface ISingle extends \MvcCore\Ext\Models\Db\IReader {
 
 	/**
 	 * Read single fetched row into instances by given full class name and reading flags.
-	 * @param string $fullClassName
-	 * @param int $readingFlags
+	 * @param  string $fullClassName
+	 * @param  int    $readingFlags
 	 * @return \object
 	 */
 	public function ToInstance ($fullClassName, $readingFlags = 0);
@@ -37,8 +37,8 @@ interface ISingle extends \MvcCore\Ext\Models\Db\IReader {
 
 	/**
 	 * Read single fetched row into scalar value by first row column.
-	 * @param string $valueColumnName
-	 * @param string $valueType
+	 * @param  string $valueColumnName
+	 * @param  string $valueType
 	 * @return int|float|string|bool|NULL
 	 */
 	public function ToScalar ($valueColumnName, $valueType = NULL);
@@ -47,9 +47,9 @@ interface ISingle extends \MvcCore\Ext\Models\Db\IReader {
 	 * Read single fetched row into custom item created by given callable completer called for the row.
 	 * Callable has to accept one argument - raw row result.
 	 * Callable completer has to return created result item instance.
-	 * @param callable $valueColumnName
-	 * @param string $keyColumnName
-	 * @param string $keyType
+	 * @param  callable $valueColumnName
+	 * @param  string   $keyColumnName
+	 * @param  string   $keyType
 	 * @return mixed
 	 */
 	public function ToAny (callable $valueCompleter);

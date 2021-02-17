@@ -45,8 +45,8 @@ trait MetaData {
 	 *  - `\MvcCore\IModel::PROPS_PRIVATE`
 	 *  - `\MvcCore\IModel::PROPS_PROTECTED`
 	 *  - `\MvcCore\IModel::PROPS_PUBLIC`
-	 * @param int $propsFlags
-	 * @param \int[] $additionalMaps
+	 * @param  int    $propsFlags
+	 * @param  \int[] $additionalMaps
 	 * @throws \RuntimeException|\InvalidArgumentException
 	 * @return array
 	 */
@@ -127,9 +127,9 @@ trait MetaData {
 
 	/**
 	 * Parse called class metadata with reflection.
-	 * @param string $classFullName 
-	 * @param int $accessModFlags 
-	 * @param bool $inclInherit 
+	 * @param  string $classFullName 
+	 * @param  int    $accessModFlags 
+	 * @param  bool   $inclInherit 
 	 * @throws \InvalidArgumentException 
 	 * @return array
 	 */
@@ -250,8 +250,8 @@ trait MetaData {
 	 * - `8`    `bool|string|NULL`  `TRUE` if column is in unique key or name 
 	 *                              of the unique key in database.
 	 * - `9`    `bool`              `TRUE` if property has defined default value.
-	 * @param \ReflectionProperty $prop 
-	 * @param array $params [bool $phpWithTypes, bool $phpWithUnionTypes, string $toolClass, bool $attributesAnotation]
+	 * @param  \ReflectionProperty $prop 
+	 * @param  array               $params [bool $phpWithTypes, bool $phpWithUnionTypes, string $toolClass, bool $attributesAnotation]
 	 * @return array
 	 */
 	protected static function parseMetaDataProperty (\ReflectionProperty $prop, $params) {

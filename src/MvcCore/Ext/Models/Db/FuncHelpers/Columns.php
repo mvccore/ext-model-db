@@ -16,8 +16,8 @@ namespace MvcCore\Ext\Models\Db\FuncHelpers;
 /**
  * Return columns names by described class properties, joined by separator,
  * optionally without some columns names as second argument.
- * @param string $separator 
- * @param \string[] $exceptColumns
+ * @param  string    $separator 
+ * @param  \string[] $exceptColumns
  * @return string
  */
 function Columns ($separator = ',', $exceptColumns = []) {

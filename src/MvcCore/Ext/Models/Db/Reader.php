@@ -43,7 +43,7 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 
 	/**
 	 * Internal constructor to create reader wrapper instance.
-	 * @param Statement $statement 
+	 * @param \MvcCore\Ext\Models\Db\Statement $statement 
 	 */
 	public function __construct (\MvcCore\Ext\Models\Db\Statement $statement) {
 		$this->statement = $statement;
@@ -82,8 +82,8 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 	 * Execute provider statement if necessary and 
 	 * fetch single or multiple rows into result variable,
 	 * close cursor and return the result.
-	 * @param bool $singleRow 
-	 * @param int $fetchMode 
+	 * @param  bool $singleRow 
+	 * @param  int  $fetchMode 
 	 * @return array|NULL
 	 */
 	protected function & fetchRawData ($singleRow, $fetchMode = \PDO::FETCH_ASSOC) {
@@ -186,7 +186,7 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 
 	/**
 	 * Get SQL command first word in lower case.
-	 * @param string $sql 
+	 * @param  string $sql 
 	 * @return string|NULL
 	 */
 	protected function getSqlCommandFirstWord ($sql) {

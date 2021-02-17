@@ -60,9 +60,9 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 	
 	/**
 	 * @inheritDocs
-	 * @param string|\string[] $sql 
-	 * @param string|int|array|\stdClass|NULL $connectionNameOrConfig
-	 * @param array $driverOptions
+	 * @param  string|\string[]                $sql 
+	 * @param  string|int|array|\stdClass|NULL $connectionNameOrConfig
+	 * @param  array                           $driverOptions
 	 * @return \MvcCore\Ext\Models\Db\Statement
 	 */
 	public static function Prepare ($sql, $connectionNameOrConfig = NULL, $driverOptions = [\MvcCore\Ext\Models\Db\IStatement::AUTO_CLOSE]) {
@@ -97,8 +97,8 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 	/**
 	 * Internal constructor to create statement wrapper instance.
 	 * @param \MvcCore\Ext\Models\Db\Connection $connection 
-	 * @param \PDOStatement $statement
-	 * @param array $driverOptions
+	 * @param \PDOStatement                     $statement
+	 * @param array                             $driverOptions
 	 */
 	public function __construct (
 		\MvcCore\Ext\Models\Db\Connection $connection, 
@@ -177,8 +177,8 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 	
 	/**
 	 * @inheritDocs
-	 * @param array $params Query params array, it could be sequential or associative array. 
-	 *						This parameter can be used as an infinite argument for the function.
+	 * @param   array $params Query params array, it could be sequential or associative array. 
+	 *                        This parameter can be used as an infinite argument for the function.
 	 * @return \MvcCore\Ext\Models\Db\Statement
 	 */
 	public function SetParams ($params = []) {
@@ -232,8 +232,8 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 
 	/**
 	 * @inheritDocs
-	 * @param array $params Query params array, it could be sequential or associative array. 
-	 *						This parameter can be used as an infinite argument for the function.
+	 * @param  array $params Query params array, it could be sequential or associative array. 
+	 *                       This parameter can be used as an infinite argument for the function.
 	 * @return \MvcCore\Ext\Models\Db\Readers\Multiple
 	 */
 	public function FetchAll ($params = []) {
@@ -247,8 +247,8 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 
 	/**
 	 * @inheritDocs
-	 * @param array $params Query params array, it could be sequential or associative array. 
-	 *						This parameter can be used as an infinite argument for the function.
+	 * @param  array $params Query params array, it could be sequential or associative array. 
+	 *                       This parameter can be used as an infinite argument for the function.
 	 * @return \MvcCore\Ext\Models\Db\Readers\Stream
 	 */
 	public function StreamAll ($params = []) {
@@ -262,8 +262,8 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 
 	/**
 	 * @inheritDocs
-	 * @param array $params Query params array, it could be sequential or associative array. 
-	 *						This parameter can be used as an infinite argument for the function.
+	 * @param  array $params Query params array, it could be sequential or associative array. 
+	 *                       This parameter can be used as an infinite argument for the function.
 	 * @return \MvcCore\Ext\Models\Db\Readers\Single
 	 */
 	public function FetchOne ($params = []) {
@@ -277,8 +277,8 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 
 	/**
 	 * @inheritDocs
-	 * @param array $params Query params array, it could be sequential or associative array. 
-	 *						This parameter can be used as an infinite argument for the function.
+	 * @param  array $params Query params array, it could be sequential or associative array. 
+	 *                       This parameter can be used as an infinite argument for the function.
 	 * @return \MvcCore\Ext\Models\Db\Readers\Execution
 	 */
 	public function Execute ($params = []) {

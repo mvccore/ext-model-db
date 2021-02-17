@@ -19,11 +19,12 @@ interface IModel {
 	 * Returns `\MvcCore\Ext\Models\Db\Connections` database connection 
 	 * by connection name/index, usually by system config values (cached by local store)
 	 * or create new connection of no connection cached.
-	 * @param string|int|array|\stdClass|NULL $connectionNameOrConfig
-	 * @param bool $strict	If `TRUE` and no connection under given name or given
-	 *						index found, exception is thrown. `TRUE` by default.
-	 *						If `FALSE`, there could be returned connection by
-	 *						first available configuration.
+	 * @param  string|int|array|\stdClass|NULL $connectionNameOrConfig
+	 * @param  bool                            $strict
+	 *                                         If `TRUE` and no connection under given name or given
+	 *                                         index found, exception is thrown. `TRUE` by default.
+	 *                                         If `FALSE`, there could be returned connection by
+	 *                                         first available configuration.
 	 * @throws \InvalidArgumentException
 	 * @return \MvcCore\Ext\Models\Db\Connection
 	 */
@@ -33,8 +34,8 @@ interface IModel {
 	 * Process instance database SQL INSERT or UPDATE by automaticly founded key data.
 	 * Return `TRUE` if there is inserted or updated 1 or more rows or return 
 	 * `FALSE` if there is no row inserted or updated. Thrown an exception in any database error.
-	 * @param $createNew bool|NULL
-	 * @param int $propsFlags
+	 * @param  bool|NULL $createNew 
+	 * @param  int       $propsFlags
 	 * @throws \InvalidArgumentException|\Throwable
 	 * @return bool
 	 */
@@ -45,7 +46,7 @@ interface IModel {
 	 * database by property with anotated auto increment column.
 	 * If property is not initialized or if it has `NULL` value, than 
 	 * model instance is recognized as new and `TRUE` is returned, `FALSE` otherwise.
-	 * @param int $propsFlags
+	 * @param  int $propsFlags
 	 * @throws \InvalidArgumentException 
 	 * @return bool
 	 */
@@ -55,7 +56,7 @@ interface IModel {
 	 * Process instance database SQL INSERT by automaticly founded key data.
 	 * Return `TRUE` if there is updated 1 or more rows or return 
 	 * `FALSE` if there is no row updated. Thrown an exception in any database error.
-	 * @param int $propsFlags
+	 * @param  int $propsFlags
 	 * @throws \InvalidArgumentException|\Throwable
 	 * @return bool
 	 */
@@ -65,7 +66,7 @@ interface IModel {
 	 * Process instance database SQL UPDATE by automaticly founded key data.
 	 * Return `TRUE` if there is updated 1 or more rows or return 
 	 * `FALSE` if there is no row updated. Thrown an exception in any database error.
-	 * @param int $propsFlags
+	 * @param  int $propsFlags
 	 * @throws \InvalidArgumentException|\Throwable
 	 * @return bool
 	 */
@@ -75,7 +76,7 @@ interface IModel {
 	 * Process instance database SQL DELETE by automaticly founded key data.
 	 * Return `TRUE` if there is removed more than 1 row or return 
 	 * `FALSE` if there is no row removed. Thrown an exception in any database error.
-	 * @param int $propsFlags 
+	 * @param  int $propsFlags 
 	 * @throws \InvalidArgumentException|\Throwable
 	 * @return bool
 	 */

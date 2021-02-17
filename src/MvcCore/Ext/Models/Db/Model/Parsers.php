@@ -17,10 +17,10 @@ trait Parsers {
 
 	/**
 	 * Try to convert raw database value into first type in target types.
-	 * @param mixed $rawValue
-	 * @param \string[] $typesString
-	 * @param array $formatArgs
-	 * @return mixed Converted result.
+	 * @param  mixed     $rawValue
+	 * @param  \string[] $typesString
+	 * @param  array     $formatArgs
+	 * @return mixed     Converted result.
 	 */
 	protected static function parseToTypes ($rawValue, $typesString, $formatArgs = []) {
 		$targetTypeValue = NULL;
@@ -60,10 +60,10 @@ trait Parsers {
 
 	/**
 	 * Try to convert database value into target type.
-	 * @param mixed $rawValue
-	 * @param string $typeStr
-	 * @param array $formatArgs
-	 * @return array First item is conversion boolean success, second item is converted result.
+	 * @param  mixed  $rawValue
+	 * @param  string $typeStr
+	 * @param  array  $formatArgs
+	 * @return array  First item is conversion boolean success, second item is converted result.
 	 */
 	protected static function parseToType ($rawValue, $typeStr, $formatArgs = []) {
 		$conversionResult = FALSE;
@@ -90,8 +90,8 @@ trait Parsers {
 	
 	/**
 	 * Convert int, float or string value into \DateTime.
-	 * @param int|float|string|NULL $rawValue 
-	 * @param \string[] $formatArgs 
+	 * @param  int|float|string|NULL $rawValue 
+	 * @param  \string[]             $formatArgs 
 	 * @return \DateTime|bool
 	 */
 	protected static function parseToDateTime ($rawValue, $formatArgs) {

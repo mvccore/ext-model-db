@@ -19,10 +19,10 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 
 	/**
 	 * @inheritDocs
-	 * @param string $fullClassName 
-	 * @param int $readingFlags 
-	 * @param string $keyColumnName 
-	 * @param string $keyType 
+	 * @param  string $fullClassName 
+	 * @param  int    $readingFlags 
+	 * @param  string $keyColumnName 
+	 * @param  string $keyType 
 	 * @return \object[]
 	 */
 	public function ToInstances ($fullClassName, $readingFlags = 0, $keyColumnName = NULL, $keyType = NULL) {
@@ -53,8 +53,8 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 
 	/**
 	 * @inheritDocs
-	 * @param string $keyColumnName 
-	 * @param string $keyType 
+	 * @param  string $keyColumnName 
+	 * @param  string $keyType 
 	 * @return \array[]
 	 */
 	public function ToArrays ($keyColumnName = NULL, $keyType = NULL) {
@@ -76,8 +76,8 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 
 	/**
 	 * @inheritDocs
-	 * @param string $keyColumnName 
-	 * @param string $keyType 
+	 * @param  string $keyColumnName 
+	 * @param  string $keyType 
 	 * @return \stdClass[]
 	 */
 	public function ToObjects ($keyColumnName = NULL, $keyType = NULL) {
@@ -99,10 +99,10 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 
 	/**
 	 * @inheritDocs
-	 * @param string $valueColumnName 
-	 * @param string $valueType 
-	 * @param string $keyColumnName 
-	 * @param string $keyType 
+	 * @param  string $valueColumnName 
+	 * @param  string $valueType 
+	 * @param  string $keyColumnName 
+	 * @param  string $keyType 
 	 * @return \int[]|\float[]|\string[]|\bool[]|NULL
 	 */
 	public function ToScalars ($valueColumnName, $valueType = NULL, $keyColumnName = NULL, $keyType = NULL) {
@@ -130,9 +130,9 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 
 	/**
 	 * @inheritDocs
-	 * @param callable $valueColumnName Called for each result row, 1. argument is raw result item, 2. argument is raw result key. Completer has to return created result item instance.
-	 * @param string $keyColumnName 
-	 * @param string $keyType 
+	 * @param  callable $valueColumnName Called for each result row, 1. argument is raw result item, 2. argument is raw result key. Completer has to return created result item instance.
+	 * @param  string   $keyColumnName 
+	 * @param  string   $keyType 
 	 * @return array
 	 */
 	public function ToAny (callable $valueCompleter, $keyColumnName = NULL, $keyType = NULL) {

@@ -15,7 +15,7 @@ namespace MvcCore\Ext\Models\Db\FuncHelpers;
 
 /**
  * Return described table name by index.
- * @param int $tableIndex 
+ * @param  int $tableIndex 
  * @throws \RuntimeException|\InvalidArgumentException
  * @return string
  */

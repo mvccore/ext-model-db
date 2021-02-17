@@ -17,11 +17,12 @@ trait Connection {
 
 	/**
 	 * @inheritDocs
-	 * @param string|int|array|\stdClass|NULL $connectionNameOrConfig
-	 * @param bool $strict	If `TRUE` and no connection under given name or given
-	 *						index found, exception is thrown. `TRUE` by default.
-	 *						If `FALSE`, there could be returned connection by
-	 *						first available configuration.
+	 * @param  string|int|array|\stdClass|NULL $connectionNameOrConfig
+	 * @param  bool                            $strict
+	 *                                         If `TRUE` and no connection under given name or given
+	 *                                         index found, exception is thrown. `TRUE` by default.
+	 *                                         If `FALSE`, there could be returned connection by
+	 *                                         first available configuration.
 	 * @throws \InvalidArgumentException
 	 * @return \MvcCore\Ext\Models\Db\Connection
 	 */

@@ -17,11 +17,11 @@ trait DataMethods {
 	
 	/**
 	 * @inheritDocs
-	 * @param int $propsFlags		All properties flags are available except flags: 
-	 *								- `\MvcCore\IModel::PROPS_INITIAL_VALUES`,
-	 *								- `\MvcCore\IModel::PROPS_CONVERT_CASE_INSENSITIVE`.
-	 * @param bool $getNullValues	If `TRUE`, include also values with `NULL`s, 
-	 *								`FALSE` by default.
+	 * @param  int  $propsFlags    All properties flags are available except flags: 
+	 *                             - `\MvcCore\IModel::PROPS_INITIAL_VALUES`,
+	 *                             - `\MvcCore\IModel::PROPS_CONVERT_CASE_INSENSITIVE`.
+	 * @param  bool $getNullValues If `TRUE`, include also values with `NULL`s, 
+	 *                             `FALSE` by default.
 	 * @throws \InvalidArgumentException
 	 * @return array
 	 */
@@ -102,8 +102,8 @@ trait DataMethods {
 
 	/**
 	 * @inheritDocs
-	 * @param array $data Raw data from database (row) or from form fields.
-	 * @param int $propsFlags All properties flags are available.
+	 * @param  array $data       Raw data from database (row) or from form fields.
+	 * @param  int   $propsFlags All properties flags are available.
 	 * @throws \InvalidArgumentException
 	 * @return \MvcCore\Ext\Models\Db\Model Current `$this` context.
 	 */
@@ -199,9 +199,9 @@ trait DataMethods {
 
 	/**
 	 * @inheritDocs
-	 * @param int $propsFlags	All properties flags are available except flags: 
-	 *							- `\MvcCore\IModel::PROPS_INITIAL_VALUES`,
-	 *							- `\MvcCore\IModel::PROPS_CONVERT_CASE_INSENSITIVE`.
+	 * @param  int $propsFlags All properties flags are available except flags: 
+	 *                         - `\MvcCore\IModel::PROPS_INITIAL_VALUES`,
+	 *                         - `\MvcCore\IModel::PROPS_CONVERT_CASE_INSENSITIVE`.
 	 * @throws \InvalidArgumentException
 	 * @return array 
 	 */

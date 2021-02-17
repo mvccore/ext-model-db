@@ -19,8 +19,8 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 
 	/**
 	 * @inheritDocs
-	 * @param string $fullClassName 
-	 * @param int $readingFlags 
+	 * @param  string $fullClassName 
+	 * @param  int    $readingFlags 
 	 * @return \object
 	 */
 	public function ToInstance ($fullClassName, $readingFlags = 0) {
@@ -65,8 +65,8 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 
 	/**
 	 * @inheritDocs
-	 * @param string $valueColumnName 
-	 * @param string $valueType 
+	 * @param  string $valueColumnName 
+	 * @param  string $valueType 
 	 * @return bool|float|int|null|string
 	 */
 	public function ToScalar ($valueColumnName, $valueType = NULL) {
@@ -84,7 +84,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 
 	/**
 	 * @inheritDocs
-	 * @param callable $valueCompleter 
+	 * @param  callable $valueCompleter 
 	 * @return mixed
 	 */
 	public function ToAny (callable $valueCompleter) {

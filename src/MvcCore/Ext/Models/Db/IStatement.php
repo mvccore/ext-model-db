@@ -31,9 +31,9 @@ interface IStatement {
 
 	/**
 	 * Prepares a statement for execution and returns a statement object.
-	 * @param string|\string[] $sql 
-	 * @param string|int|array|\stdClass|NULL $connectionNameOrConfig
-	 * @param array $driverOptions
+	 * @param  string|\string[]                $sql 
+	 * @param  string|int|array|\stdClass|NULL $connectionNameOrConfig
+	 * @param  array                           $driverOptions
 	 * @return \MvcCore\Ext\Models\Db\Statement
 	 */
 	public static function Prepare ($sql, $connectionNameOrConfig = NULL, $driverOptions = []);
@@ -72,8 +72,8 @@ interface IStatement {
 
 	/**
 	 * Set execution params.
-	 * @param array $params Query params array, it could be sequential or associative array. 
-	 *						This parameter can be used as an infinite argument for the function.
+	 * @param  array $params Query params array, it could be sequential or associative array. 
+	 *                       This parameter can be used as an infinite argument for the function.
 	 * @return \MvcCore\Ext\Models\Db\Statement
 	 */
 	public function SetParams ($params = []);
@@ -113,8 +113,8 @@ interface IStatement {
 	 * Executes a statement with given params, 
 	 * fetches all data from database at once and 
 	 * returns multiple rows reader object.
-	 * @param array $params Query params array, it could be sequential or associative array. 
-	 *						This parameter can be used as an infinite argument for the function.
+	 * @param  array $params Query params array, it could be sequential or associative array. 
+	 *                       This parameter can be used as an infinite argument for the function.
 	 * @return \MvcCore\Ext\Models\Db\Readers\Multiple
 	 */
 	public function FetchAll ($params = []);
@@ -123,8 +123,8 @@ interface IStatement {
 	 * Executes a statement with given params, 
 	 * doesn't fetch data from database yet, 
 	 * only returns multiple rows stream reader object.
-	 * @param array $params Query params array, it could be sequential or associative array. 
-	 *						This parameter can be used as an infinite argument for the function.
+	 * @param  array $params Query params array, it could be sequential or associative array. 
+	 *                       This parameter can be used as an infinite argument for the function.
 	 * @return \MvcCore\Ext\Models\Db\Readers\Stream
 	 */
 	public function StreamAll ($params = []);
@@ -133,8 +133,8 @@ interface IStatement {
 	 * Executes a statement with given params, 
 	 * fetches single row from database and 
 	 * returns single row reader object.
-	 * @param array $params Query params array, it could be sequential or associative array. 
-	 *						This parameter can be used as an infinite argument for the function.
+	 * @param  array $params Query params array, it could be sequential or associative array. 
+	 *                       This parameter can be used as an infinite argument for the function.
 	 * @return \MvcCore\Ext\Models\Db\Readers\Single
 	 */
 	public function FetchOne ($params = []);
@@ -142,8 +142,8 @@ interface IStatement {
 	/**
 	 * Executes a statement with given params and 
 	 * returns execution reader object.
-	 * @param array $params Query params array, it could be sequential or associative array. 
-	 *						This parameter can be used as an infinite argument for the function.
+	 * @param  array $params Query params array, it could be sequential or associative array. 
+	 *                       This parameter can be used as an infinite argument for the function.
 	 * @return \MvcCore\Ext\Models\Db\Readers\Execution
 	 */
 	public function Execute ($params = []);
