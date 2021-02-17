@@ -171,7 +171,7 @@ trait MetaData {
 			) continue;
 
 			$resultItem = static::parseMetaDataProperty(
-				$prop, [$phpWithTypes, $phpWithUnionTypes, $toolClass, $attributesAnotation]
+				$prop, [$phpWithTypes, $phpWithUnionTypes, $toolClass, $attributesAnotation, $accessModFlags]
 			);
 			
 			$propsMetaData[$index] = $resultItem;
@@ -255,7 +255,7 @@ trait MetaData {
 	 * @return array
 	 */
 	protected static function parseMetaDataProperty (\ReflectionProperty $prop, $params) {
-		list ($phpWithTypes, $phpWithUnionTypes, $toolClass, $attributesAnotation) = $params;
+		list ($phpWithTypes, $phpWithUnionTypes, $toolClass, $attributesAnotation, $accessModFlags) = $params;
 		// array with records under sequential indexes 0, 1, 2:
 		$result = static::parseMetaDataPropertyBase($prop, $params);
 		
@@ -271,12 +271,25 @@ trait MetaData {
 		];
 		$toolsMethod = $attributesAnotation ? 'GetAttrCtorArgs' : 'GetPhpDocsTagArgs';
 		$propAttrs = new \stdClass;
-		foreach ($attrsClassesNames as $key => $attrClassName) 
-			$propAttrs->{$key} = $toolClass::{$toolsMethod}(
-				$prop, ($attributesAnotation
-					? mb_substr($attrClassName, 1)
-					: $attrClassName::PHP_DOCS_TAG_NAME)
-			);
+		$propAttrsCount = 0;
+		$currentProp = $prop;
+		while (TRUE) {
+			foreach ($attrsClassesNames as $key => $attrClassName) {
+				$propAttr = $toolClass::{$toolsMethod}(
+					$currentProp, ($attributesAnotation
+						? mb_substr($attrClassName, 1)
+						: $attrClassName::PHP_DOCS_TAG_NAME)
+				);
+				if ($propAttr !== NULL) {
+					$propAttrs->{$key} = $propAttr;
+					$propAttrsCount++;
+				}
+			}
+			if ($propAttrsCount > 0) break;
+			$propParentClass = $currentProp->getDeclaringClass()->getParentClass();
+			if (!$propParentClass->hasProperty($currentProp->name)) break;
+			$currentProp = $propParentClass->getProperty($currentProp->name);
+		}
 		
 		// database column name to index 4:
 		$result[4] = isset($propAttrs->columnName) && count($propAttrs->columnName) > 0
@@ -292,7 +305,7 @@ trait MetaData {
 		$result[6] = FALSE;
 		// auto increment feature flag to index 7:
 		$result[7] = FALSE;
-		if ($propAttrs->keyPrimary !== NULL) {
+		if (isset($propAttrs->keyPrimary)) {
 			$result[6] = TRUE;
 			$result[7] = TRUE; // auto increment feature always by default
 			if (is_array($propAttrs->keyPrimary) && count($propAttrs->keyPrimary) > 0) {
@@ -306,7 +319,7 @@ trait MetaData {
 		// unique key index data to index 8:
 		$result[8] = NULL;
 		
-		if ($propAttrs->keyUnique !== NULL) 
+		if (isset($propAttrs->keyUnique)) 
 			$result[8] = is_array($propAttrs->keyUnique) && count($propAttrs->keyUnique) > 0
 				? ($propAttrs->keyUnique[0] === '' ? TRUE : $propAttrs->keyUnique[0])
 				: TRUE;
