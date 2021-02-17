@@ -229,7 +229,12 @@ implements	\MvcCore\Model\IConstants,
 	 * @return string
 	 */
 	public function QuoteName ($identifierName) {
-		return "'{$identifierName}'";
+		if (mb_substr($identifierName, 0, 1) !== "'" && mb_substr($identifierName, -1, 1) !== "'") {
+			if (mb_strpos($identifierName, '.') !== FALSE) 
+				return "'".str_replace('.', "'.'", $identifierName)."'";
+			return "'".$identifierName."'";
+		}
+		return $identifierName;
 	}
 
 
