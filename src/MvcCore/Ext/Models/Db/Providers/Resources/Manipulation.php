@@ -17,14 +17,14 @@ trait Manipulation {
 	
 	/**
 	 * Execute SQL code to insert new database table row in transaction, in default database isolation.
-	 * @param int|string $connNameOrIndex	Connection name or index in system config.
-	 * @param string $tableName				Database table name.
-	 * @param array $dataColumns			Data to use in insert clause, keys are 
-	 *										column names, values are column values.
-	 * @param string $className				model class full name.
-	 * @param string $autoIncrColumnName	Auto increment column name.
-	 * @return array						First item is boolean result, 
-	 *										second is affected rows count. 
+	 * @param  int|string $connNameOrIndex    Connection name or index in system config.
+	 * @param  string     $tableName          Database table name.
+	 * @param  array      $dataColumns        Data to use in insert clause, keys are 
+	 *                                        column names, values are column values.
+	 * @param  string     $className          model class full name.
+	 * @param  string     $autoIncrColumnName Auto increment column name.
+	 * @return array                          First item is boolean result, 
+	 *                                        second is affected rows count. 
 	 */
 	public function Insert ($connNameOrIndex, $tableName, $dataColumns, $className, $autoIncrColumnName) {
 		$sqlItems = [];
@@ -59,7 +59,7 @@ trait Manipulation {
 			$success = $reader->GetExecResult();
 			$affectedRows = $reader->GetRowsCount();
 
-			$newId = $conn->LastInsertId($tableName);
+			$newId = $conn->LastInsertId();
 
 			$conn->Commit();
 
@@ -88,14 +88,14 @@ trait Manipulation {
 
 	/**
 	 * Execute SQL code to update database table row by key columns.
-	 * @param int|string $connNameOrIndex	Connection name or index in system config.
-	 * @param string $tableName				Database table name.
-	 * @param array $keyColumns				Data to use in where condition, keys are 
-	 *										column names, values are column values.
-	 * @param array $dataColumns			Data to use in update set clause, keys are 
-	 *										column names, values are column values.
-	 * @return array						First item is boolean result, 
-	 *										second is affected rows count. 
+	 * @param  int|string $connNameOrIndex Connection name or index in system config.
+	 * @param  string     $tableName       Database table name.
+	 * @param  array      $keyColumns      Data to use in where condition, keys are 
+	 *                                     column names, values are column values.
+	 * @param  array      $dataColumns     Data to use in update set clause, keys are 
+	 *                                     column names, values are column values.
+	 * @return array                       First item is boolean result, 
+	 *                                     second is affected rows count. 
 	 */
 	public function Update ($connNameOrIndex, $tableName, $keyColumns, $dataColumns) {
 		$setSqlItems = [];
@@ -132,12 +132,12 @@ trait Manipulation {
 
 	/**
 	 * Execute SQL code to remove database table row.
-	 * @param int|string $connNameOrIndex	Connection name or index in system config.
-	 * @param string $tableName				Database table name.
-	 * @param array $keyColumns				Data to use in where condition, keys are 
-	 *										column names, values are column values.
-	 * @return array						First item is boolean result, 
-	 *										second is affected rows count. 
+	 * @param  int|string $connNameOrIndex Connection name or index in system config.
+	 * @param  string     $tableName       Database table name.
+	 * @param  array      $keyColumns      Data to use in where condition, keys are 
+	 *                                     column names, values are column values.
+	 * @return array                       First item is boolean result, 
+	 *                                     second is affected rows count. 
 	 */
 	public function Delete ($connNameOrIndex, $tableName, $keyColumns) {
 		$sqlItems = [];
