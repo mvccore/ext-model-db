@@ -172,14 +172,18 @@ trait Manipulation {
 			$propsFlags | \MvcCore\IModel::PROPS_NAMES_BY_DATABASE
 		);
 
-		list(
-			$propIsPrivate, /*$propAllowNulls*/, $propTypes, 
-			$propCodeName, $propDbColumnName/*, $propFormatArgs,
-			$propPrimaryKey, $propAutoIncrement, $propUniqueKey*/
-		) = $metaData[$autoIncrIndex];
-
-		if (isset($allValues[$propDbColumnName]))
-			unset($allValues[$propDbColumnName]);
+		$hasAutoIncrementColumn = isset($metaData[$autoIncrIndex]);
+		if (!$hasAutoIncrementColumn) {
+			$propDbColumnName = NULL;
+		} else {
+			list(
+				$propIsPrivate, /*$propAllowNulls*/, $propTypes, 
+				$propCodeName, $propDbColumnName/*, $propFormatArgs,
+				$propPrimaryKey, $propAutoIncrement, $propUniqueKey*/
+			) = $metaData[$autoIncrIndex];
+			if (isset($allValues[$propDbColumnName]))
+				unset($allValues[$propDbColumnName]);
+		}
 		
 		/** @var $providerResource \MvcCore\Ext\Models\Db\Providers\Resource */
 		$providerResource = static::getEditProviderResource();
@@ -191,13 +195,15 @@ trait Manipulation {
 		);
 
 		if ($success && $affectedRows > 0) {
-			$newId = static::parseToTypes($rawNewId, $propTypes);
-			if ($propIsPrivate) {
-				$prop = new \ReflectionProperty($context, $propCodeName);
-				$prop->setAccessible(TRUE);
-				$prop->setValue($context, $newId);
-			} else {
-				$context->{$propCodeName} = $newId;
+			if ($hasAutoIncrementColumn) {
+				$newId = static::parseToTypes($rawNewId, $propTypes);
+				if ($propIsPrivate) {
+					$prop = new \ReflectionProperty($context, $propCodeName);
+					$prop->setAccessible(TRUE);
+					$prop->setValue($context, $newId);
+				} else {
+					$context->{$propCodeName} = $newId;
+				}
 			}
 			return TRUE;
 		} else {
