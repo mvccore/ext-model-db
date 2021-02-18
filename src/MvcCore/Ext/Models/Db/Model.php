@@ -15,7 +15,7 @@ namespace MvcCore\Ext\Models;
 
 class		Model 
 implements	\MvcCore\IModel,
-			\MvcCore\Ext\Models\IModel, 
+			\MvcCore\Ext\Models\Db\IModel, 
 			\MvcCore\Ext\Models\Db\Model\IConstants {
 
 	use \MvcCore\Model\Props;
