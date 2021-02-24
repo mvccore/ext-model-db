@@ -27,9 +27,8 @@ function Table ($tableIndex = 0) {
 			"Table helper function has to be called from class only."
 		);
 	
-	$getMetaDataMethod = new \ReflectionMethod(ltrim($callerInfo['class']), 'getMetaData');
-	$getMetaDataMethod->setAccessible(TRUE);
-	list(/*$metaData*/, $tableAttrArgs) = $getMetaDataMethod->invokeArgs(
+	$callerClass = '\\' . ltrim($callerInfo['class'], '\\');
+	list(/*$metaData*/, $tableAttrArgs) = $callerClass::GetMetaData(
 		NULL, [0, [\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_TABLES]]
 	);
 	

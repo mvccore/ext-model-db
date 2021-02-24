@@ -27,7 +27,7 @@ trait Features {
 
 	use \MvcCore\Model\MetaData,
 		\MvcCore\Ext\Models\Db\Model\MetaData {
-			\MvcCore\Ext\Models\Db\Model\MetaData::getMetaData insteadof \MvcCore\Model\MetaData;
+			\MvcCore\Ext\Models\Db\Model\MetaData::GetMetaData insteadof \MvcCore\Model\MetaData;
 			\MvcCore\Ext\Models\Db\Model\MetaData::parseMetaData insteadof \MvcCore\Model\MetaData;
 			\MvcCore\Ext\Models\Db\Model\MetaData::parseMetaDataProperty insteadof \MvcCore\Model\MetaData;
 			\MvcCore\Model\MetaData::parseMetaDataProperty as parseMetaDataPropertyBase;

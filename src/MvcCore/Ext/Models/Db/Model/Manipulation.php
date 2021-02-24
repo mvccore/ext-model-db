@@ -291,7 +291,7 @@ trait Manipulation {
 	 * @return array [$metaData, $autoIncrementIndex, $primaryKeyColumnsIndexes, $uniqueKeyColumnsIndexes, $connectionArgs, $tableArgs]
 	 */
 	protected static function getEditMetaDataCollections ($propsFlags = 0) {
-		$metaDataCollections = static::getMetaData(
+		$metaDataCollections = static::GetMetaData(
 			$propsFlags, [
 				\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_AUTO_INCREMENT,
 				\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_PRIMARY_KEY,

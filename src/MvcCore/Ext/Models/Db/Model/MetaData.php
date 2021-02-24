@@ -16,41 +16,13 @@ namespace MvcCore\Ext\Models\Db\Model;
 trait MetaData {
 	
 	/**
-	 * Return cached data about properties in current class to not create
-	 * and parse reflection objects every time. Returned data is always array 
-	 * list `list()` indexes into separate variables. First result record is
-	 * always metadata array with numeric indexes, where each value is property 
-	 * metadata. Second and every next result record is properties map, where
-	 * keys are property names (or column names) and values are integer keys into
-	 * first result record with metadata.
-	 * 
-	 * Every key in metadata array in first result record is integer key, 
-	 * which is necessary to complete from any properties map and every value
-	 * is array with metadata:
-	 * - `0`    `boolean`           `TRUE` for private property.
-	 * - `1'    `boolean`           `TRUE` to allow `NULL` values.
-	 * - `2`    `string[]`          Property types from code or from doc comments or empty array.
-	 * - `3`    `string`            PHP code property name.
-	 * - `4`    `string|NULL`       Database column name (if defined) or `NULL`.
-	 * - `5`    `mixed`             Additional convertsion data (if defined) or `NULL`.
-	 * - `6`    `bool`              `TRUE` if column is in primary key.
-	 * - `7`    `bool`              `TRUE` if column has auto increment feature.
-	 * - `8`    `bool|string|NULL`  `TRUE` if column is in unique key or name 
-	 *                              of the unique key in database.
-	 *                              private properties manipulation.
-	 * - `9`    `bool`              `TRUE` if property has defined default value.
-	 * 
-	 * Possible reading flags:
-	 *  - `\MvcCore\IModel::PROPS_INHERIT`
-	 *  - `\MvcCore\IModel::PROPS_PRIVATE`
-	 *  - `\MvcCore\IModel::PROPS_PROTECTED`
-	 *  - `\MvcCore\IModel::PROPS_PUBLIC`
+	 * @inheritDocs
 	 * @param  int    $propsFlags
 	 * @param  \int[] $additionalMaps
 	 * @throws \RuntimeException|\InvalidArgumentException
 	 * @return array
 	 */
-	protected static function getMetaData ($propsFlags = 0, $additionalMaps = []) {
+	public static function GetMetaData ($propsFlags = 0, $additionalMaps = []) {
 		/** @var $this \MvcCore\Model */
 		
 		/**

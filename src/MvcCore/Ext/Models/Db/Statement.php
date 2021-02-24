@@ -73,16 +73,12 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 				"Database static statement preparing has to be called from class only."
 			);
 
-		$fullClassName = '\\' . ltrim($callerInfo['class']);
+		$fullClassName = '\\' . ltrim($callerInfo['class'], '\\');
 		
 		if ($connectionNameOrConfig === NULL) {
-			
-			$getMetaDataMethod = new \ReflectionMethod($fullClassName, 'getMetaData');
-			$getMetaDataMethod->setAccessible(TRUE);
-			list(/*$metaData*/, $connAttrArgs) = $getMetaDataMethod->invokeArgs(
+			list(/*$metaData*/, $connAttrArgs) = $fullClassName::GetMetaData(
 				NULL, [0, [\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_CONNECTIONS]]
 			);
-
 			if ($connAttrArgs > 0) 
 				$connectionNameOrConfig = $connAttrArgs[0];
 		}

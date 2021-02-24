@@ -37,9 +37,8 @@ trait Connection {
 					"[".get_called_class()."] Database static connection getter has to be called from class only."
 				);
 			try {
-				$getMetaDataMethod = new \ReflectionMethod(ltrim($callerInfo['class']), 'getMetaData');
-				$getMetaDataMethod->setAccessible(TRUE);
-				list(/*$metaData*/, $connAttrArgs) = $getMetaDataMethod->invokeArgs(
+				$callerClass = '\\' . ltrim($callerInfo['class'], '\\');
+				list(/*$metaData*/, $connAttrArgs) = $callerClass::GetMetaData(
 					NULL, [0, [\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_CONNECTIONS]]
 				);
 

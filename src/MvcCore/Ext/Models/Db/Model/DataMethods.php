@@ -27,7 +27,7 @@ trait DataMethods {
 	 */
 	public function GetValues ($propsFlags = 0, $getNullValues = FALSE) {
 		/** @var $this \MvcCore\Ext\Models\Db\Model */
-		list ($metaData, $sourceCodeNamesMap) = static::getMetaData(
+		list ($metaData, $sourceCodeNamesMap) = static::GetMetaData(
 			$propsFlags, [\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_BY_CODE]
 		);
 
@@ -111,7 +111,7 @@ trait DataMethods {
 		/** @var $this \MvcCore\Ext\Models\Db\Model */
 		$completeInitialValues = ($propsFlags & \MvcCore\IModel::PROPS_INITIAL_VALUES) != 0;
 		
-		list ($metaData, $sourceCodeNamesMap, $dbColumnNamesMap) = static::getMetaData(
+		list ($metaData, $sourceCodeNamesMap, $dbColumnNamesMap) = static::GetMetaData(
 			$propsFlags, [
 				\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_BY_CODE, 
 				\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_BY_DATABASE
@@ -207,7 +207,7 @@ trait DataMethods {
 	 */
 	public function GetTouched ($propsFlags = 0) {
 		/** @var $this \MvcCore\Ext\Models\Db\Model */
-		list ($metaData, $sourceCodeNamesMap) = static::getMetaData(
+		list ($metaData, $sourceCodeNamesMap) = static::GetMetaData(
 			$propsFlags, [\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_BY_CODE]
 		);
 

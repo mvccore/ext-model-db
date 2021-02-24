@@ -28,9 +28,8 @@ function Columns ($separator = ',', $exceptColumns = []) {
 			"Columns helper function has to be called from class only."
 		);
 	
-	$getMetaDataMethod = new \ReflectionMethod(ltrim($callerInfo['class']), 'getMetaData');
-	$getMetaDataMethod->setAccessible(TRUE);
-	list(/*$metaData*/, $dbColumnNamesMap) = $getMetaDataMethod->invokeArgs(
+	$callerClass = '\\' . ltrim($callerInfo['class'], '\\');
+	list(/*$metaData*/, $dbColumnNamesMap) = $callerClass::GetMetaData(
 		NULL, [0, [\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_BY_DATABASE]]
 	);
 

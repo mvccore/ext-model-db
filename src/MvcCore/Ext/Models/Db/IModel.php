@@ -31,6 +31,48 @@ interface IModel {
 	public static function GetConnection ($connectionNameOrConfig = NULL, $strict = TRUE);
 
 	/**
+	 * Return cached data about properties in current class to not create
+	 * and parse reflection objects every time. Be carefull, meta data are 
+	 * in lowest level as it could be - only in array types, to serialize or 
+	 * unserialize them into or from cache as fast as possible instead of 
+	 * serializing PHP objects.
+	 * 
+	 * Returned result is different from parent method, result is array to list 
+	 * separate variables. First result variable is always metadata array with 
+	 * numeric indexes, where each value is property metadata like in parent 
+	 * method result. Second and every next result record is properties map, 
+	 * where keys are properties names (or columns names) and values are integer 
+	 * keys into first result variable with metadata.
+	 * 
+	 * Every key in metadata array in first result variable is integer key, 
+	 * which is necessary to complete from any properties map and every value
+	 * is array with metadata:
+	 * - `0`    `boolean`           `TRUE` for private property.
+	 * - `1'    `boolean`           `TRUE` to allow `NULL` values.
+	 * - `2`    `string[]`          Property types from code or from doc comments or empty array.
+	 * - `3`    `string`            PHP code property name.
+	 * - `4`    `string|NULL`       Database column name (if defined) or `NULL`.
+	 * - `5`    `mixed`             Additional convertsion data (if defined) or `NULL`.
+	 * - `6`    `bool`              `TRUE` if column is in primary key.
+	 * - `7`    `bool`              `TRUE` if column has auto increment feature.
+	 * - `8`    `bool|string|NULL`  `TRUE` if column is in unique key or name 
+	 *                              of the unique key in database.
+	 *                              private properties manipulation.
+	 * - `9`    `bool`              `TRUE` if property has defined default value.
+	 * 
+	 * Possible reading flags:
+	 *  - `\MvcCore\IModel::PROPS_INHERIT`
+	 *  - `\MvcCore\IModel::PROPS_PRIVATE`
+	 *  - `\MvcCore\IModel::PROPS_PROTECTED`
+	 *  - `\MvcCore\IModel::PROPS_PUBLIC`
+	 * @param  int    $propsFlags
+	 * @param  \int[] $additionalMaps
+	 * @throws \RuntimeException|\InvalidArgumentException
+	 * @return array
+	 */
+	public static function GetMetaData ($propsFlags = 0, $additionalMaps = []);
+
+	/**
 	 * Process instance database SQL INSERT or UPDATE by automaticly founded key data.
 	 * Return `TRUE` if there is inserted or updated 1 or more rows or return 
 	 * `FALSE` if there is no row inserted or updated. Thrown an exception in any database error.
