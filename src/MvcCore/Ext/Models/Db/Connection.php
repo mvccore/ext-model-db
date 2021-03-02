@@ -502,25 +502,27 @@ implements	\MvcCore\Model\IConstants,
 			}
 		});
 		if ($assocParams) {
-			$index = 0;
 			$resultItems = [];
 			$matchesCount = 0;
+			$resultQuery = " {$query} ";
 			foreach ($params as $paramKey => $paramValue) {
-				preg_match_all("#([^a-zA-Z0-9])({$paramKey})([^a-zA-Z0-9])#", $query, $matches, PREG_OFFSET_CAPTURE);
+				preg_match_all(
+					"#([\s\(\)\!\=\>\<])({$paramKey})([\s\(\)\!\=\>\<])#", 
+					$resultQuery, $matches, PREG_OFFSET_CAPTURE
+				);
 				if (count($matches) > 0 && count($matches[2]) === 1) {
 					$matchIndex = $matches[2][0][1];
-					$resultItems[] = mb_substr($query, $index, $matchIndex - $index);
-					$resultItems[] = $paramValue;
-					$index = $matchIndex + mb_strlen($paramKey);
+					$resultQuery = (
+						mb_substr($resultQuery, 0, $matchIndex)
+						. $paramValue
+						. mb_substr($resultQuery, $matchIndex + mb_strlen($paramKey))
+					);
 					$matchesCount += 1;
 				} else {
 					break;
 				}
 			}
 			if ($matchesCount === $paramsCnt) {
-				if ($index < mb_strlen($query)) 
-					$resultItems[] = mb_substr($query, $index);
-				$resultQuery = implode('', $resultItems);
 				$dumpSuccess = TRUE;
 			} else {
 				$resultQuery = $query;
@@ -529,7 +531,7 @@ implements	\MvcCore\Model\IConstants,
 		} else {
 			$dumpSuccess = FALSE;
 			$resultQuery = $query;
-			preg_match_all("#([^a-zA-Z0-9])(\?)([^a-zA-Z0-9])#", $query, $matches, PREG_OFFSET_CAPTURE);
+			preg_match_all("#([^-a-zA-Z0-9_])(\?)([^-a-zA-Z0-9_])#", $query, $matches, PREG_OFFSET_CAPTURE);
 			if (count($matches)) {
 				$matchesQm = $matches[2];
 				$matchesCnt = count($matchesQm);
