@@ -77,7 +77,7 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 		
 		if ($connectionNameOrConfig === NULL) {
 			list(/*$metaData*/, $connAttrArgs) = $fullClassName::GetMetaData(
-				NULL, [0, [\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_CONNECTIONS]]
+				0, [\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_CONNECTIONS]
 			);
 			if ($connAttrArgs > 0) 
 				$connectionNameOrConfig = $connAttrArgs[0];

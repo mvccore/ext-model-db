@@ -29,7 +29,7 @@ function Table ($tableIndex = 0) {
 	
 	$callerClass = '\\' . ltrim($callerInfo['class'], '\\');
 	list(/*$metaData*/, $tableAttrArgs) = $callerClass::GetMetaData(
-		NULL, [0, [\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_TABLES]]
+		0, [\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_TABLES]
 	);
 	
 	if (!isset($tableAttrArgs[$tableIndex])) 

@@ -31,7 +31,7 @@ trait Connection {
 		if ($connectionNameOrConfig === NULL) {
 			
 			list(,$callerInfo) = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-
+			
 			if (!isset($callerInfo['class']))
 				throw new \RuntimeException(
 					"[".get_called_class()."] Database static connection getter has to be called from class only."
@@ -39,16 +39,16 @@ trait Connection {
 			try {
 				$callerClass = '\\' . ltrim($callerInfo['class'], '\\');
 				list(/*$metaData*/, $connAttrArgs) = $callerClass::GetMetaData(
-					NULL, [0, [\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_CONNECTIONS]]
+					0, [\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_CONNECTIONS]
 				);
-
+				
 				if ($connAttrArgs > 0) 
 					$connectionNameOrConfig = $connAttrArgs[0];
 			} catch (\Exception $e) { // backward compatibility
 			} catch (\Throwable $e) {
 			}
 		}
-
+		
 		$connectionName = (is_string($connectionNameOrConfig) || is_int($connectionNameOrConfig))
 			? $connectionNameOrConfig
 			: static::resolveConnectionName($connectionNameOrConfig, $strict);

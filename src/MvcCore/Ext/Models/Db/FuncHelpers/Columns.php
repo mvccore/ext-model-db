@@ -30,9 +30,9 @@ function Columns ($separator = ',', $exceptColumns = []) {
 	
 	$callerClass = '\\' . ltrim($callerInfo['class'], '\\');
 	list(/*$metaData*/, $dbColumnNamesMap) = $callerClass::GetMetaData(
-		NULL, [0, [\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_BY_DATABASE]]
+		0, [\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_BY_DATABASE]
 	);
-
+	
 	$columns = array_keys($dbColumnNamesMap);
 	if (count($exceptColumns) > 0) 
 		$columns = array_diff($columns, $exceptColumns);
