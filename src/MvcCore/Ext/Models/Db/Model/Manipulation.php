@@ -163,51 +163,85 @@ trait Manipulation {
 		list (
 			$metaData, $autoIncrIndex, 
 			/*$primaryKeyColumnsIndexes*/, /*$uniqueKeyColumnsIndexes*/, 
-			$connectionArgs, $tableArgs
+			$connectionArgs, $tableArgs, $columnsDbNamesMap
 		) = $metaDataCollections;
 		
+		$initValuesFlag = \MvcCore\IModel::PROPS_INITIAL_VALUES;
+		$hasInitValuesFlag = ($propsFlags & $initValuesFlag) != 0;
+		if ($hasInitValuesFlag) // remove init values flag
+			$propsFlags = ~((~$propsFlags) | $initValuesFlag);
 		if ($propsFlags === 0) 
 			$propsFlags = static::$defaultPropsFlags;
 		$allValues = $context->GetValues(
 			$propsFlags | \MvcCore\IModel::PROPS_NAMES_BY_DATABASE
 		);
 
-		$hasAutoIncrementColumn = isset($metaData[$autoIncrIndex]);
-		if (!$hasAutoIncrementColumn) {
-			$propDbColumnName = NULL;
+		$hasAutoIncrColumn = isset($metaData[$autoIncrIndex]);
+		if (!$hasAutoIncrColumn) {
+			$autoIncrPropDbName = NULL;
 		} else {
 			list(
-				$propIsPrivate, /*$propAllowNulls*/, $propTypes, 
-				$propCodeName, $propDbColumnName/*, $propFormatArgs,
-				$propPrimaryKey, $propAutoIncrement, $propUniqueKey*/
+				$autoIncrPropIsPrivate, /*$autoIncrPropAllowNulls*/, $autoIncrPropTypes, 
+				$autoIncrPropCodeName, $autoIncrPropDbName/*, $autoIncrPropFormatArgs,
+				$autoIncrPropPrimaryKey, $autoIncrPropAutoIncrement, $autoIncrPropUniqueKey*/
 			) = $metaData[$autoIncrIndex];
-			if (isset($allValues[$propDbColumnName]))
-				unset($allValues[$propDbColumnName]);
+			if (isset($allValues[$autoIncrPropDbName]))
+				unset($allValues[$autoIncrPropDbName]);
 		}
 		
-		/** @var $providerResource \MvcCore\Ext\Models\Db\Providers\Resource */
-		$providerResource = static::getEditProviderResource();
-		$connectionNameOrIndex = isset($connectionArgs[0]) ? $connectionArgs[0] : NULL;
-		list (
-			$success, $affectedRows, $rawNewId, $error
-		) = $providerResource->Insert(
-			$connectionNameOrIndex, $tableArgs[0], $allValues, get_class($context), $propDbColumnName
-		);
+		$error = NULL;
+		if (count($allValues) === 0) {
+			// no data to insert
+			list ($success, $affectedRows) = [FALSE, 0];
+		} else {
+			/** @var $providerResource \MvcCore\Ext\Models\Db\Providers\Resource */
+			$providerResource = static::getEditProviderResource();
+			$connectionNameOrIndex = isset($connectionArgs[0]) ? $connectionArgs[0] : NULL;
+			list (
+				$success, $affectedRows, $rawNewId, $error
+			) = $providerResource->Insert(
+				$connectionNameOrIndex, $tableArgs[0], $allValues, get_class($context), $autoIncrPropDbName
+			);
+		}
 
 		if ($success && $affectedRows > 0) {
-			if ($hasAutoIncrementColumn) {
-				$newId = static::parseToTypes($rawNewId, $propTypes);
-				if ($propIsPrivate) {
-					$prop = new \ReflectionProperty($context, $propCodeName);
+			if ($hasAutoIncrColumn) {
+				$newId = static::parseToTypes($rawNewId, $autoIncrPropTypes);
+				if ($autoIncrPropIsPrivate) {
+					$prop = new \ReflectionProperty($context, $autoIncrPropCodeName);
 					$prop->setAccessible(TRUE);
 					$prop->setValue($context, $newId);
 				} else {
-					$context->{$propCodeName} = $newId;
+					$context->{$autoIncrPropCodeName} = $newId;
+				}
+				if ($hasInitValuesFlag)
+					$context->initialValues[$autoIncrPropCodeName] = $newId;
+			}
+			if ($hasInitValuesFlag) {
+				foreach (array_keys($allValues) as $dbColumnName) {
+					if (!isset($columnsDbNamesMap[$dbColumnName])) continue;
+					$metaDataIndex = $columnsDbNamesMap[$dbColumnName];
+					if ($metaDataIndex === $autoIncrIndex) continue;
+					$columnMeta = $metaData[$metaDataIndex];
+					list(
+						$propIsPrivate, /*$propAllowNulls*/, /*$propTypes*/, 
+						$propCodeName, /*$propDbColumnName, $propFormatArgs,
+						$propPrimaryKey, $propAutoIncrement, $propUniqueKey*/
+					) = $metaData[$metaDataIndex];
+					if ($propIsPrivate) {
+						$prop = new \ReflectionProperty($context, $propCodeName);
+						$prop->setAccessible(TRUE);
+						$context->initialValues[$propCodeName] = $prop->getValue($context);
+					} else {
+						$context->initialValues[$propCodeName] = $context->{$propCodeName};
+					}
 				}
 			}
 			return TRUE;
-		} else {
+		} else if ($error !== NULL) {
 			throw $error;
+		} else {
+			return FALSE;
 		}
 	}
 
@@ -223,11 +257,15 @@ trait Manipulation {
 	 */
 	protected static function editUpdate ($context, $propsFlags, $metaDataCollections) {
 		list (
-			$metaData, /*$autoIncrIndex*/, 
+			$metaData, $autoIncrIndex, 
 			$primaryKeyColumnsIndexes, $uniqueKeyColumnsIndexes, 
-			$connectionArgs, $tableArgs
+			$connectionArgs, $tableArgs, $columnsDbNamesMap
 		) = $metaDataCollections;
 		
+		$initValuesFlag = \MvcCore\IModel::PROPS_INITIAL_VALUES;
+		$hasInitValuesFlag = ($propsFlags & $initValuesFlag) != 0;
+		if ($hasInitValuesFlag) // remove init values flag
+			$propsFlags = ~((~$propsFlags) | $initValuesFlag);
 		if ($propsFlags === 0) 
 			$propsFlags = static::$defaultPropsFlags;
 		$touchedValues = $context->GetTouched(
@@ -238,17 +276,45 @@ trait Manipulation {
 			$context, $metaData, $primaryKeyColumnsIndexes, $uniqueKeyColumnsIndexes
 		);
 		$dataColumns = array_diff_assoc($touchedValues, $keysColumns);
+	
+		if (count($dataColumns) === 0) {
+			// no data to update
+			list ($success, $affectedRows) = [FALSE, 0];
+		} else {
+			/** @var $providerResource \MvcCore\Ext\Models\Db\Providers\Resource */
+			$providerResource = static::getEditProviderResource();
+			$connectionNameOrIndex = isset($connectionArgs[0]) ? $connectionArgs[0] : NULL;
+			list (
+				$success, $affectedRows
+			) = $providerResource->Update(
+				$connectionNameOrIndex, $tableArgs[0], $keysColumns, $dataColumns
+			);
+		}
 		
-		/** @var $providerResource \MvcCore\Ext\Models\Db\Providers\Resource */
-		$providerResource = static::getEditProviderResource();
-		$connectionNameOrIndex = isset($connectionArgs[0]) ? $connectionArgs[0] : NULL;
-		list (
-			$success, $affectedRows
-		) = $providerResource->Update(
-			$connectionNameOrIndex, $tableArgs[0], $keysColumns, $dataColumns
-		);
-		
-		return $success && $affectedRows > 0;
+		$result = $success && $affectedRows > 0;
+
+		if ($result && $hasInitValuesFlag) {
+			foreach (array_keys($touchedValues) as $dbColumnName) {
+				if (!isset($columnsDbNamesMap[$dbColumnName])) continue;
+				$metaDataIndex = $columnsDbNamesMap[$dbColumnName];
+				if ($metaDataIndex === $autoIncrIndex) continue;
+				$columnMeta = $metaData[$metaDataIndex];
+				list(
+					$propIsPrivate, /*$propAllowNulls*/, /*$propTypes*/, 
+					$propCodeName, /*$propDbColumnName, $propFormatArgs,
+					$propPrimaryKey, $propAutoIncrement, $propUniqueKey*/
+				) = $metaData[$metaDataIndex];
+				if ($propIsPrivate) {
+					$prop = new \ReflectionProperty($context, $propCodeName);
+					$prop->setAccessible(TRUE);
+					$context->initialValues[$propCodeName] = $prop->getValue($context);
+				} else {
+					$context->initialValues[$propCodeName] = $context->{$propCodeName};
+				}
+			}
+		}
+
+		return $result;
 	}
 	
 	/**
@@ -291,13 +357,18 @@ trait Manipulation {
 	 * @return array [$metaData, $autoIncrementIndex, $primaryKeyColumnsIndexes, $uniqueKeyColumnsIndexes, $connectionArgs, $tableArgs]
 	 */
 	protected static function getEditMetaDataCollections ($propsFlags = 0) {
+		$initValuesFlag = \MvcCore\IModel::PROPS_INITIAL_VALUES;
+		$hasInitValuesFlag = ($propsFlags & $initValuesFlag) != 0;
+		if ($hasInitValuesFlag) // remove init values flag
+			$propsFlags = ~((~$propsFlags) | $initValuesFlag);
 		$metaDataCollections = static::GetMetaData(
 			$propsFlags, [
 				\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_AUTO_INCREMENT,
 				\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_PRIMARY_KEY,
 				\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_UNIQUE_KEY,
 				\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_CONNECTIONS,
-				\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_TABLES
+				\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_TABLES,
+				\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_BY_DATABASE,
 			]
 		);
 		if (!isset($metaDataCollections[5]))
