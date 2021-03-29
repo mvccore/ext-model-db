@@ -23,7 +23,7 @@ class Table {
 	 * Define this param to declare table name or table names 
 	 * for whole class, where could be used static helper functions
 	 * to get table in query by class describtion. Better for refactoring.
-	 * @param string|\string[] $names
+	 * @param \string[] $names,...
 	 */
 	public function __construct ($names) {
 	}
