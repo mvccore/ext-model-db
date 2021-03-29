@@ -135,6 +135,8 @@ trait MetaData {
 		$attributesAnotation = $toolClass::GetAttributesAnotations();
 		/** @var $prop \ReflectionProperty */
 		$index = 0;
+		$primaryKeysIndexes = [];
+		$autoIncrementMatched = FALSE;
 		foreach ($props as $prop) {
 			if (
 				$prop->isStatic() ||
@@ -161,14 +163,16 @@ trait MetaData {
 
 			if ($propPrimaryKey) {
 				$propsAdditionalMaps[$propsPrimaryKey][] = $index;
+				$primaryKeysIndexes[] = $index;
 				if ($propAutoIncrement) {
+					$autoIncrementMatched = TRUE;
 					if ($propsAdditionalMaps[$propsAutoIncrement] !== NULL) {
 						$propMetaDataIndex = $propsAdditionalMaps[$propsAutoIncrement];
 						$propMetaData = $propsMetaData[$propMetaDataIndex];
 						throw new \InvalidArgumentException(
 							"[".get_class()."] Class `{$classFullName}` has defined ".
 							"multiple properties with autoincrement column feature: ".
-							"`{$propMetaData[4]}`, `{$prop->name}`."
+							"`{$propMetaData[3]}`, `{$prop->name}`."
 						);
 					}
 					$propsAdditionalMaps[$propsAutoIncrement] = $index;
@@ -186,6 +190,13 @@ trait MetaData {
 			}
 
 			$index++;
+		}
+		// auto increment feature by dfault for single primary key integer column:
+		if (!$autoIncrementMatched && count($primaryKeysIndexes) === 1) {
+			$columnIndex = $primaryKeysIndexes[0];
+			$propTypes = $propsMetaData[$columnIndex][2];
+			if (in_array('int', $propTypes, true) || in_array('integer', $propTypes, true))
+				$propsAdditionalMaps[$propsAutoIncrement] = $columnIndex;
 		}
 
 		// complete class extended metadata:
@@ -279,7 +290,7 @@ trait MetaData {
 		$result[7] = FALSE;
 		if (isset($propAttrs->keyPrimary)) {
 			$result[6] = TRUE;
-			$result[7] = TRUE; // auto increment feature always by default
+			$result[7] = FALSE;
 			if (is_array($propAttrs->keyPrimary) && count($propAttrs->keyPrimary) > 0) {
 				$rawBool = $propAttrs->keyPrimary[0];
 				$result[7] = is_bool($rawBool)
