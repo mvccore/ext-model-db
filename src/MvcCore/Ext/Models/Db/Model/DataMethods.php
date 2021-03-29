@@ -27,17 +27,19 @@ trait DataMethods {
 	 */
 	public function GetValues ($propsFlags = 0, $getNullValues = FALSE) {
 		/** @var $this \MvcCore\Ext\Models\Db\Model */
+		$keysByCode = NULL;
+		if (($propsFlags & \MvcCore\IModel::PROPS_NAMES_BY_CODE) != 0) {
+			$keysByCode = TRUE;
+			$propsFlags = ~((~$propsFlags) | \MvcCore\IModel::PROPS_NAMES_BY_CODE);
+		} else if (($propsFlags & \MvcCore\IModel::PROPS_NAMES_BY_DATABASE) != 0) {
+			$keysByCode = FALSE;
+			$propsFlags = ~((~$propsFlags) | \MvcCore\IModel::PROPS_NAMES_BY_DATABASE);
+		}
+
 		list ($metaData, $sourceCodeNamesMap) = static::GetMetaData(
 			$propsFlags, [\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_BY_CODE]
 		);
 
-		$keysByCode = NULL;
-		if (($propsFlags & \MvcCore\IModel::PROPS_NAMES_BY_CODE) != 0) {
-			$keysByCode = TRUE;
-		} else if (($propsFlags & \MvcCore\IModel::PROPS_NAMES_BY_DATABASE) != 0) {
-			$keysByCode = FALSE;
-		}
-		
 		$phpWithTypes = PHP_VERSION_ID >= 70400;
 		$keyConversionsMethod = NULL;
 		$caseSensitiveKeysMap = '';
@@ -109,7 +111,11 @@ trait DataMethods {
 	 */
 	public function SetValues ($data = [], $propsFlags = 0) {
 		/** @var $this \MvcCore\Ext\Models\Db\Model */
-		$completeInitialValues = ($propsFlags & \MvcCore\IModel::PROPS_INITIAL_VALUES) != 0;
+		$completeInitialValues = FALSE;
+		if (($propsFlags & \MvcCore\IModel::PROPS_INITIAL_VALUES) != 0) {
+			$completeInitialValues = TRUE;
+			$propsFlags = ~((~$propsFlags) | \MvcCore\IModel::PROPS_INITIAL_VALUES);
+		}
 		
 		list ($metaData, $sourceCodeNamesMap, $dbColumnNamesMap) = static::GetMetaData(
 			$propsFlags, [
@@ -207,16 +213,18 @@ trait DataMethods {
 	 */
 	public function GetTouched ($propsFlags = 0) {
 		/** @var $this \MvcCore\Ext\Models\Db\Model */
-		list ($metaData, $sourceCodeNamesMap) = static::GetMetaData(
-			$propsFlags, [\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_BY_CODE]
-		);
-
 		$keysByCode = NULL;
 		if (($propsFlags & \MvcCore\IModel::PROPS_NAMES_BY_CODE) != 0) {
 			$keysByCode = TRUE;
+			$propsFlags = ~((~$propsFlags) | \MvcCore\IModel::PROPS_NAMES_BY_CODE);
 		} else if (($propsFlags & \MvcCore\IModel::PROPS_NAMES_BY_DATABASE) != 0) {
 			$keysByCode = FALSE;
+			$propsFlags = ~((~$propsFlags) | \MvcCore\IModel::PROPS_NAMES_BY_DATABASE);
 		}
+
+		list ($metaData, $sourceCodeNamesMap) = static::GetMetaData(
+			$propsFlags, [\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_BY_CODE]
+		);
 		
 		$phpWithTypes = PHP_VERSION_ID >= 70400;
 		$keyConversionsMethod = NULL;
@@ -228,7 +236,7 @@ trait DataMethods {
 			if ($propsFlags > 8191)
 				$caseSensitiveKeysMap = ','.implode(',', array_keys($sourceCodeNamesMap)).',';
 		};
-
+		
 		$result = [];
 		
 		foreach ($sourceCodeNamesMap as $propertyName => $metaDataIndex) {
@@ -255,7 +263,7 @@ trait DataMethods {
 			} else if (isset($this->{$propertyName})) {
 				$currentValue = $this->{$propertyName};
 			}
-
+			
 			if (static::isEqual($currentValue, $initialValue)) continue;
 			
 			if ($keysByCode === TRUE) {
