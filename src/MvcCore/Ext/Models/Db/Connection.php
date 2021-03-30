@@ -341,6 +341,14 @@ implements	\MvcCore\Model\IConstants,
 	}
 
 	/**
+	 * Closes the connection by unseting the `\PDO` provider instance.
+	 * @return void
+	 */
+	protected function close () {
+		$this->provider = NULL;
+	}
+
+	/**
 	 * Connect into database with `\PDO` provider with possibly configured retries.
 	 * @return \PDO
 	 */
