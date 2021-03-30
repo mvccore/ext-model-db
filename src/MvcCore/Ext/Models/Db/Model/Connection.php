@@ -27,7 +27,6 @@ trait Connection {
 	 * @return \MvcCore\Ext\Models\Db\Connection
 	 */
 	public static function GetConnection ($connectionNameOrConfig = NULL, $strict = TRUE) {
-		/** @var $connection \MvcCore\Ext\Models\Db\Connection */
 		if ($connectionNameOrConfig === NULL) {
 			
 			list(,$callerInfo) = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
@@ -82,6 +81,7 @@ trait Connection {
 		}
 		
 		// connect:
+		/** @var $connection \MvcCore\Ext\Models\Db\Connection */
 		$connection = static::connect($cfg);
 		
 		// store new connection under config index for all other model classes:
