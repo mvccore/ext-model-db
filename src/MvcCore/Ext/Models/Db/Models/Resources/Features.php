@@ -13,6 +13,9 @@
 
 namespace MvcCore\Ext\Models\Db\Models\Resources;
 
+/**
+ * @mixin \MvcCore\Ext\Models\Db\Models\Resource
+ */
 trait Features {
 	
 	use \MvcCore\Model\Connection, 

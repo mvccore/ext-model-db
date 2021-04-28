@@ -13,6 +13,9 @@
 
 namespace MvcCore\Ext\Models\Db\Model;
 
+/**
+ * @mixin \MvcCore\Ext\Models\Db\Model
+ */
 trait MetaData {
 	
 	/**
@@ -23,7 +26,6 @@ trait MetaData {
 	 * @return array
 	 */
 	public static function GetMetaData ($propsFlags = 0, $additionalMaps = []) {
-		/** @var \MvcCore\Model $this */
 		
 		/**
 		 * This is static hidden property, so it has different values 

@@ -13,6 +13,9 @@
 
 namespace MvcCore\Ext\Models\Db\Providers\Resources;
 
+/**
+ * @mixin \MvcCore\Ext\Models\Db\Providers\Resource
+ */
 trait Manipulation {
 	
 	/**

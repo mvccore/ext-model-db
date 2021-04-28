@@ -13,6 +13,9 @@
 
 namespace MvcCore\Ext\Models\Db\Model;
 
+/**
+ * @mixin \MvcCore\Ext\Models\Db\Model
+ */
 trait Features {
 	
 	use \MvcCore\Ext\Models\Db\Model\Props;
