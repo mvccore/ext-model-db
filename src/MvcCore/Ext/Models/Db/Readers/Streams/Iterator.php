@@ -283,7 +283,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 			: $rawRow[$props->keyColumnName];
 		if ($props->retypeKey)
 			settype($itemKey, $props->keyType);
-		/** @var $item \MvcCore\Ext\Models\Db\Model */
+		/** @var \MvcCore\Ext\Models\Db\Model $item */
 		$item = $props->type->newInstanceWithoutConstructor();
 		$item->SetValues($rawRow, $props->readingFlags);
 		

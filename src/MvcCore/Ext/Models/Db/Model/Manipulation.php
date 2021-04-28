@@ -194,7 +194,7 @@ trait Manipulation {
 			// no data to insert
 			list ($success, $affectedRows) = [FALSE, 0];
 		} else {
-			/** @var $providerResource \MvcCore\Ext\Models\Db\Providers\Resource */
+			/** @var \MvcCore\Ext\Models\Db\Providers\Resource $providerResource */
 			$providerResource = static::getEditProviderResource();
 			$connectionNameOrIndex = isset($connectionArgs[0]) ? $connectionArgs[0] : NULL;
 			list (
@@ -281,7 +281,7 @@ trait Manipulation {
 			// no data to update
 			list ($success, $affectedRows) = [FALSE, 0];
 		} else {
-			/** @var $providerResource \MvcCore\Ext\Models\Db\Providers\Resource */
+			/** @var \MvcCore\Ext\Models\Db\Providers\Resource $providerResource */
 			$providerResource = static::getEditProviderResource();
 			$connectionNameOrIndex = isset($connectionArgs[0]) ? $connectionArgs[0] : NULL;
 			list (
@@ -338,7 +338,7 @@ trait Manipulation {
 			$context, $metaData, $primaryKeyColumnsIndexes, $uniqueKeyColumnsIndexes
 		);
 		
-		/** @var $providerResource \MvcCore\Ext\Models\Db\Providers\Resource */
+		/** @var \MvcCore\Ext\Models\Db\Providers\Resource $providerResource */
 		$providerResource = static::getEditProviderResource();
 		$connectionNameOrIndex = isset($connectionArgs[0]) ? $connectionArgs[0] : NULL;
 		list (

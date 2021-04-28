@@ -23,7 +23,7 @@ trait MetaData {
 	 * @return array
 	 */
 	public static function GetMetaData ($propsFlags = 0, $additionalMaps = []) {
-		/** @var $this \MvcCore\Model */
+		/** @var \MvcCore\Model $this */
 		
 		/**
 		 * This is static hidden property, so it has different values 
@@ -62,7 +62,7 @@ trait MetaData {
 				$classFullName,
 				$cacheFlags
 			]);
-			/** @var $cache \MvcCore\Ext\Cache */
+			/** @var \MvcCore\Ext\Cache $cache */
 			$cache = $cacheClassName::GetStore();
 			if ($cache === NULL)
 				throw new \RuntimeException("Cache has not configured default store.");
@@ -133,7 +133,7 @@ trait MetaData {
 		$props = $classType->getProperties($accessModFlags);
 		$toolClass = \MvcCore\Application::GetInstance()->GetToolClass();
 		$attributesAnotation = $toolClass::GetAttributesAnotations();
-		/** @var $prop \ReflectionProperty */
+		/** @var \ReflectionProperty $prop */
 		$index = 0;
 		$primaryKeysIndexes = [];
 		$autoIncrementMatched = FALSE;

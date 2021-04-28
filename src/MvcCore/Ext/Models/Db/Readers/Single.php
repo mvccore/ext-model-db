@@ -33,7 +33,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 				"[".get_class()."] Class `{$fullClassName}` has no public method ".
 				"`SetValues (\$data = [], \$propsFlags = 0): \MvcCore\Model`."
 			);
-		/** @var $result \MvcCore\Ext\Models\Db\Model */
+		/** @var \MvcCore\Ext\Models\Db\Model $result */
 		$result = $type->newInstanceWithoutConstructor();
 		$result->SetValues($this->rawData, $readingFlags);
 		return $result;

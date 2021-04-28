@@ -43,7 +43,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 				: $rawItem[$keyColumnName];
 			if ($retypeKey)
 				settype($itemKey, $keyType);
-			/** @var $item \MvcCore\Ext\Models\Db\Model */
+			/** @var \MvcCore\Ext\Models\Db\Model $item */
 			$item = $type->newInstanceWithoutConstructor();
 			$item->SetValues($rawItem, $readingFlags);
 			$result[$itemKey] = $item;

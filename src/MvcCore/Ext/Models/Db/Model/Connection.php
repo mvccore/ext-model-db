@@ -81,7 +81,7 @@ trait Connection {
 		}
 		
 		// connect:
-		/** @var $connection \MvcCore\Ext\Models\Db\Connection */
+		/** @var \MvcCore\Ext\Models\Db\Connection $connection */
 		$connection = static::connect($cfg);
 		
 		// store new connection under config index for all other model classes:

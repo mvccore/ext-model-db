@@ -26,7 +26,7 @@ trait DataMethods {
 	 * @return array
 	 */
 	public function GetValues ($propsFlags = 0, $getNullValues = FALSE) {
-		/** @var $this \MvcCore\Ext\Models\Db\Model */
+		/** @var \MvcCore\Ext\Models\Db\Model $this */
 		$keysByCode = NULL;
 		if (($propsFlags & \MvcCore\IModel::PROPS_NAMES_BY_CODE) != 0) {
 			$keysByCode = TRUE;
@@ -110,7 +110,7 @@ trait DataMethods {
 	 * @return \MvcCore\Ext\Models\Db\Model Current `$this` context.
 	 */
 	public function SetValues ($data = [], $propsFlags = 0) {
-		/** @var $this \MvcCore\Ext\Models\Db\Model */
+		/** @var \MvcCore\Ext\Models\Db\Model $this */
 		$completeInitialValues = FALSE;
 		if (($propsFlags & \MvcCore\IModel::PROPS_INITIAL_VALUES) != 0) {
 			$completeInitialValues = TRUE;
@@ -212,7 +212,7 @@ trait DataMethods {
 	 * @return array 
 	 */
 	public function GetTouched ($propsFlags = 0) {
-		/** @var $this \MvcCore\Ext\Models\Db\Model */
+		/** @var \MvcCore\Ext\Models\Db\Model $this */
 		$keysByCode = NULL;
 		if (($propsFlags & \MvcCore\IModel::PROPS_NAMES_BY_CODE) != 0) {
 			$keysByCode = TRUE;
