@@ -11,7 +11,7 @@
  * @license		https://mvccore.github.io/docs/mvccore/5.0.0/LICENSE.md
  */
 
-namespace MvcCore\Ext\Models;
+namespace MvcCore\Ext\Models\Db;
 
 class		Model 
 implements	\MvcCore\IModel,
