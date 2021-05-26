@@ -22,6 +22,12 @@ trait Features {
 	use \MvcCore\Ext\Models\Db\Model\DataMethods;
 	use \MvcCore\Ext\Models\Db\Model\Manipulation;
 	
+	use \MvcCore\Model\MagicMethods,
+		\MvcCore\Ext\Models\Db\Model\MagicMethods {
+			\MvcCore\Ext\Models\Db\Model\MagicMethods::jsonSerialize insteadof \MvcCore\Model\MagicMethods;
+			\MvcCore\Model\MagicMethods::jsonSerialize as jsonSerializeBase;
+		}
+
 	use \MvcCore\Model\Connection, 
 		\MvcCore\Ext\Models\Db\Model\Connection {
 			\MvcCore\Ext\Models\Db\Model\Connection::GetConnection insteadof \MvcCore\Model\Connection;
