@@ -314,7 +314,20 @@ trait MetaData {
 		}
 
 		// property has default value to index 9:
-		$result[9] = $prop->hasDefaultValue();
+		$hasDefaultValue = FALSE;
+		if ($phpWithUnionTypes) {
+			$hasDefaultValue = $prop->hasDefaultValue();
+		} else {
+			$type = new \ReflectionClass($prop->class);
+			if (!$type->isAbstract()) {
+				$dummyInstance = $type->newInstanceWithoutConstructor();
+				$dummyInstanceProp = new \ReflectionProperty($prop->class, $prop->name);
+				$dummyInstanceProp->setAccessible(TRUE);
+				$dummyValue = $dummyInstanceProp->getValue($dummyInstance);
+				$hasDefaultValue = $dummyValue !== NULL;
+			}
+		}
+		$result[9] = $hasDefaultValue;
 
 		return $result;
 	}
