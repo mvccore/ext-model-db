@@ -225,7 +225,6 @@ trait Manipulation {
 					if (!isset($columnsDbNamesMap[$dbColumnName])) continue;
 					$metaDataIndex = $columnsDbNamesMap[$dbColumnName];
 					if ($metaDataIndex === $autoIncrIndex) continue;
-					$columnMeta = $metaData[$metaDataIndex];
 					list(
 						$propIsPrivate, /*$propAllowNulls*/, /*$propTypes*/, 
 						$propCodeName, /*$propDbColumnName, $propFormatArgs,
@@ -301,7 +300,6 @@ trait Manipulation {
 				if (!isset($columnsDbNamesMap[$dbColumnName])) continue;
 				$metaDataIndex = $columnsDbNamesMap[$dbColumnName];
 				if ($metaDataIndex === $autoIncrIndex) continue;
-				$columnMeta = $metaData[$metaDataIndex];
 				list(
 					$propIsPrivate, /*$propAllowNulls*/, /*$propTypes*/, 
 					$propCodeName, /*$propDbColumnName, $propFormatArgs,
