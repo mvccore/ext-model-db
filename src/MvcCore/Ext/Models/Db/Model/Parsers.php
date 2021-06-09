@@ -83,8 +83,11 @@ trait Parsers {
 					$conversionResult = TRUE;
 				}
 			}
+		} else if ($typeStr === 'bool' || $typeStr === 'boolean') {
+			$rawValue = static::parseToBool($rawValue);
+			$conversionResult = TRUE;
 		} else {
-			// bool, int, float, string, array, object, null:
+			// int, float, string, array, object, null:
 			if (settype($rawValue, $typeStr)) 
 				$conversionResult = TRUE;
 		}
