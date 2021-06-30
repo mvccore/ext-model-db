@@ -293,8 +293,10 @@ trait MetaData {
 		if (isset($propAttrs->keyPrimary)) {
 			$result[6] = TRUE;
 			$result[7] = FALSE;
-			if (is_array($propAttrs->keyPrimary) && count($propAttrs->keyPrimary) > 0) {
-				$rawBool = (isset($propAttrs->keyPrimary[0]) ? $propAttrs->keyPrimary[0] : $propAttrs->keyPrimary['autoIncrement']);
+			if (is_array($propAttrs->keyPrimary) && count($propAttrs->keyPrimary) === 1) {
+				$rawBool = (isset($propAttrs->keyPrimary[0]) 
+					? $propAttrs->keyPrimary[0] 
+					: $propAttrs->keyPrimary['autoIncrement']);
 				$result[7] = is_bool($rawBool)
 					? $rawBool
 					: strtoupper($rawBool) === 'TRUE';
@@ -306,8 +308,12 @@ trait MetaData {
 		
 		if (isset($propAttrs->keyUnique)) {
 			if (is_array($propAttrs->keyUnique) && count($propAttrs->keyUnique) > 0) {
-				$uKeyName = isset($propAttrs->keyUnique[0]) ? $propAttrs->keyUnique[0] : $propAttrs->keyUnique['keyName'];
-				$result[8] = $uKeyName === '' ? TRUE : $uKeyName;
+				$uKeyName = isset($propAttrs->keyUnique[0]) 
+					? $propAttrs->keyUnique[0] 
+					: $propAttrs->keyUnique['keyName'];
+				$result[8] = $uKeyName === '' 
+					? TRUE 
+					: $uKeyName;
 			} else {
 				$result[8] = TRUE;
 			}
