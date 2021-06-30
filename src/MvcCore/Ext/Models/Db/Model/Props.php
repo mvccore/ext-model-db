@@ -45,8 +45,5 @@ trait Props {
 	 *	- maniulation methods: `Save()`, `IsNew()`, `Insert()`, `Update()`, `Delete()`
 	 * @var int
 	 */
-	protected static $defaultPropsFlags		= (
-		\MvcCore\IModel::PROPS_INHERIT | 
-		\MvcCore\IModel::PROPS_PROTECTED
-	);
+	protected static $defaultPropsFlags		= \MvcCore\IModel::PROPS_INHERIT_PROTECTED;
 }
