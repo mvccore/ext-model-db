@@ -55,8 +55,11 @@ trait Connection {
 			? $connectionNameOrConfig
 			: static::resolveConnectionName($connectionNameOrConfig, $strict);
 		
-		if (isset(self::$connections[$connectionName])) 
-			return self::$connections[$connectionName];
+		if (\MvcCore\Model::HasConnection($connectionName)) {
+			/** @var \MvcCore\Ext\Models\Db\Connection $conn */
+			$conn = \MvcCore\Model::GetConnection($connectionName);
+			return $conn;
+		}
 		
 		$cfg = static::GetConfig($connectionName);
 		if ($cfg === NULL) throw new \InvalidArgumentException(
@@ -84,11 +87,11 @@ trait Connection {
 		}
 		
 		// connect:
-		/** @var \MvcCore\Ext\Models\Db\Connection $connection */
+		/** @var \MvcCore\Ext\Models\Db\Connection|\PDO $connection */
 		$connection = static::connect($cfg);
 		
 		// store new connection under config index for all other model classes:
-		self::$connections[$connectionName] = $connection;
+		\MvcCore\Model::SetConnection($connectionName, $connection);
 		
 		return $connection;
 	}
