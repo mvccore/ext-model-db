@@ -52,9 +52,12 @@ trait Manipulation {
 		$newId = NULL;
 		$error = NULL;
 
+		$execInTransaction = !($conn->InTransaction());
+
 		$transName = 'INSERT:'.str_replace('\\', '_', $className);
 		try {
-			$conn->BeginTransaction(8 | 16, $transName); // 8 means serializable, 16 means read write
+			if ($execInTransaction)
+				$conn->BeginTransaction(8 | 16, $transName); // 8 means serializable, 16 means read write
 
 			$reader = $conn
 				->Prepare($sql)
@@ -66,20 +69,21 @@ trait Manipulation {
 			if ($autoIncrColumnName !== NULL)
 				$newId = $conn->LastInsertId();
 
-			$conn->Commit();
+			if ($execInTransaction)
+				$conn->Commit();
 
 			$success = TRUE;
 		} catch (\Exception $e) { // backward compatibility
 			$affectedRows = 0;
 			$newId = NULL;
 			$error = $e;
-			if ($conn && $conn->InTransaction())
+			if ($execInTransaction && $conn->InTransaction())
 				$conn->RollBack();
 		} catch (\Throwable $e) {
 			$affectedRows = 0;
 			$newId = NULL;
 			$error = $e;
-			if ($conn && $conn->InTransaction())
+			if ($execInTransaction && $conn->InTransaction())
 				$conn->RollBack();
 		}
 
