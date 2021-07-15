@@ -264,7 +264,7 @@ trait DataMethods {
 				$currentValue = $this->{$propertyName};
 			}
 			
-			if (static::isEqual($currentValue, $initialValue)) continue;
+			if (static::IsEqual($currentValue, $initialValue)) continue;
 			
 			if ($keysByCode === TRUE) {
 				$resultKey = $propertyName;
