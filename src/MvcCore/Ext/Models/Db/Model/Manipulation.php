@@ -26,7 +26,7 @@ trait Manipulation {
 	 * @return bool
 	 */
 	public function Save ($createNew = NULL, $propsFlags = 0) {
-		/** @var \MvcCore\Ext\Models\Db\Model */
+		/** @var \MvcCore\Ext\Models\Db\Model $this */
 		return static::editSave(
 			$this, $createNew, $propsFlags, static::getEditMetaDataCollections($propsFlags)
 		);
@@ -39,7 +39,7 @@ trait Manipulation {
 	 * @return bool
 	 */
 	public function IsNew ($propsFlags = 0) {
-		/** @var \MvcCore\Ext\Models\Db\Model */
+		/** @var \MvcCore\Ext\Models\Db\Model $this */
 		return static::editIsNew(
 			$this, $propsFlags, static::getEditMetaDataCollections($propsFlags)
 		);
@@ -52,7 +52,7 @@ trait Manipulation {
 	 * @return bool
 	 */
 	public function Insert ($propsFlags = 0) {
-		/** @var \MvcCore\Ext\Models\Db\Model */
+		/** @var \MvcCore\Ext\Models\Db\Model $this */
 		return static::editInsert(
 			$this, $propsFlags, static::getEditMetaDataCollections($propsFlags)
 		);
@@ -65,7 +65,7 @@ trait Manipulation {
 	 * @return bool
 	 */
 	public function Update ($propsFlags = 0) {
-		/** @var \MvcCore\Ext\Models\Db\Model */
+		/** @var \MvcCore\Ext\Models\Db\Model $this */
 		return static::editUpdate(
 			$this, $propsFlags, static::getEditMetaDataCollections($propsFlags)
 		);
@@ -78,7 +78,7 @@ trait Manipulation {
 	 * @return bool
 	 */
 	public function Delete ($propsFlags = 0) {
-		/** @var \MvcCore\Ext\Models\Db\Model */
+		/** @var \MvcCore\Ext\Models\Db\Model $this */
 		return static::editDelete(
 			$this, $propsFlags, static::getEditMetaDataCollections($propsFlags)
 		);
