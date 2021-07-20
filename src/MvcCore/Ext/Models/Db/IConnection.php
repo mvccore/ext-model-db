@@ -30,6 +30,12 @@ interface IConnection {
 	 * @throws \Throwable
 	 */
 	public function __construct ($dsn, $username = NULL, $password = NULL, array $options = []);
+	
+	/**
+	 * Get used system configuration values.
+	 * @return \stdClass
+	 */
+	public function GetConfig ();
 
 	/**
 	 * Prepares a statement for execution and returns a statement object.
@@ -92,8 +98,8 @@ interface IConnection {
 
 	/**
 	 * Set a `\PDO` database connection attribute.
-	 * @param int   $attribute
-	 * @param mixed $value
+	 * @param  int   $attribute
+	 * @param  mixed $value
 	 * @return bool
 	 */
 	public function SetAttribute ($attribute , $value);
@@ -120,7 +126,7 @@ interface IConnection {
 	 * Get `__construct()` function arguments values.
 	 * @return array
 	 */
-	public function GetConfig ();
+	public function GetCtorArguments ();
 
 
 	
@@ -154,4 +160,20 @@ interface IConnection {
 	 * @return bool
 	 */
 	public function Rollback ($flags = 0);
+
+	/**
+	 * Returns connection debugger instance.
+	 * @return \MvcCore\Ext\Models\Db\IDebugger|NULL
+	 */
+	public function GetDebugger ();
+
+	/**
+	 * Replace all params in query to dump query with values on development env.
+	 * Return array with success boolean and replaced query.
+	 * @param  \PDO   $provider
+	 * @param  string $query 
+	 * @param  array  $params 
+	 * @return array  [bool $success, string $replacedQuery]
+	 */
+	public static function DumpQueryWithParams ($provider, $query, $params);
 }

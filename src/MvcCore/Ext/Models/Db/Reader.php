@@ -120,6 +120,10 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 		$testRetryAttempts = $testProp->getValue($testConn);
 		*/
 		if ($this->providerExecResult !== NULL) return $this;
+		
+		$connection = $this->statement->GetConnection();
+		$debugger = $connection->GetDebugger();
+		$debugging = $debugger !== NULL;
 
 		$params = $this->statement->GetParams();
 		$providerStatement = $this->statement->GetProviderStatement();
@@ -135,7 +139,17 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 				$dbErrorMsg = $errMessage;
 			});
 			
+			if ($debugging) $startTime = microtime(TRUE);
+
 			$this->providerExecResult = $providerStatement->execute($params);
+
+			if ($debugging) {
+				$execTime = microtime(TRUE) - $startTime;
+				$debugger->AddQuery(
+					$providerStatement->queryString, $params, $execTime, $connection
+				);
+			}
+
 			$this->stmntOpenedProp->setValue($this->statement, TRUE);
 			
 			restore_error_handler();
@@ -162,7 +176,6 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 		
 		if ($this->providerExecResult === FALSE) {
 			
-			$connection = $this->statement->GetConnection();
 			$testConnType = new \ReflectionClass($connection);
 			$retryConnectMethod = $testConnType->getMethod('reConnectIfNecessaryOrThrownError');
 			$retryConnectMethod->setAccessible(TRUE);

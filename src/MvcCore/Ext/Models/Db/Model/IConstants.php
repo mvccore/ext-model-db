@@ -81,4 +81,10 @@ interface IConstants {
 	 * @var int
 	 */
 	const METADATA_TABLES			= 6;
+
+	/**
+	 * Connection debugger interface.
+	 * @var string
+	 */
+	const DEBUGGER_INTERFACE						= '\\MvcCore\\Ext\\Models\\Db\\IDebugger';
 }

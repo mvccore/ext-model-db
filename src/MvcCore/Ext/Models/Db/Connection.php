@@ -48,6 +48,18 @@ implements	\MvcCore\Model\IConstants,
 	protected $options;
 
 	/**
+	 * Used system configuration values.
+	 * @var \stdClass|NULL
+	 */
+	protected $config = NULL;
+
+	/**
+	 * Debugger instance if any class configured.
+	 * @var \MvcCore\Ext\Models\Db\IDebugger|NULL
+	 */
+	protected $debugger = NULL;
+
+	/**
 	 * `TRUE` for multi statements connection type.
 	 * @see https://stackoverflow.com/questions/38305108/disable-multiple-statements-in-php-pdo
 	 * @var bool
@@ -110,6 +122,17 @@ implements	\MvcCore\Model\IConstants,
 	 * @throws \Throwable
 	 */
 	public function __construct ($dsn, $username = NULL, $password = NULL, array $options = []) {
+		$sysCfgProps = \MvcCore\Model::GetSysConfigProperties();
+
+		$configPropName = $sysCfgProps->config;
+		if (isset($options[$configPropName])) {
+			$this->config = $options[$configPropName];
+			unset($options[$configPropName]);
+			$debuggerPropName = $sysCfgProps->debugger;
+			if (isset($this->config->{$debuggerPropName})) 
+				$this->initDebugger($this->config->{$debuggerPropName});
+		}
+
 		$this->dsn = $dsn;
 		$this->username = $username;
 		$this->password = $password;
@@ -117,11 +140,13 @@ implements	\MvcCore\Model\IConstants,
 		
 		if ($this->retryAttemptsTotal === NULL) {
 			$this->retryAttemptsTotal = 0;
-			$sysCfg = \MvcCore\Config::GetSystem();
+			$configClass = \MvcCore\Application::GetInstance()->GetConfigClass();
+			$sysCfg = $configClass::GetSystem();
 			if ($sysCfg !== NULL) {
-				$sysCfgProps = \MvcCore\Model::GetSysConfigProperties();
 				$sysCfgDbSection = $sysCfg->{$sysCfgProps->sectionName};
 				if ($sysCfgDbSection !== NULL) {
+					if ($this->debugger === NULL && isset($sysCfgDbSection->{$sysCfgProps->defaultDebugger}))
+						$this->initDebugger($sysCfgDbSection->{$sysCfgProps->defaultDebugger});
 					if (isset($sysCfgDbSection->{$sysCfgProps->retryAttempts}))
 						$this->retryAttemptsTotal = $sysCfgDbSection->{$sysCfgProps->retryAttempts};
 					if (isset($sysCfgDbSection->{$sysCfgProps->retryDelay}))
@@ -162,6 +187,28 @@ implements	\MvcCore\Model\IConstants,
 				: $prop->getValue($this);
 		}
 		return $result;
+	}
+
+	/**
+	 * @inheritDocs
+	 * @param  \stdClass $config 
+	 * @return \MvcCore\Ext\Models\Db\Connection
+	 */
+	public function SetConfig (\stdClass $config) {
+		$this->config = $config;
+		$sysCfgProps = \MvcCore\Model::GetSysConfigProperties();
+		$debuggerPropName = $sysCfgProps->debugger;
+		if (isset($config->{$debuggerPropName}))
+			$this->debugger = $config->{$debuggerPropName};
+		return $this;
+	}
+	
+	/**
+	 * @inheritDocs
+	 * @return \stdClass
+	 */
+	public function GetConfig () {
+		return $this->config;
 	}
 	
 	/**
@@ -286,7 +333,7 @@ implements	\MvcCore\Model\IConstants,
 	 * @inheritDocs
 	 * @return array
 	 */
-	public function GetConfig () {
+	public function GetCtorArguments () {
 		return [
 			'dsn'		=> $this->dsn,
 			'username'	=> $this->username,
@@ -338,6 +385,86 @@ implements	\MvcCore\Model\IConstants,
 		$this->inTransaction = FALSE;
 		$this->transactionName = NULL;
 		return $result;
+	}
+
+	/**
+	 * @inheritDocs
+	 * @return \MvcCore\Ext\Models\Db\Debugger|NULL
+	 */
+	public function GetDebugger () {
+		return $this->debugger;
+	}
+	
+	/**
+	 * @inheritDocs
+	 * @param  \PDO   $provider
+	 * @param  string $query 
+	 * @param  array  $params 
+	 * @return array  [bool $success, string $replacedQuery]
+	 */
+	public static function DumpQueryWithParams ($provider, $query, $params) {
+		$paramsCnt = count($params);
+		$assocParams = (
+			array_keys($params) !== range(0, $paramsCnt - 1)
+		);
+		array_walk($params, function (& $value, $key) use (& $provider) {
+			if ($value === NULL) {
+				$value = 'NULL';
+			} else if (is_string($value)) {
+				$value = $provider->quote($value, \PDO::PARAM_STR);
+			}
+		});
+		if ($assocParams) {
+			$resultItems = [];
+			$matchesCount = 0;
+			$resultQuery = " {$query} ";
+			foreach ($params as $paramKey => $paramValue) {
+				preg_match_all(
+					"#([\s\(\)\!\=\>\<])({$paramKey})([\s\(\)\!\=\>\<])#", 
+					$resultQuery, $matches, PREG_OFFSET_CAPTURE
+				);
+				if (count($matches) > 0 && count($matches[2]) === 1) {
+					$matchIndex = $matches[2][0][1];
+					$resultQuery = (
+						mb_substr($resultQuery, 0, $matchIndex)
+						. $paramValue
+						. mb_substr($resultQuery, $matchIndex + mb_strlen($paramKey))
+					);
+					$matchesCount += 1;
+				} else {
+					break;
+				}
+			}
+			if ($matchesCount === $paramsCnt) {
+				$dumpSuccess = TRUE;
+			} else {
+				$resultQuery = $query;
+				$dumpSuccess = FALSE;
+			}
+		} else {
+			$dumpSuccess = FALSE;
+			$resultQuery = $query;
+			preg_match_all("#([^-a-zA-Z0-9_])(\?)([^-a-zA-Z0-9_])#", $query, $matches, PREG_OFFSET_CAPTURE);
+			if (count($matches)) {
+				$matchesQm = $matches[2];
+				$matchesCnt = count($matchesQm);
+				if ($matchesCnt === $paramsCnt) {
+					$index = 0;
+					$resultItems = [];
+					foreach ($matchesQm as $key => $qmAndIndex) {
+						$matchIndex = $qmAndIndex[1];
+						$resultItems[] = mb_substr($query, $index, $matchIndex);
+						$resultItems[] = $params[$key];
+						$index = $matchIndex + 1;
+					}
+					if ($index < mb_strlen($query)) 
+						$resultItems[] = mb_substr($query, $index);
+					$resultQuery = implode('', $resultItems);
+					$dumpSuccess = TRUE;
+				}
+			}
+		}
+		return [$dumpSuccess, $resultQuery];
 	}
 
 	/**
@@ -459,107 +586,36 @@ implements	\MvcCore\Model\IConstants,
 	 * @throws \Throwable 
 	 */
 	protected function handleError (\Throwable $error) {
-		$isDev = \MvcCore\Application::GetInstance()->GetEnvironment()->IsDevelopment();
+		$app = \MvcCore\Application::GetInstance();
+		$isDev = $app->GetEnvironment()->IsDevelopment();
 		if ($isDev && $error instanceof \MvcCore\Ext\Models\Db\Exception) {
 			$query = $error->getQuery();
 			$params = array_merge([], $error->getParams() ?: []);
+			$debugClass = $app->GetDebugClass();
 			if (count($params) === 0) {
-				\MvcCore\Debug::BarDump($query, 'Query:', [
+				$debugClass::BarDump($query, 'Query:', [
 					'truncate'	=> mb_strlen($query)
 				]);
 			} else {
 				list(
 					$dumpSuccess, $queryWithValues
-				) = $this->devDumpQueryWithParams($query, $params);
+				) = static::DumpQueryWithParams($this->provider, $query, $params);
 				if ($dumpSuccess) {
-					\MvcCore\Debug::BarDump($queryWithValues, 'Query with params:', [
+					$debugClass::BarDump($queryWithValues, 'Query with params:', [
 						'truncate'	=> mb_strlen($queryWithValues)
 					]);
 				} else {
-					\MvcCore\Debug::BarDump($query, 'Query:', [
+					$debugClass::BarDump($query, 'Query:', [
 						'truncate'	=> mb_strlen($query)
 					]);
-					\MvcCore\Debug::BarDump($params, 'Params:');
+					$debugClass::BarDump($params, 'Params:');
 				}
 			}
-			\MvcCore\Debug::BarDump($this, 'Connection:');
+			$debugClass::BarDump($this, 'Connection:');
 			throw $error->getPrevious();
 		} else {
 			throw $error;
 		}
-	}
-
-	/**
-	 * Replace all params in query to dump query with values on development env.
-	 * Return array with success boolean and replaced query.
-	 * @param  string $query 
-	 * @param  array  $params 
-	 * @return array
-	 */
-	protected function devDumpQueryWithParams ($query, $params) {
-		$paramsCnt = count($params);
-		$assocParams = (
-			array_keys($params) !== range(0, $paramsCnt - 1)
-		);
-		$prov = & $this->provider;
-		array_walk($params, function (& $value, $key) use (& $prov) {
-			if ($value === NULL) {
-				$value = 'NULL';
-			} else if (is_string($value)) {
-				$value = $prov->quote($value, \PDO::PARAM_STR);
-			}
-		});
-		if ($assocParams) {
-			$resultItems = [];
-			$matchesCount = 0;
-			$resultQuery = " {$query} ";
-			foreach ($params as $paramKey => $paramValue) {
-				preg_match_all(
-					"#([\s\(\)\!\=\>\<])({$paramKey})([\s\(\)\!\=\>\<])#", 
-					$resultQuery, $matches, PREG_OFFSET_CAPTURE
-				);
-				if (count($matches) > 0 && count($matches[2]) === 1) {
-					$matchIndex = $matches[2][0][1];
-					$resultQuery = (
-						mb_substr($resultQuery, 0, $matchIndex)
-						. $paramValue
-						. mb_substr($resultQuery, $matchIndex + mb_strlen($paramKey))
-					);
-					$matchesCount += 1;
-				} else {
-					break;
-				}
-			}
-			if ($matchesCount === $paramsCnt) {
-				$dumpSuccess = TRUE;
-			} else {
-				$resultQuery = $query;
-				$dumpSuccess = FALSE;
-			}
-		} else {
-			$dumpSuccess = FALSE;
-			$resultQuery = $query;
-			preg_match_all("#([^-a-zA-Z0-9_])(\?)([^-a-zA-Z0-9_])#", $query, $matches, PREG_OFFSET_CAPTURE);
-			if (count($matches)) {
-				$matchesQm = $matches[2];
-				$matchesCnt = count($matchesQm);
-				if ($matchesCnt === $paramsCnt) {
-					$index = 0;
-					$resultItems = [];
-					foreach ($matchesQm as $key => $qmAndIndex) {
-						$matchIndex = $qmAndIndex[1];
-						$resultItems[] = mb_substr($query, $index, $matchIndex);
-						$resultItems[] = $params[$key];
-						$index = $matchIndex + 1;
-					}
-					if ($index < mb_strlen($query)) 
-						$resultItems[] = mb_substr($query, $index);
-					$resultQuery = implode('', $resultItems);
-					$dumpSuccess = TRUE;
-				}
-			}
-		}
-		return [$dumpSuccess, $resultQuery];
 	}
 
 	/**
@@ -589,5 +645,17 @@ implements	\MvcCore\Model\IConstants,
 			$this->handleError($e); // throws \Throwable
 			return NULL;
 		}
+	}
+
+	/**
+	 * Initialize debugger singleton instance if given class name implements configured interface.
+	 * @param  string $debuggerFullClassName 
+	 * @return void
+	 */
+	protected function initDebugger ($debuggerFullClassName) {
+		/** @var \MvcCore\Tool $toolClass */
+		$toolClass = \MvcCore\Application::GetInstance()->GetToolClass();
+		if ($toolClass::CheckClassInterface($debuggerFullClassName, static::DEBUGGER_INTERFACE, TRUE, TRUE))
+			$this->debugger = $debuggerFullClassName::GetInstance();
 	}
 }
