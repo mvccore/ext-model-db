@@ -420,7 +420,7 @@ implements	\MvcCore\Model\IConstants,
 			$resultQuery = " {$query} ";
 			foreach ($params as $paramKey => $paramValue) {
 				preg_match_all(
-					"#([\s\(\)\!\=\>\<])({$paramKey})([\s\(\)\!\=\>\<])#", 
+					"#([\s\(\)\!\=\>\<\,\;])({$paramKey})([\s\(\)\!\=\>\<\;\,])#", 
 					$resultQuery, $matches, PREG_OFFSET_CAPTURE
 				);
 				if (count($matches) > 0 && count($matches[2]) === 1) {

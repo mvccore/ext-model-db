@@ -89,7 +89,7 @@ class Debugger implements \MvcCore\Ext\Models\Db\IDebugger {
 			'query'		=> $query,
 			'params'	=> $params,
 			'exec'		=> $execMs,
-			'stack'		=> array_slice($stack, $index + 1),
+			'stack'		=> array_slice($stack, $index),
 			'connection'=> $connection,
 		];
 		return $this;
