@@ -25,7 +25,7 @@ class Debugger implements \MvcCore\Ext\Models\Db\IDebugger {
 	 * PHP's `debug_backtrace()` function first argument to get query stack trace.
 	 * @var int
 	 */
-	protected static $stackFlags = DEBUG_BACKTRACE_IGNORE_ARGS | DEBUG_BACKTRACE_PROVIDE_OBJECT;
+	protected static $stackFlags = DEBUG_BACKTRACE_IGNORE_ARGS/* | DEBUG_BACKTRACE_PROVIDE_OBJECT*/;
 	
 	/**
 	 * PHP's `debug_backtrace()` function second argument to get query stack trace.
