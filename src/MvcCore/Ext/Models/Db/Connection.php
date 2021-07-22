@@ -426,9 +426,9 @@ implements	\MvcCore\Model\IConstants,
 				if (count($matches) > 0 && count($matches[2]) === 1) {
 					$matchIndex = $matches[2][0][1];
 					$resultQuery = (
-						mb_substr($resultQuery, 0, $matchIndex)
+						substr($resultQuery, 0, $matchIndex)
 						. $paramValue
-						. mb_substr($resultQuery, $matchIndex + mb_strlen($paramKey))
+						. substr($resultQuery, $matchIndex + strlen($paramKey))
 					);
 					$matchesCount += 1;
 				} else {
@@ -453,12 +453,12 @@ implements	\MvcCore\Model\IConstants,
 					$resultItems = [];
 					foreach ($matchesQm as $key => $qmAndIndex) {
 						$matchIndex = $qmAndIndex[1];
-						$resultItems[] = mb_substr($query, $index, $matchIndex);
+						$resultItems[] = substr($query, $index, $matchIndex);
 						$resultItems[] = $params[$key];
 						$index = $matchIndex + 1;
 					}
-					if ($index < mb_strlen($query)) 
-						$resultItems[] = mb_substr($query, $index);
+					if ($index < strlen($query)) 
+						$resultItems[] = substr($query, $index);
 					$resultQuery = implode('', $resultItems);
 					$dumpSuccess = TRUE;
 				}
