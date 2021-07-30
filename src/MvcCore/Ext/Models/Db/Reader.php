@@ -139,16 +139,14 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 				$dbErrorMsg = $errMessage;
 			});
 			
-			if ($debugging) $startTime = microtime(TRUE);
+			if ($debugging) $reqTime = microtime(TRUE);
 
 			$this->providerExecResult = $providerStatement->execute($params);
 
-			if ($debugging) {
-				$execTime = microtime(TRUE) - $startTime;
+			if ($debugging) 
 				$debugger->AddQuery(
-					$providerStatement->queryString, $params, $execTime, $connection
+					$providerStatement->queryString, $params, $reqTime, microtime(TRUE), $connection
 				);
-			}
 
 			$this->stmntOpenedProp->setValue($this->statement, TRUE);
 			

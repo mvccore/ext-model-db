@@ -25,17 +25,25 @@ interface IDebugger {
 	 * Add query with params into local store.
 	 * @param  string                             $query 
 	 * @param  array                              $params 
-	 * @param  float                              $execMs
+	 * @param  float                              $reqTime
+	 * @param  float                              $resTime
 	 * @param  \MvcCore\Ext\Models\Db\IConnection $connection
 	 * @return \MvcCore\Ext\Models\Db\IDebugger
 	 */
-	public function AddQuery ($query, $params, $execMs, \MvcCore\Ext\Models\Db\IConnection $connection);
+	public function AddQuery ($query, $params, $reqTime, $resTime, \MvcCore\Ext\Models\Db\IConnection $connection);
 	
 	/**
 	 * Get populated store.
 	 * @return array
 	 */
 	public function & GetStore ();
+
+	/**
+	 * Set store of populated queries.
+	 * @param  \stdClass[] $store
+	 * @return \MvcCore\Ext\Models\Db\Debugger
+	 */
+	public function SetStore (array & $store);
 
 	/**
 	 * Frees local store memory.
