@@ -397,6 +397,24 @@ implements	\MvcCore\Model\IConstants,
 	
 	/**
 	 * @inheritDocs
+	 * @param  \MvcCore\Ext\Models\Db\Debugger|NULL $debugger
+	 * @param  bool                                 $copyPreviousQueries
+	 *                                              Copy queries from previous debugger if there were any.
+	 * @return \MvcCore\Ext\Models\Db\Connection
+	 */
+	public function SetDebugger (\MvcCore\Ext\Models\Db\IDebugger $debugger, $copyPreviousQueries = TRUE) {
+		if ($copyPreviousQueries && $this->debugger !== NULL) {
+			// do not use reference `&` switch here to be able to use different debuggers accross connections
+			$store = $this->debugger->GetStore();
+			$debugger->SetStore($store);
+			unset($store);
+		}
+		$this->debugger = $debugger;
+		return $this;
+	}
+	
+	/**
+	 * @inheritDocs
 	 * @param  \PDO   $provider
 	 * @param  string $query 
 	 * @param  array  $params 

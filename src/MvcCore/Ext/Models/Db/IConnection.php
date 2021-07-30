@@ -16,6 +16,13 @@ namespace MvcCore\Ext\Models\Db;
 interface IConnection {
 
 	/**
+	 * Connection debugger interface.
+	 * @var string
+	 */
+	const DEBUGGER_INTERFACE		= '\\MvcCore\\Ext\\Models\\Db\\IDebugger';
+	
+	
+	/**
 	 * Return an array of available `\PDO` drivers.
 	 * @return array
 	 */
@@ -166,6 +173,15 @@ interface IConnection {
 	 * @return \MvcCore\Ext\Models\Db\IDebugger|NULL
 	 */
 	public function GetDebugger ();
+	
+	/**
+	 * Sets connection debugger instance.
+	 * @param  \MvcCore\Ext\Models\Db\IDebugger|NULL $debugger
+	 * @param  bool                                  $copyPreviousQueries
+	 *                                               Copy queries from previous debugger if there were any.
+	 * @return \MvcCore\Ext\Models\Db\IConnection
+	 */
+	public function SetDebugger (\MvcCore\Ext\Models\Db\IDebugger $debugger, $copyPreviousQueries = TRUE);
 
 	/**
 	 * Replace all params in query to dump query with values on development env.
