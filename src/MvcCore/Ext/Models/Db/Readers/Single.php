@@ -21,7 +21,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 	 * @inheritDocs
 	 * @param  string $fullClassName 
 	 * @param  int    $readingFlags 
-	 * @return \object
+	 * @return \object|NULL
 	 */
 	public function ToInstance ($fullClassName, $readingFlags = 0) {
 		if ($this->rawData === NULL)
@@ -41,7 +41,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 
 	/**
 	 * @inheritDocs
-	 * @return array
+	 * @return array|NULL
 	 */
 	public function ToArray () {
 		if ($this->rawData === NULL)
@@ -53,7 +53,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 
 	/**
 	 * @inheritDocs
-	 * @return \stdClass
+	 * @return \stdClass|NULL
 	 */
 	public function ToObject () {
 		if ($this->rawData === NULL)
@@ -65,18 +65,25 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 
 	/**
 	 * @inheritDocs
-	 * @param  string $valueColumnName 
-	 * @param  string $valueType 
-	 * @return bool|float|int|null|string
+	 * @param  string|NULL $valueColumnName 
+	 * @param  string|NULL $valueType 
+	 * @return bool|float|int|string|NULL
 	 */
-	public function ToScalar ($valueColumnName, $valueType = NULL) {
+	public function ToScalar ($valueColumnName = NULL, $valueType = NULL) {
 		if ($this->rawData === NULL)
 			$this->fetchRawData(TRUE);
 		if (
-			!$this->rawData ||
-			!array_key_exists($valueColumnName, $this->rawData)
+			!$this->rawData || (
+				$valueColumnName !== NULL && 
+				!array_key_exists($valueColumnName, $this->rawData)
+			)
 		) return NULL;
-		$itemValue = $this->rawData[$valueColumnName];
+		if ($valueColumnName !== NULL) {
+			$itemValue = $this->rawData[$valueColumnName];
+		} else {
+			$rawDataKeys = array_keys($this->rawData);
+			$itemValue = $this->rawData[$rawDataKeys[0]];
+		}
 		if ($valueType !== NULL)
 			settype($itemValue, $valueType);
 		return $itemValue;

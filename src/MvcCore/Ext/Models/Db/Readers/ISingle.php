@@ -19,29 +19,29 @@ interface ISingle extends \MvcCore\Ext\Models\Db\IReader {
 	 * Read single fetched row into instances by given full class name and reading flags.
 	 * @param  string $fullClassName
 	 * @param  int    $readingFlags
-	 * @return \object
+	 * @return \object|NULL
 	 */
 	public function ToInstance ($fullClassName, $readingFlags = 0);
 
 	/**
 	 * Read single fetched row into associative array with keys by SQL query columns.
-	 * @return array
+	 * @return array|NULL
 	 */
 	public function ToArray ();
 
 	/**
 	 * Read single fetched row into `\stdClass` object with item keys by SQL query columns.
-	 * @return \stdClass
+	 * @return \stdClass|NULL
 	 */
 	public function ToObject();
 
 	/**
 	 * Read single fetched row into scalar value by first row column.
-	 * @param  string $valueColumnName
-	 * @param  string $valueType
+	 * @param  string|NULL $valueColumnName
+	 * @param  string|NULL $valueType
 	 * @return int|float|string|bool|NULL
 	 */
-	public function ToScalar ($valueColumnName, $valueType = NULL);
+	public function ToScalar ($valueColumnName = NULL, $valueType = NULL);
 
 	/**
 	 * Read single fetched row into custom item created by given callable completer called for the row.
