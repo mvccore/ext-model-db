@@ -37,15 +37,24 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 				"[".get_class()."] Class `{$fullClassName}` has no public method ".
 				"`SetValues (\$data = [], \$propsFlags = 0): \MvcCore\Model`."
 			);
+		$conn = $this->statement->GetConnection();
+		$transcode = $conn->GetTranscode();
 		foreach ($this->rawData as $rawKey => $rawItem) {
 			$itemKey = $useRawKey
 				? $rawKey
 				: $rawItem[$keyColumnName];
 			if ($retypeKey)
 				settype($itemKey, $keyType);
+			if ($transcode) {
+				if (!$useRawKey && is_string($itemKey))
+					$itemKey = $conn->TranscodeResultValue($itemKey);
+				$rawValues = $conn->TranscodeResultRowValues($rawItem);
+			} else {
+				$rawValues = $rawItem;
+			}
 			/** @var \MvcCore\Ext\Models\Db\Model $item */
 			$item = $type->newInstanceWithoutConstructor();
-			$item->SetValues($rawItem, $readingFlags);
+			$item->SetValues($rawValues, $readingFlags);
 			$result[$itemKey] = $item;
 		}
 		return $result;
@@ -63,13 +72,21 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 		$result = [];
 		$retypeKey = $keyType !== NULL;
 		$useRawKey = $keyColumnName === NULL;
+		$conn = $this->statement->GetConnection();
+		$transcode = $conn->GetTranscode();
 		foreach ($this->rawData as $rawKey => $rawItem) {
 			$itemKey = $useRawKey
 				? $rawKey 
 				: $rawItem[$keyColumnName];
 			if ($retypeKey)
 				settype($itemKey, $keyType);
-			$result[$itemKey] = $rawItem;
+			if ($transcode) {
+				if (!$useRawKey && is_string($itemKey))
+					$itemKey = $conn->TranscodeResultValue($itemKey);
+				$result[$itemKey] = $conn->TranscodeResultRowValues($rawItem);
+			} else {
+				$result[$itemKey] = $rawItem;
+			}
 		}
 		return $result;
 	}
@@ -86,13 +103,21 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 		$result = [];
 		$retypeKey = $keyType !== NULL;
 		$useRawKey = $keyColumnName === NULL;
+		$conn = $this->statement->GetConnection();
+		$transcode = $conn->GetTranscode();
 		foreach ($this->rawData as $rawKey => $rawItem) {
 			$itemKey = $useRawKey
 				? $rawKey
 				: $rawItem[$keyColumnName];
 			if ($retypeKey)
 				settype($itemKey, $keyType);
-			$result[$itemKey] = (object) $rawItem;
+			if ($transcode) {
+				if (!$useRawKey && is_string($itemKey))
+					$itemKey = $conn->TranscodeResultValue($itemKey);
+				$result[$itemKey] = (object) $conn->TranscodeResultRowValues($rawItem);
+			} else {
+				$result[$itemKey] = (object) $rawItem;
+			}
 		}
 		return $result;
 	}
@@ -112,6 +137,8 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 		$retypeKey = $keyType !== NULL;
 		$retypeValue = $valueType !== NULL;
 		$useRawKey = $keyColumnName === NULL;
+		$conn = $this->statement->GetConnection();
+		$transcode = $conn->GetTranscode();
 		foreach ($this->rawData as $rawKey => $rawItem) {
 			$itemKey = $useRawKey
 				? $rawKey
@@ -123,6 +150,12 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 				: NULL;
 			if ($retypeValue)
 				settype($itemValue, $valueType);
+			if ($transcode) {
+				if (!$useRawKey && is_string($itemKey)) 
+					$itemKey = $conn->TranscodeResultValue($itemKey);
+				if (is_string($itemValue)) 
+					$itemValue = $conn->TranscodeResultValue($itemValue);
+			}
 			$result[$itemKey] = $itemValue;
 		}
 		return $result;
@@ -141,13 +174,22 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 		$result = [];
 		$retypeKey = $keyType !== NULL;
 		$useRawKey = $keyColumnName === NULL;
+		$conn = $this->statement->GetConnection();
+		$transcode = $conn->GetTranscode();
 		foreach ($this->rawData as $rawKey => $rawItem) {
 			$itemKey = $useRawKey
 				? $rawKey
 				: $rawItem[$keyColumnName];
 			if ($retypeKey)
 				settype($itemKey, $keyType);
-			$result[$itemKey] = $valueCompleter($rawItem, $rawKey);
+			if ($transcode) {
+				if (!$useRawKey && is_string($itemKey)) 
+					$itemKey = $conn->TranscodeResultValue($itemKey);
+				$itemValues = $conn->TranscodeResultRowValues($rawItem);
+			} else {
+				$itemValues = $rawItem;
+			}
+			$result[$itemKey] = $valueCompleter($itemValues, $itemKey);
 		}
 		return $result;
 	}

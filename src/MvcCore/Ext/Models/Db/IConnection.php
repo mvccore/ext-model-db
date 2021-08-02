@@ -112,14 +112,44 @@ interface IConnection {
 	public function SetAttribute ($attribute , $value);
 	
 	/**
+	 * Return `TRUE` for transcode from/to database encoding 
+	 * to/from client encoding by PHP `iconv()`, `FALSE` by default.
+	 * @return bool
+	 */
+	public function GetTranscode ();
+	
+	/**
+	 * Return `\stdClass` with keys `database` and `client`,
+	 * where are charsets for PHP `iconv()` trancoding.
+	 * @return \stdClass
+	 */
+	public function GetTranscodingCharsets ();
+
+	/**
+	 * Transcode string value in row data 
+	 * from database to client encoding by `iconv()`.
+	 * @param  string $str 
+	 * @return string
+	 */
+	public function TranscodeResultValue ($str);
+	
+	/**
+	 * Transcode any string array value in row data 
+	 * from database to client encoding by `iconv()`.
+	 * @param  array $rowData 
+	 * @return array
+	 */
+	public function TranscodeResultRowValues ($rowData);
+	
+	/**
 	 * Return database server version in "PHP-standardized" version number string.
-	 * @return null|string
+	 * @return string|NULL
 	 */
 	public function GetVersion ();
 
 	/**
 	 * Return `TRUE` for multi statements connection type.
-	 * @return bool|null
+	 * @return bool|NULL
 	 */
 	public function IsMutliStatements ();
 

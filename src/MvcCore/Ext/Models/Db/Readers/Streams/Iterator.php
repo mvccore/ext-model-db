@@ -173,7 +173,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	 */
 	protected function prepareInstances (& $completerArguments) {
 		list(
-			$fullClassName, $readingFlags, $keyColumnName, $keyType
+			$fullClassName, $readingFlags, $keyColumnName, $keyType, $conn, $transcode
 		) = $completerArguments;
 		$type = new \ReflectionClass($fullClassName);
 		if (!$type->hasMethod('SetValues'))
@@ -188,6 +188,8 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 			'keyType'		=> $keyType,
 			'retypeKey'		=> $keyType !== NULL,
 			'useRawKey'		=> $keyColumnName === NULL,
+			'connection'	=> $conn,
+			'transcode'		=> $transcode,
 		];
 	}
 	
@@ -216,13 +218,15 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	 */
 	protected function prepareArraysAndObjects (& $completerArguments) {
 		list(
-			$keyColumnName, $keyType
+			$keyColumnName, $keyType, $conn, $transcode
 		) = $completerArguments;
 		$this->completerProps = (object) [
 			'keyColumnName'	=> $keyColumnName,
 			'keyType'		=> $keyType,
 			'retypeKey'		=> $keyType !== NULL,
 			'useRawKey'		=> $keyColumnName === NULL,
+			'connection'	=> $conn,
+			'transcode'		=> $transcode,
 		];
 	}
 	
@@ -233,7 +237,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	 */
 	protected function prepareScalars (& $completerArguments) {
 		list(
-			$valueColumnName, $valueType, $keyColumnName, $keyType
+			$valueColumnName, $valueType, $keyColumnName, $keyType, $conn, $transcode
 		) = $completerArguments;
 		$this->completerProps = (object) [
 			'valueColumnName'	=> $valueColumnName,
@@ -243,6 +247,8 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 			'retypeKey'			=> $keyType !== NULL,
 			'retypeValue'		=> $valueType !== NULL,
 			'useRawKey'			=> $keyColumnName === NULL,
+			'connection'		=> $conn,
+			'transcode'			=> $transcode,
 		];
 	}
 	
@@ -253,14 +259,16 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	 */
 	protected function prepareAny (& $completerArguments) {
 		list(
-			$valueCompleter, $keyColumnName, $keyType
+			$valueCompleter, $keyColumnName, $keyType, $conn, $transcode
 		) = $completerArguments;
 		$this->completerProps = (object) [
-			'valueCompleter'	=> $valueCompleter,
-			'keyColumnName'		=> $keyColumnName,
-			'keyType'			=> $keyType,
-			'retypeKey'			=> $keyType !== NULL,
-			'useRawKey'			=> $keyColumnName === NULL,
+			'valueCompleter'		=> $valueCompleter,
+			'keyColumnName'			=> $keyColumnName,
+			'keyType'				=> $keyType,
+			'retypeKey'				=> $keyType !== NULL,
+			'useRawKey'				=> $keyColumnName === NULL,
+			'connection'			=> $conn,
+			'transcode'				=> $transcode,
 		];
 	}
 	
@@ -273,7 +281,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	 * Instances result value completer.
 	 * @param  int|float|string|bool $rawKey 
 	 * @param  array                 $rawRow 
-	 * @return array
+	 * @return void
 	 */
 	protected function toInstances ($rawKey, & $rawRow) {
 		$props = $this->completerProps;
@@ -283,9 +291,16 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 			: $rawRow[$props->keyColumnName];
 		if ($props->retypeKey)
 			settype($itemKey, $props->keyType);
+		if ($props->transcode) {
+			if (!$props->useRawKey && is_string($itemKey))
+				$itemKey = $props->connection->TranscodeResultValue($itemKey);
+			$itemValues = $props->connection->TranscodeResultRowValues($rawRow);
+		} else {
+			$itemValues = $rawRow;
+		}
 		/** @var \MvcCore\Ext\Models\Db\Model $item */
 		$item = $props->type->newInstanceWithoutConstructor();
-		$item->SetValues($rawRow, $props->readingFlags);
+		$item->SetValues($itemValues, $props->readingFlags);
 		
 		$this->resultKey = $itemKey;
 		$this->resultValue = $item;
@@ -295,7 +310,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	 * Arrays result value completer.
 	 * @param  int|float|string|bool $rawKey 
 	 * @param  array                 $rawRow 
-	 * @return array
+	 * @return void
 	 */
 	protected function toArrays ($rawKey, & $rawRow) {
 		$props = $this->completerProps;
@@ -305,16 +320,23 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 			: $rawRow[$props->keyColumnName];
 		if ($props->retypeKey)
 			settype($itemKey, $props->keyType);
+		if ($props->transcode) {
+			if (!$props->useRawKey && is_string($itemKey))
+				$itemKey = $props->connection->TranscodeResultValue($itemKey);
+			$itemValue = $props->connection->TranscodeResultRowValues($rawRow);
+		} else {
+			$itemValue = & $rawRow;
+		}
 
 		$this->resultKey = $itemKey;
-		$this->resultValue = & $rawRow;
+		$this->resultValue = & $itemValue;
 	}
 	
 	/**
 	 * Objects result value completer.
 	 * @param  int|float|string|bool $rawKey 
 	 * @param  array                 $rawRow 
-	 * @return array
+	 * @return void
 	 */
 	protected function toObjects ($rawKey, & $rawRow) {
 		$props = $this->completerProps;
@@ -324,16 +346,23 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 			: $rawRow[$props->keyColumnName];
 		if ($props->retypeKey)
 			settype($itemKey, $props->keyType);
+		if ($props->transcode) {
+			if (!$props->useRawKey && is_string($itemKey))
+				$itemKey = $props->connection->TranscodeResultValue($itemKey);
+			$itemValue = (object) $props->connection->TranscodeResultRowValues($rawRow);
+		} else {
+			$itemValue = (object) $rawRow;
+		}
 
 		$this->resultKey = $itemKey;
-		$this->resultValue = (object) $rawRow;
+		$this->resultValue = $itemValue;
 	}
 	
 	/**
 	 * Scalars result value completer.
 	 * @param  int|float|string|bool $rawKey 
 	 * @param  array                 $rawRow 
-	 * @return array
+	 * @return void
 	 */
 	protected function toScalars ($rawKey, & $rawRow) {
 		$props = $this->completerProps;
@@ -348,6 +377,12 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 			: NULL;
 		if ($props->retypeValue)
 			settype($itemValue, $props->valueType);
+		if ($props->transcode) {
+			if (!$props->useRawKey && is_string($itemKey)) 
+				$itemKey = $props->connection->TranscodeResultValue($itemKey);
+			if (is_string($itemValue)) 
+				$itemValue = $props->connection->TranscodeResultValue($itemValue);
+		}
 
 		$this->resultKey = $itemKey;
 		$this->resultValue = $itemValue;
@@ -357,7 +392,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	 * Any types result value completer.
 	 * @param  int|float|string|bool $rawKey 
 	 * @param  array                 $rawRow 
-	 * @return array
+	 * @return void
 	 */
 	protected function toAny ($rawKey, & $rawRow) {
 		$props = $this->completerProps;
@@ -368,9 +403,16 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 			: $rawRow[$props->keyColumnName];
 		if ($props->retypeKey)
 			settype($itemKey, $props->keyType);
+		if ($props->transcode) {
+			if (!$props->useRawKey && is_string($itemKey)) 
+				$itemKey = $props->connection->TranscodeResultValue($itemKey);
+			$itemValues = $props->connection->TranscodeResultRowValues($rawRow);
+		} else {
+			$itemValues = $rawRow;
+		}
 		
 		$this->resultKey = $itemKey;
-		$this->resultValue = $valueCompleter($rawRow, $rawKey);
+		$this->resultValue = $valueCompleter($itemValues, $itemKey);
 	}
 	
 	#endregion Protected methods - completing

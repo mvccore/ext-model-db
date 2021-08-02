@@ -33,9 +33,13 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 				"[".get_class()."] Class `{$fullClassName}` has no public method ".
 				"`SetValues (\$data = [], \$propsFlags = 0): \MvcCore\Model`."
 			);
+		$conn = $this->statement->GetConnection();
+		$rawValues = $conn->GetTranscode()
+			? $conn->TranscodeResultRowValues($this->rawData)
+			: $this->rawData;
 		/** @var \MvcCore\Ext\Models\Db\Model $result */
 		$result = $type->newInstanceWithoutConstructor();
-		$result->SetValues($this->rawData, $readingFlags);
+		$result->SetValues($rawValues, $readingFlags);
 		return $result;
 	}
 
@@ -47,7 +51,10 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 		if ($this->rawData === NULL)
 			$this->fetchRawData(TRUE);
 		if (!$this->rawData) return NULL;
-		$result = $this->rawData;
+		$conn = $this->statement->GetConnection();
+		$result = $conn->GetTranscode()
+			? $conn->TranscodeResultRowValues($this->rawData)
+			: $this->rawData;
 		return $result;
 	}
 
@@ -59,7 +66,10 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 		if ($this->rawData === NULL)
 			$this->fetchRawData(TRUE);
 		if (!$this->rawData) return NULL;
-		$result = (object) $this->rawData;
+		$conn = $this->statement->GetConnection();
+		$result = $conn->GetTranscode()
+			? (object) $conn->TranscodeResultRowValues($this->rawData)
+			: (object) $this->rawData;
 		return $result;
 	}
 
@@ -86,6 +96,11 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 		}
 		if ($valueType !== NULL)
 			settype($itemValue, $valueType);
+		if (is_string($itemValue)) {
+			$conn = $this->statement->GetConnection();
+			if ($conn->GetTranscode())
+				$itemValue = $conn->TranscodeResultValue($itemValue);	
+		}
 		return $itemValue;
 	}
 
@@ -97,7 +112,13 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 	public function ToAny (callable $valueCompleter) {
 		if ($this->rawData === NULL)
 			$this->fetchRawData(TRUE);
-		$result = $valueCompleter($this->rawData);
+		$conn = $this->statement->GetConnection();
+		if ($conn->GetTranscode()) {
+			$itemValues = $conn->TranscodeResultRowValues($this->rawData);
+		} else {
+			$itemValues = $this->rawData;
+		}
+		$result = $valueCompleter($itemValues);
 		return $result;
 	}
 

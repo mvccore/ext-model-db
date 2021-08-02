@@ -26,9 +26,10 @@ implements	\MvcCore\Ext\Models\Db\Readers\IStream {
 	 * @return \MvcCore\Ext\Models\Db\Readers\Streams\Iterator
 	 */
 	public function ToInstances ($fullClassName, $readingFlags = 0, $keyColumnName = NULL, $keyType = NULL) {
+		$conn = $this->statement->GetConnection();
 		$this->iterator = new \MvcCore\Ext\Models\Db\Readers\Streams\Iterator(
 			$this, \MvcCore\Ext\Models\Db\Readers\Streams\Iterator::COMPLETER_INSTANCES, 
-			[$fullClassName, $readingFlags, $keyColumnName, $keyType]
+			[$fullClassName, $readingFlags, $keyColumnName, $keyType, $conn, $conn->GetTranscode()]
 		);
 		return $this->iterator;
 	}
@@ -37,12 +38,13 @@ implements	\MvcCore\Ext\Models\Db\Readers\IStream {
 	 * @inheritDocs
 	 * @param  string $keyColumnName 
 	 * @param  string $keyType 
-	 * @return \MvcCore\Ext\Models\Db\Iterator
+	 * @return \MvcCore\Ext\Models\Db\Readers\Streams\Iterator
 	 */
 	public function ToArrays ($keyColumnName = NULL, $keyType = NULL) {
+		$conn = $this->statement->GetConnection();
 		$this->iterator = new \MvcCore\Ext\Models\Db\Readers\Streams\Iterator(
 			$this, \MvcCore\Ext\Models\Db\Readers\Streams\Iterator::COMPLETER_ARRAYS, 
-			[$keyColumnName, $keyType]
+			[$keyColumnName, $keyType, $conn, $conn->GetTranscode()]
 		);
 		return $this->iterator;
 	}
@@ -54,9 +56,10 @@ implements	\MvcCore\Ext\Models\Db\Readers\IStream {
 	 * @return \MvcCore\Ext\Models\Db\Readers\Streams\Iterator
 	 */
 	public function ToObjects ($keyColumnName = NULL, $keyType = NULL) {
+		$conn = $this->statement->GetConnection();
 		$this->iterator = new \MvcCore\Ext\Models\Db\Readers\Streams\Iterator(
 			$this, \MvcCore\Ext\Models\Db\Readers\Streams\Iterator::COMPLETER_OBJECTS, 
-			[$keyColumnName, $keyType]
+			[$keyColumnName, $keyType, $conn, $conn->GetTranscode()]
 		);
 		return $this->iterator;
 	}
@@ -70,9 +73,10 @@ implements	\MvcCore\Ext\Models\Db\Readers\IStream {
 	 * @return \MvcCore\Ext\Models\Db\Readers\Streams\Iterator
 	 */
 	public function ToScalars ($valueColumnName, $valueType = NULL, $keyColumnName = NULL, $keyType = NULL) {
+		$conn = $this->statement->GetConnection();
 		$this->iterator = new \MvcCore\Ext\Models\Db\Readers\Streams\Iterator(
 			$this, \MvcCore\Ext\Models\Db\Readers\Streams\Iterator::COMPLETER_SCALARS, 
-			[$valueColumnName, $valueType, $keyColumnName, $keyType]
+			[$valueColumnName, $valueType, $keyColumnName, $keyType, $conn, $conn->GetTranscode()]
 		);
 		return $this->iterator;
 	}
@@ -85,9 +89,10 @@ implements	\MvcCore\Ext\Models\Db\Readers\IStream {
 	 * @return \MvcCore\Ext\Models\Db\Readers\Streams\Iterator
 	 */
 	public function ToAny (callable $valueCompleter, $keyColumnName = NULL, $keyType = NULL) {
+		$conn = $this->statement->GetConnection();
 		$this->iterator = new \MvcCore\Ext\Models\Db\Readers\Streams\Iterator(
 			$this, \MvcCore\Ext\Models\Db\Readers\Streams\Iterator::COMPLETER_ANY, 
-			[$valueCompleter, $keyColumnName, $keyType]
+			[$valueCompleter, $keyColumnName, $keyType, $conn, $conn->GetTranscode()]
 		);
 		return $this->iterator;
 	}

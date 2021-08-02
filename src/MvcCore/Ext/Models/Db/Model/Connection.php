@@ -77,11 +77,13 @@ trait Connection {
 				if ($providerDriverName === $cfg->driver) {
 					$cfg = (object) array_merge([], (array) $cfg); // clone the `\stdClass` before change
 					$cfg->{$sysConfigClassProp} = static::$providerConnectionClass;
-				} else {
-					throw new \RuntimeException(
-						"[".get_called_class()."] Default connection has different driver ".
-						"name `{$cfg->driver}` than current class is extended from."
-					);
+				} else if ($cfg->driver !== 'default') {
+					$connectionKnownDrivers = array_keys(static::$connectionArguments);
+					if (in_array($cfg->driver, $connectionKnownDrivers, TRUE)) 
+						throw new \RuntimeException(
+							"[".get_called_class()."] Default connection has different driver ".
+							"name `{$cfg->driver}` than current class is extended from."
+						);
 				}
 			}
 		}

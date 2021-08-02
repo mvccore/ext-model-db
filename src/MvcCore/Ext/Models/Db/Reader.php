@@ -138,10 +138,30 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 				// $phpErrLevel is always with value `2` as warning
 				$dbErrorMsg = $errMessage;
 			});
-			
+
+			// transcode params with string values if necessary:
+			if (!$connection->GetTranscode()) {
+				$transcodedParams = $params;
+			} else {
+				$transcodedParams = [];
+				$transcodingCharsets = $connection->GetTranscodingCharsets();
+				$clientCharset = $this->transcodingCharsets->client;
+				$databaseCharset = $this->transcodingCharsets->database . '//TRANSLIT//IGNORE';
+				foreach ($params as $paramName => $paramValue) {
+					if (!is_string($paramValue)) {
+						$transcodedParamValue = $paramValue;
+					} else {
+						$transcodedParamValue = iconv($clientCharset, $databaseCharset, $paramValue);
+						if ($transcodedParamValue === FALSE)
+							$transcodedParamValue = $paramValue;
+					}
+					$transcodedParams[$paramName] = $transcodedParamValue;
+				}
+			}
+
 			if ($debugging) $reqTime = microtime(TRUE);
 
-			$this->providerExecResult = $providerStatement->execute($params);
+			$this->providerExecResult = $providerStatement->execute($transcodedParams);
 
 			if ($debugging) 
 				$debugger->AddQuery(

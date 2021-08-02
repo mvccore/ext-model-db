@@ -67,6 +67,23 @@ implements	\MvcCore\Model\IConstants,
 	protected $multiStatements = FALSE;
 	
 	/**
+	 * `TRUE` for transcode from/to database encoding 
+	 * to/from client encoding by PHP `iconv()`, `FALSE` by default.
+	 * @var bool
+	 */
+	protected $transcode = FALSE;
+
+	/**
+	 * Transcoding charsets for PHP `iconv()` function, 
+	 * automaticly detected in ctor.
+	 * @var array|\stdClass
+	 */
+	protected $transcodingCharsets = [
+		'database'	=> NULL,
+		'client'	=> NULL,
+	];
+	
+	/**
 	 *  Database server version in "PHP-standardized" version number string.
 	 * @var string|NULL
 	 */
@@ -112,6 +129,83 @@ implements	\MvcCore\Model\IConstants,
 	public static function GetAvailableDrivers () {
 		return \PDO::getAvailableDrivers();
 	}
+	
+	/**
+	 * @inheritDocs
+	 * @param  \PDO   $provider
+	 * @param  string $query 
+	 * @param  array  $params 
+	 * @return array  [bool $success, string $replacedQuery]
+	 */
+	public static function DumpQueryWithParams ($provider, $query, $params) {
+		$paramsCnt = count($params);
+		$assocParams = (
+			array_keys($params) !== range(0, $paramsCnt - 1)
+		);
+		array_walk($params, function (& $value, $key) use (& $provider) {
+			if ($value === NULL) {
+				$value = 'NULL';
+			} else if (is_string($value)) {
+				try {
+					$value = $provider->quote($value, \PDO::PARAM_STR);
+				} catch (\Throwable $e) {
+					$value = "'".addcslashes($value, "'")."'";
+				}
+			}
+		});
+		if ($assocParams) {
+			$resultItems = [];
+			$matchesCount = 0;
+			$resultQuery = " {$query} ";
+			foreach ($params as $paramKey => $paramValue) {
+				preg_match_all(
+					"#([\s\(\)\!\=\>\<\,\;])({$paramKey})([\s\(\)\!\=\>\<\;\,])#", 
+					$resultQuery, $matches, PREG_OFFSET_CAPTURE
+				);
+				if (count($matches) > 0 && count($matches[2]) === 1) {
+					$matchIndex = $matches[2][0][1];
+					$resultQuery = (
+						substr($resultQuery, 0, $matchIndex)
+						. $paramValue
+						. substr($resultQuery, $matchIndex + strlen($paramKey))
+					);
+					$matchesCount += 1;
+				} else {
+					break;
+				}
+			}
+			if ($matchesCount === $paramsCnt) {
+				$dumpSuccess = TRUE;
+			} else {
+				$resultQuery = $query;
+				$dumpSuccess = FALSE;
+			}
+		} else {
+			$dumpSuccess = FALSE;
+			$resultQuery = $query;
+			preg_match_all("#([^-a-zA-Z0-9_])(\?)([^-a-zA-Z0-9_])#", $query, $matches, PREG_OFFSET_CAPTURE);
+			if (count($matches)) {
+				$matchesQm = $matches[2];
+				$matchesCnt = count($matchesQm);
+				if ($matchesCnt === $paramsCnt) {
+					$index = 0;
+					$resultItems = [];
+					foreach ($matchesQm as $key => $qmAndIndex) {
+						$matchIndex = $qmAndIndex[1];
+						$resultItems[] = substr($query, $index, $matchIndex);
+						$resultItems[] = $params[$key];
+						$index = $matchIndex + 1;
+					}
+					if ($index < strlen($query)) 
+						$resultItems[] = substr($query, $index);
+					$resultQuery = implode('', $resultItems);
+					$dumpSuccess = TRUE;
+				}
+			}
+		}
+		return [$dumpSuccess, $resultQuery];
+	}
+
 
 	/**
 	 * Creates a PDO instance representing a connection to a database.
@@ -123,6 +217,7 @@ implements	\MvcCore\Model\IConstants,
 	 */
 	public function __construct ($dsn, $username = NULL, $password = NULL, array $options = []) {
 		$sysCfgProps = \MvcCore\Model::GetSysConfigProperties();
+		$this->transcodingCharsets = (object) $this->transcodingCharsets;
 
 		$configPropName = $sysCfgProps->config;
 		if (isset($options[$configPropName])) {
@@ -131,6 +226,9 @@ implements	\MvcCore\Model\IConstants,
 			$debuggerPropName = $sysCfgProps->debugger;
 			if (isset($this->config->{$debuggerPropName})) 
 				$this->initDebugger($this->config->{$debuggerPropName});
+			$transcodePropName = $sysCfgProps->transcode;
+			if (isset($this->config->{$transcodePropName})) 
+				$this->initTranscoding($this->config->{$transcodePropName});
 		}
 
 		$this->dsn = $dsn;
@@ -189,6 +287,7 @@ implements	\MvcCore\Model\IConstants,
 		return $result;
 	}
 
+
 	/**
 	 * @inheritDocs
 	 * @param  \stdClass $config 
@@ -199,7 +298,10 @@ implements	\MvcCore\Model\IConstants,
 		$sysCfgProps = \MvcCore\Model::GetSysConfigProperties();
 		$debuggerPropName = $sysCfgProps->debugger;
 		if (isset($config->{$debuggerPropName}))
-			$this->debugger = $config->{$debuggerPropName};
+			$this->initDebugger($config->{$debuggerPropName});
+		$transcodePropName = $sysCfgProps->transcode;
+		if (isset($this->config->{$transcodePropName})) 
+			$this->initTranscoding($this->config->{$transcodePropName});
 		return $this;
 	}
 	
@@ -304,18 +406,71 @@ implements	\MvcCore\Model\IConstants,
 	public function SetAttribute ($attribute, $value) {
 		return $this->provider->setAttribute($attribute , $value);
 	}
-
+	
 	/**
 	 * @inheritDocs
-	 * @return null|string
+	 * @return bool
 	 */
-	public function GetVersion () {
-		return $this->version;
+	public function GetTranscode () {
+		return $this->transcode;
 	}
 
 	/**
 	 * @inheritDocs
-	 * @return bool|null
+	 * @return \stdClass
+	 */
+	public function GetTranscodingCharsets () {
+		return $this->transcodingCharsets;
+	}
+
+	/**
+	 * @inheritDocs
+	 * @param  string $str 
+	 * @return string
+	 */
+	public function TranscodeResultValue ($str) {
+		$transcoded = iconv(
+			$this->transcodingCharsets->database,
+			$this->transcodingCharsets->client . '//TRANSLIT//IGNORE',
+			$str
+		);
+		if ($transcoded === FALSE) return $str;
+		return $transcoded;
+	}
+	
+	/**
+	 * @inheritDocs
+	 * @param  array $rowData 
+	 * @return array
+	 */
+	public function TranscodeResultRowValues ($rowData) {
+		$databaseCharset = $this->transcodingCharsets->database;
+		$clientCharset = $this->transcodingCharsets->client . '//TRANSLIT//IGNORE';
+		$result = [];
+		foreach ($rowData as $key => $value) {
+			if (!is_string($value)) {
+				$result[$key] = $value;
+			} else {
+				$transcoded = iconv($databaseCharset, $clientCharset, $value);
+				$result[$key] = $transcoded === FALSE
+					? $value
+					: $transcoded;
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * @inheritDocs
+	 * @return string|NULL
+	 */
+	public function GetVersion () {
+		return $this->version;
+	}
+	
+	/**
+	 * @inheritDocs
+	 * @return bool|NULL
 	 */
 	public function IsMutliStatements () {
 		return $this->mutliStatements;
@@ -413,77 +568,6 @@ implements	\MvcCore\Model\IConstants,
 		return $this;
 	}
 	
-	/**
-	 * @inheritDocs
-	 * @param  \PDO   $provider
-	 * @param  string $query 
-	 * @param  array  $params 
-	 * @return array  [bool $success, string $replacedQuery]
-	 */
-	public static function DumpQueryWithParams ($provider, $query, $params) {
-		$paramsCnt = count($params);
-		$assocParams = (
-			array_keys($params) !== range(0, $paramsCnt - 1)
-		);
-		array_walk($params, function (& $value, $key) use (& $provider) {
-			if ($value === NULL) {
-				$value = 'NULL';
-			} else if (is_string($value)) {
-				$value = $provider->quote($value, \PDO::PARAM_STR);
-			}
-		});
-		if ($assocParams) {
-			$resultItems = [];
-			$matchesCount = 0;
-			$resultQuery = " {$query} ";
-			foreach ($params as $paramKey => $paramValue) {
-				preg_match_all(
-					"#([\s\(\)\!\=\>\<\,\;])({$paramKey})([\s\(\)\!\=\>\<\;\,])#", 
-					$resultQuery, $matches, PREG_OFFSET_CAPTURE
-				);
-				if (count($matches) > 0 && count($matches[2]) === 1) {
-					$matchIndex = $matches[2][0][1];
-					$resultQuery = (
-						substr($resultQuery, 0, $matchIndex)
-						. $paramValue
-						. substr($resultQuery, $matchIndex + strlen($paramKey))
-					);
-					$matchesCount += 1;
-				} else {
-					break;
-				}
-			}
-			if ($matchesCount === $paramsCnt) {
-				$dumpSuccess = TRUE;
-			} else {
-				$resultQuery = $query;
-				$dumpSuccess = FALSE;
-			}
-		} else {
-			$dumpSuccess = FALSE;
-			$resultQuery = $query;
-			preg_match_all("#([^-a-zA-Z0-9_])(\?)([^-a-zA-Z0-9_])#", $query, $matches, PREG_OFFSET_CAPTURE);
-			if (count($matches)) {
-				$matchesQm = $matches[2];
-				$matchesCnt = count($matchesQm);
-				if ($matchesCnt === $paramsCnt) {
-					$index = 0;
-					$resultItems = [];
-					foreach ($matchesQm as $key => $qmAndIndex) {
-						$matchIndex = $qmAndIndex[1];
-						$resultItems[] = substr($query, $index, $matchIndex);
-						$resultItems[] = $params[$key];
-						$index = $matchIndex + 1;
-					}
-					if ($index < strlen($query)) 
-						$resultItems[] = substr($query, $index);
-					$resultQuery = implode('', $resultItems);
-					$dumpSuccess = TRUE;
-				}
-			}
-		}
-		return [$dumpSuccess, $resultQuery];
-	}
 
 	/**
 	 * Closes the connection by unseting the `\PDO` provider instance.
@@ -514,7 +598,10 @@ implements	\MvcCore\Model\IConstants,
 		$serverVersionConstVal = defined($serverVersionConst) 
 			? constant($serverVersionConst) 
 			: 0;
-		$this->version = $this->provider->getAttribute($serverVersionConstVal);
+		try {
+			$this->version = $this->provider->getAttribute($serverVersionConstVal);
+		} catch (\Throwable $e) {
+		}
 	}
 	
 	/**
@@ -550,6 +637,19 @@ implements	\MvcCore\Model\IConstants,
 		$dbErrorMsg = NULL;
 
 		list($query, $driverOptions) = $args;
+
+		// transcode query if necessary:
+		if (!$this->transcode) {
+			$transcodedQuery = $query;
+		} else {
+			$transcodedQuery = iconv(
+				$this->transcodingCharsets->client,
+				$this->transcodingCharsets->database . '//TRANSLIT//IGNORE',
+				$query
+			);
+			if ($transcodedQuery === FALSE)
+				$transcodedQuery = $query;
+		}
 		
 		if (($driverOptionsIndex = array_search(\MvcCore\Ext\Models\Db\IStatement::AUTO_CLOSE, $driverOptions)) !== FALSE) 
 			unset($driverOptions[$driverOptionsIndex]);
@@ -564,7 +664,7 @@ implements	\MvcCore\Model\IConstants,
 
 			$providerResult = call_user_func_array(
 				[$this->provider, $method], 
-				[$query, $driverOptions]
+				[$transcodedQuery, $driverOptions]
 			);
 
 			restore_error_handler();
@@ -675,5 +775,23 @@ implements	\MvcCore\Model\IConstants,
 		$toolClass = \MvcCore\Application::GetInstance()->GetToolClass();
 		if ($toolClass::CheckClassInterface($debuggerFullClassName, static::DEBUGGER_INTERFACE, TRUE, TRUE))
 			$this->debugger = $debuggerFullClassName::GetInstance();
+	}
+
+	/**
+	 * Initialize transcoding boolean and charsets for PHP `iconv()` if necessary.
+	 * @param  string $databaseCharset 
+	 * @return void
+	 */
+	protected function initTranscoding ($databaseCharset) {
+		$clientCharset = @ini_get('default_charset');
+		if ($clientCharset === '' && $clientCharset === NULL)
+			$clientCharset = 'UTF-8';
+		if ($databaseCharset === '')
+			$databaseCharset = $clientCharset;
+		$this->transcode = $databaseCharset !== $clientCharset;
+		$this->transcodingCharsets = (object) [
+			'database'	=> $databaseCharset,
+			'client'	=> $clientCharset,
+		];
 	}
 }
