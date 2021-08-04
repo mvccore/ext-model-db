@@ -145,8 +145,8 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 			} else {
 				$transcodedParams = [];
 				$transcodingCharsets = $connection->GetTranscodingCharsets();
-				$clientCharset = $this->transcodingCharsets->client;
-				$databaseCharset = $this->transcodingCharsets->database . '//TRANSLIT//IGNORE';
+				$clientCharset = $transcodingCharsets->client;
+				$databaseCharset = $transcodingCharsets->database . '//TRANSLIT//IGNORE';
 				foreach ($params as $paramName => $paramValue) {
 					if (!is_string($paramValue)) {
 						$transcodedParamValue = $paramValue;
