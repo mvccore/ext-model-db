@@ -66,8 +66,16 @@ trait Manipulation {
 			$success = $reader->GetExecResult();
 			$affectedRows = $reader->GetRowsCount();
 
-			if ($autoIncrColumnName !== NULL)
-				$newId = $conn->LastInsertId();
+			if ($autoIncrColumnName !== NULL) {
+				// Do not use function `LastInsertId()`, some drivers doesn't support it:
+				//$newId = $conn->LastInsertId();
+				$autoIncrColumnName = $conn->QuoteName($autoIncrColumnName);
+				$lastInsertIdSql = "SELECT MAX({$autoIncrColumnName}) AS LastInsertedId FROM {$tableName};";
+				$newId = $conn
+					->Prepare($lastInsertIdSql)
+					->FetchOne()
+					->ToScalar('LastInsertedId', 'int');
+			}
 
 			if ($execInTransaction)
 				$conn->Commit();
