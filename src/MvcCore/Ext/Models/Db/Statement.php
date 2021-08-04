@@ -284,7 +284,8 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 			$this->params = & $params;
 		$this->reader = new \MvcCore\Ext\Models\Db\Readers\Execution($this);
 		$this->reader->GetExecResult();
-		$this->Close();
+		if (array_search(\MvcCore\Ext\Models\Db\IStatement::AUTO_CLOSE, $this->driverOptions) !== FALSE) 
+			$this->Close();
 		return $this->reader;
 	}
 }
