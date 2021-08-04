@@ -24,4 +24,16 @@ implements	\MvcCore\Ext\Models\Db\Readers\IExecution {
 	public function GetRowsCount () {
 		return $this->statement->GetProviderStatement()->rowCount();
 	}
+
+	/**
+	 * @inheritDocs
+	 * @return int
+	 */
+	public function GetAllResultsRowsCount () {
+		$rowsCount = $this->GetRowsCount();
+		while ($this->statement->NextResultSet()) 
+			$rowsCount += $this->GetRowsCount();
+		$this->statement->Close();
+		return $rowsCount;
+	}
 }

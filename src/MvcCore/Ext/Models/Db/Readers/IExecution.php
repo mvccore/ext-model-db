@@ -21,4 +21,11 @@ interface IExecution extends \MvcCore\Ext\Models\Db\IReader {
 	 * @return int
 	 */
 	public function GetRowsCount ();
+
+	/**
+	 * Returns the number of rows affected by all result set(s).
+	 * (the `\PDOStatement::rowCount()` result(s)).
+	 * @return int
+	 */
+	public function GetAllResultsRowsCount ();
 }
