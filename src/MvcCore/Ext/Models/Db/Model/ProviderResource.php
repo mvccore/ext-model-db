@@ -32,17 +32,29 @@ trait ProviderResource {
 
 	/**
 	 * Database provider specific resource class instance with universal SQL statements.
-	 * @var \MvcCore\Ext\Models\Db\Providers\Resource
+	 * @var \MvcCore\Ext\Models\Db\Providers\Resource|NULL
 	 */
-	protected static $editProviderResource = NULL;
+	protected $providerEditResource = NULL;
 
 	/**
-	 * Get database provider specific resource class instance with universal SQL statements.
-	 * @return \MvcCore\Ext\Models\Db\Providers\Resource
+	 * @inheritDocs
+	 * @param  bool $autoCreate
+	 * @return \MvcCore\Ext\Models\Db\Providers\Resource|NULL
 	 */
-	protected static function getEditProviderResource () {
-		if (self::$editProviderResource === NULL)
-			self::$editProviderResource = new \MvcCore\Ext\Models\Db\Providers\Resource;
-		return self::$editProviderResource;
+	public function GetProviderEditResource ($autoCreate = TRUE) {
+		if ($autoCreate && $this->providerEditResource === NULL)
+			$this->providerEditResource = new \MvcCore\Ext\Models\Db\Providers\Resource;
+		return $this->providerEditResource;
+	}
+
+	/**
+	 * @inheritDocs
+	 * @param  \MvcCore\Ext\Models\Db\Providers\Resource|NULL
+	 * @return \MvcCore\Ext\Models\Db\Model
+	 */
+	public function SetProviderEditResource ($providerEditResource) {
+		/** @var \MvcCore\Ext\Models\Db\Model $this */
+		$this->providerEditResource = $providerEditResource;
+		return $this;
 	}
 }

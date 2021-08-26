@@ -123,4 +123,20 @@ interface IModel {
 	 * @return bool
 	 */
 	public function Delete ($propsFlags = 0);
+
+	/**
+	 * Get database provider specific resource with universal SQL statements
+	 * to automatically insert, update and delete model instance.
+	 * @param  bool $autoCreate
+	 * @return \MvcCore\Ext\Models\Db\Providers\Resource|NULL
+	 */
+	public function GetProviderEditResource ($autoCreate = TRUE);
+
+	/**
+	 * Set database provider specific resource with universal SQL statements
+	 * to automatically insert, update and delete model instance.
+	 * @param  \MvcCore\Ext\Models\Db\Providers\Resource|NULL
+	 * @return \MvcCore\Ext\Models\Db\IModel
+	 */
+	public function SetProviderEditResource ($providerEditResource);
 }
