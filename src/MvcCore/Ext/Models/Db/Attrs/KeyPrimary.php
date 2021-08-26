@@ -23,6 +23,6 @@ class KeyPrimary {
 	 * Optionally you can set auto increment feature (`TRUE` by default).
 	 * @param bool $autoIncrement
 	 */
-	public function __construct ($autoIncrement = FALSE) {
+	public function __construct ($autoIncrement = TRUE) {
 	}
 }
