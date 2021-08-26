@@ -65,6 +65,12 @@ implements	\MvcCore\Model\IConstants,
 	 * @var bool
 	 */
 	protected $multiStatements = FALSE;
+
+	/**
+	 * `TRUE` for connection using ODBC connection driver.
+	 * @var bool
+	 */
+	protected $usingOdbcDriver = FALSE;
 	
 	/**
 	 * `TRUE` for transcode from/to database encoding 
@@ -567,6 +573,14 @@ implements	\MvcCore\Model\IConstants,
 		$this->debugger = $debugger;
 		return $this;
 	}
+
+	/**
+	 * @inheritDocs
+	 * @return bool
+	 */
+	public function GetUsingOdbcDriver () {
+		return $this->usingOdbcDriver;
+	}
 	
 
 	/**
@@ -602,6 +616,7 @@ implements	\MvcCore\Model\IConstants,
 			$this->version = $this->provider->getAttribute($serverVersionConstVal);
 		} catch (\Throwable $e) {
 		}
+		$this->usingOdbcDriver = mb_strpos($this->config->dsn, 'odbc:') === 0;
 	}
 	
 	/**

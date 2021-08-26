@@ -214,6 +214,12 @@ interface IConnection {
 	public function SetDebugger (\MvcCore\Ext\Models\Db\IDebugger $debugger, $copyPreviousQueries = TRUE);
 
 	/**
+	 * Get `TRUE` if connection uses ODBC connection driver, `FALSE` otherwise for most cases.
+	 * @return bool
+	 */
+	public function GetUsingOdbcDriver ();
+
+	/**
 	 * Replace all params in query to dump query with values on development env.
 	 * Return array with success boolean and replaced query.
 	 * @param  \PDO   $provider
