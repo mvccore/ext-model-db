@@ -15,7 +15,8 @@ namespace MvcCore\Ext\Models\Db\Providers;
 
 class		Resource
 implements	\MvcCore\Model\IConstants,
-			\MvcCore\Ext\Models\Db\Model\IConstants {
+			\MvcCore\Ext\Models\Db\Model\IConstants,
+			\MvcCore\Ext\Models\Db\Providers\Resources\IEdit {
 	
 	use \MvcCore\Model\Props;
 	use \MvcCore\Model\Config;
@@ -28,5 +29,5 @@ implements	\MvcCore\Model\IConstants,
 	
 	use \MvcCore\Ext\Models\Db\Model\ProviderResource;
 	
-	use \MvcCore\Ext\Models\Db\Providers\Resources\Manipulation;
+	use \MvcCore\Ext\Models\Db\Providers\Resources\Edit;
 }

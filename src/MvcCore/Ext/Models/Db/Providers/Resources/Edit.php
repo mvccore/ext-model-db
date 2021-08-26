@@ -16,10 +16,10 @@ namespace MvcCore\Ext\Models\Db\Providers\Resources;
 /**
  * @mixin \MvcCore\Ext\Models\Db\Providers\Resource
  */
-trait Manipulation {
+trait Edit {
 	
 	/**
-	 * Execute SQL code to insert new database table row in transaction, in default database isolation.
+	 * @inheritDocs
 	 * @param  int|string  $connNameOrIndex    Connection name or index in system config.
 	 * @param  string      $tableName          Database table name.
 	 * @param  array       $dataColumns        Data to use in insert clause, keys are 
@@ -67,14 +67,17 @@ trait Manipulation {
 			$affectedRows = $reader->GetRowsCount();
 
 			if ($autoIncrColumnName !== NULL) {
-				// Do not use function `LastInsertId()`, some drivers doesn't support it:
-				//$newId = $conn->LastInsertId();
-				$autoIncrColumnName = $conn->QuoteName($autoIncrColumnName);
-				$lastInsertIdSql = "SELECT MAX({$autoIncrColumnName}) AS LastInsertedId FROM {$tableName};";
-				$newId = $conn
-					->Prepare($lastInsertIdSql)
-					->FetchOne()
-					->ToScalar('LastInsertedId', 'int');
+				if (!$conn->GetUsingOdbcDriver()) {
+					$newId = $conn->LastInsertId();
+				} else {
+					// odbc driver doesn't support function `LastInsertId()`:
+					$autoIncrColumnName = $conn->QuoteName($autoIncrColumnName);
+					$lastInsertIdSql = "SELECT MAX({$autoIncrColumnName}) AS LastInsertedId FROM {$tableName};";
+					$newId = $conn
+						->Prepare($lastInsertIdSql)
+						->FetchOne()
+						->ToScalar('LastInsertedId', 'int');
+				}
 			}
 
 			if ($execInTransaction)
@@ -104,7 +107,7 @@ trait Manipulation {
 	}
 
 	/**
-	 * Execute SQL code to update database table row by key columns.
+	 * @inheritDocs
 	 * @param  int|string $connNameOrIndex Connection name or index in system config.
 	 * @param  string     $tableName       Database table name.
 	 * @param  array      $keyColumns      Data to use in where condition, keys are 
@@ -148,7 +151,7 @@ trait Manipulation {
 	}
 
 	/**
-	 * Execute SQL code to remove database table row.
+	 * @inheritDocs
 	 * @param  int|string $connNameOrIndex Connection name or index in system config.
 	 * @param  string     $tableName       Database table name.
 	 * @param  array      $keyColumns      Data to use in where condition, keys are 
