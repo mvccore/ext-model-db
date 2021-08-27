@@ -616,7 +616,7 @@ implements	\MvcCore\Model\IConstants,
 			$this->version = $this->provider->getAttribute($serverVersionConstVal);
 		} catch (\Throwable $e) {
 		}
-		$this->usingOdbcDriver = mb_strpos($this->config->dsn, 'odbc:') === 0;
+		$this->usingOdbcDriver = mb_strpos($this->dsn, 'odbc:') === 0;
 	}
 	
 	/**

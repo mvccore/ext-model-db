@@ -110,26 +110,40 @@ implements	\MvcCore\Ext\Models\Db\IBatch {
 	 * @return \MvcCore\Ext\Models\Db\Batch
 	 */
 	public function Flush () {
-		$sql = [];
-		$params = [];
+		$sqlCollections = [];
+		$paramsCollections = [];
+		$batchEditResource = new \MvcCore\Ext\Models\Db\Batches\EditResource;
+		$batchEditResource->SetEditHandler(function ($operationSql, $operationParams, $fetchSql = NULL, $fetchParams = []) use (& $sqlCollections, & $paramsCollections) {
+			$sqlCollections[] = $operationSql;
+			$paramsCollections = $paramsCollections + $operationParams;
+			if ($fetchSql !== NULL) {
+				$sqlCollections[] = $fetchSql;
+				$paramsCollections = $paramsCollections + $fetchParams;
+			}
+		});
 		foreach ($this->instances as $index => $instance) {
 			$instanceEditRes = $instance->GetEditResource(FALSE);
-
+			$instance->SetEditResource($batchEditResource);
 			$operation = $this->operations[$index];
 			if ($operation === \MvcCore\Ext\Models\Db\IBatch::OPERATION_SAVE) {
-				static::editSave($instance, NULL, 0, $instance::getEditMetaDataCollections(0));
+				$instance->Save();
 			} else if ($operation === \MvcCore\Ext\Models\Db\IBatch::OPERATION_INSERT) {
-				static::editInsert($instance, 0, $instance::getEditMetaDataCollections(0));
+				$instance->Insert();
 			} else if ($operation === \MvcCore\Ext\Models\Db\IBatch::OPERATION_UPDATE) {
-				static::editUpdate($instance, 0, $instance::getEditMetaDataCollections(0));
+				$instance->Update();
 			} else if ($operation === \MvcCore\Ext\Models\Db\IBatch::OPERATION_DELETE) {
-				static::editDelete($instance, 0, $instance::getEditMetaDataCollections(0));
+				$instance->Delete();
 			}
+			$instance->SetEditResource($instanceEditRes);
 		}
+		x($sqlCollections);
+		xxx($paramsCollections);
+
 		$this->allResultsRowsCount = self::GetConnection()
 			->Prepare($sql)
 			->Execute($params)
 			->GetAllResultsRowsCount();
+
 		$this->instances = [];
 		$this->operations = [];
 		$this->size = 0;

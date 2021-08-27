@@ -220,12 +220,11 @@ trait EditMethods {
 			// no data to insert
 			list ($success, $affectedRows) = [FALSE, 0];
 		} else {
-			/** @var \MvcCore\Ext\Models\Db\Providers\Resource $providerResource */
-			$providerResource = static::getEditProviderResource();
+			$editResource = $context->GetEditResource();
 			$connectionNameOrIndex = isset($connectionArgs[0]) ? $connectionArgs[0] : NULL;
 			list (
 				$success, $affectedRows, $rawNewId, $error
-			) = $providerResource->Insert(
+			) = $editResource->Insert(
 				$connectionNameOrIndex, $tableArgs[0], $allValues, get_class($context), $autoIncrPropDbName
 			);
 		}
@@ -306,12 +305,11 @@ trait EditMethods {
 			// no data to update
 			list ($success, $affectedRows) = [FALSE, 0];
 		} else {
-			/** @var \MvcCore\Ext\Models\Db\Providers\Resource $providerResource */
-			$providerResource = static::getEditProviderResource();
+			$editResource = $context->GetEditResource();
 			$connectionNameOrIndex = isset($connectionArgs[0]) ? $connectionArgs[0] : NULL;
 			list (
 				$success, $affectedRows
-			) = $providerResource->Update(
+			) = $editResource->Update(
 				$connectionNameOrIndex, $tableArgs[0], $keysColumns, $dataColumns
 			);
 		}
@@ -362,12 +360,11 @@ trait EditMethods {
 			$context, $metaData, $primaryKeyColumnsIndexes, $uniqueKeyColumnsIndexes
 		);
 		
-		/** @var \MvcCore\Ext\Models\Db\Providers\Resource $providerResource */
-		$providerResource = static::getEditProviderResource();
+		$editResource = $context->GetEditResource();
 		$connectionNameOrIndex = isset($connectionArgs[0]) ? $connectionArgs[0] : NULL;
 		list (
 			$success, $affectedRows
-		) = $providerResource->Delete(
+		) = $editResource->Delete(
 			$connectionNameOrIndex, $tableArgs[0], $keysColumns
 		);
 		
