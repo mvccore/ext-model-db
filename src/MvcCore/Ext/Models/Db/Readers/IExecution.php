@@ -14,6 +14,14 @@
 namespace MvcCore\Ext\Models\Db\Readers;
 
 interface IExecution extends \MvcCore\Ext\Models\Db\IReader {
+	
+	/**
+	 * Returns the ID of the last inserted row or sequence value.
+	 * @param  string|NULL $sequenceName
+	 * @param  string|NULL $targetType
+	 * @return int|float|string|NULL
+	 */
+	public function LastInsertId ($sequenceName = NULL, $targetType = NULL);
 
 	/**
 	 * Returns the number of rows affected by the last SQL statement.

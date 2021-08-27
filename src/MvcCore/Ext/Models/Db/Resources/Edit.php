@@ -17,7 +17,5 @@ class		Edit
 extends		\MvcCore\Ext\Models\Db\Resource
 implements	\MvcCore\Ext\Models\Db\Resources\IEdit {
 	
-	use \MvcCore\Ext\Models\Db\Resource\Features;
-
 	use \MvcCore\Ext\Models\Db\Resources\Edit\Features;
 }

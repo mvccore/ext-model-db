@@ -39,6 +39,12 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 	 */
 	protected $stmntOpenedProp = NULL;
 
+	/**
+	 * Metadata with `AffectedRows` and `LastInsertId` if driver doesn't support it.
+	 * @var array
+	 */
+	protected $metaData = NULL;
+
 
 
 	/**
@@ -229,5 +235,21 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 			return $firstWord;
 		}
 		return $sql;
+	}
+
+	/**
+	 * Execute provider specific statement to get previous statement metadata.
+	 * @param  \MvcCore\Ext\Models\Db\Connection $connection 
+	 * @param  string $metaStatement 
+	 * @return array|NULL
+	 */
+	protected function getMetaData (\MvcCore\Ext\Models\Db\IConnection $connection, $metaStatement) {
+		if ($this->metaData === NULL) {
+			$this->metaData = $connection
+				->Prepare($metaStatement)
+				->FetchOne()
+				->ToArray();
+		}
+		return $this->metaData;
 	}
 }

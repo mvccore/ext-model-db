@@ -71,14 +71,6 @@ interface IConnection {
 
 
 	/**
-	 * Returns the ID of the last inserted row or sequence value.
-	 * @param  string|NULL $sequenceName
-	 * @param  string|NULL $targetType
-	 * @return int|float|string|NULL
-	 */
-	public function LastInsertId ($sequenceName = NULL, $targetType = NULL);
-
-	/**
 	 * Quotes a string for use in a query.
 	 * @param  string $string
 	 * @param  int    $paramType
@@ -218,6 +210,14 @@ interface IConnection {
 	 * @return bool
 	 */
 	public function GetUsingOdbcDriver ();
+
+	/**
+	 * Get custom statement to get affected rows count 
+	 * by INSERT, UPDATE or DELETE statement and 
+	 * to get last inserted id after INSERT statement.
+	 * @return string|NULL
+	 */
+	public function GetMetaDataStatement ();
 
 	/**
 	 * Replace all params in query to dump query with values on development env.

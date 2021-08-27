@@ -66,19 +66,8 @@ trait Features {
 			$success = $reader->GetExecResult();
 			$affectedRows = $reader->GetRowsCount();
 
-			if ($autoIncrColumnName !== NULL) {
-				if (!$conn->GetUsingOdbcDriver()) {
-					$newId = $conn->LastInsertId();
-				} else {
-					// odbc driver doesn't support function `LastInsertId()`:
-					$autoIncrColumnName = $conn->QuoteName($autoIncrColumnName);
-					$lastInsertIdSql = "SELECT MAX({$autoIncrColumnName}) AS LastInsertedId FROM {$tableName};";
-					$newId = $conn
-						->Prepare($lastInsertIdSql)
-						->FetchOne()
-						->ToScalar('LastInsertedId', 'int');
-				}
-			}
+			if ($autoIncrColumnName !== NULL) 
+				$newId = $reader->LastInsertId(NULL, 'int');
 
 			if ($execInTransaction)
 				$conn->Commit();

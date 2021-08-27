@@ -71,6 +71,14 @@ implements	\MvcCore\Model\IConstants,
 	 * @var bool
 	 */
 	protected $usingOdbcDriver = FALSE;
+
+	/**
+	 * Custom statement to get affected rows count 
+	 * by INSERT, UPDATE or DELETE statement and 
+	 * to get last inserted id after INSERT statement.
+	 * @var string|NULL
+	 */
+	protected $metaDataStatement = NULL;
 	
 	/**
 	 * `TRUE` for transcode from/to database encoding 
@@ -580,6 +588,14 @@ implements	\MvcCore\Model\IConstants,
 	 */
 	public function GetUsingOdbcDriver () {
 		return $this->usingOdbcDriver;
+	}
+
+	/**
+	 * @inheritDocs
+	 * @return string|NULL
+	 */
+	public function GetMetaDataStatement () {
+		return $this->metaDataStatement;
 	}
 	
 

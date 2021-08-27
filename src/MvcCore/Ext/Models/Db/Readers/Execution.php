@@ -16,15 +16,40 @@ namespace MvcCore\Ext\Models\Db\Readers;
 class		Execution 
 extends		\MvcCore\Ext\Models\Db\Reader
 implements	\MvcCore\Ext\Models\Db\Readers\IExecution {
-
+	
+	/**
+	 * @inheritDocs
+	 * @param  string|NULL $sequenceName
+	 * @param  string|NULL $targetType
+	 * @return int|float|string|NULL
+	 */
+	public function LastInsertId ($sequenceName = NULL, $targetType = NULL) {
+		$conn = $this->statement->GetConnection();
+		if ($metaStatement = $conn->GetMetaDataStatement()) {
+			$metaData = $this->getMetaData($conn, $metaStatement);
+			$result = $metaData['LastInsertId'];
+		} else {
+			$result = $this->provider->lastInsertId($sequenceName);
+		}
+		if ($result !== NULL && $targetType !== NULL)
+			settype($result, $targetType);
+		return $result;
+	}
+	
 	/**
 	 * @inheritDocs
 	 * @return int
 	 */
 	public function GetRowsCount () {
-		return $this->statement->GetProviderStatement()->rowCount();
+		$conn = $this->statement->GetConnection();
+		if ($metaStatement = $conn->GetMetaDataStatement()) {
+			$metaData = $this->getMetaData($conn, $metaStatement);
+			return intval($metaData['AffectedRows']);
+		} else {
+			return $this->statement->GetProviderStatement()->rowCount();
+		}
 	}
-
+	
 	/**
 	 * @inheritDocs
 	 * @return int

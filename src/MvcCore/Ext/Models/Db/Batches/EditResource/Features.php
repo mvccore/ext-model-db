@@ -55,34 +55,32 @@ trait Features {
 	 */
 	public function Insert ($connNameOrIndex, $tableName, $dataColumns, $className, $autoIncrColumnName) {
 		$sqlItems = [];
-		$operationParams = [];
+		$params = [];
 		$conn = self::GetConnection($connNameOrIndex);
 
 		foreach ($dataColumns as $dataColumnName => $dataColumnValue) {
 			$sqlItems[] = $conn->QuoteName($dataColumnName);
-			$operationParams[":p{$this->paramsCounter}"] = $dataColumnValue;
+			$params[":p{$this->paramsCounter}"] = $dataColumnValue;
 			$this->paramsCounter++;
 		}
 		
 		$tableName = $conn->QuoteName($tableName);
-		$operationSql = "INSERT INTO {$tableName} (" 
+		$sql = "INSERT INTO {$tableName} (" 
 			. implode(", ", $sqlItems) 
 			. ") VALUES (" 
-			. implode(", ", array_keys($operationParams)) 
+			. implode(", ", array_keys($params)) 
 			. ");";
 
-		$fetchSql = NULL;
-		$fetchParams = [];
-		if ($autoIncrColumnName !== NULL && $conn->GetUsingOdbcDriver()) {
-			// odbc driver doesn't support function `LastInsertId()`, it needs fetch sql after each insert:
-			$autoIncrColumnName = $conn->QuoteName($autoIncrColumnName);
-			$fetchSql = "SELECT MAX({$autoIncrColumnName}) AS LastInsertedId FROM {$tableName};";
-		}
+		/*$editHandler = $this->editHandler;
+		$editHandler(
+			\MvcCore\Ext\Models\Db\IBatch::OPERATION_INSERT, $sql, $params
+		);*/
+		call_user_func_array(
+			$this->editHandler, 
+			[\MvcCore\Ext\Models\Db\IBatch::OPERATION_INSERT, $sql, $params]
+		);
 
-		$editHandler = $this->editHandler;
-		$editHandler($operationSql, $operationParams, $fetchSql, $fetchParams);
-
-		return [TRUE, 1];
+		return [FALSE, 0, NULL, NULL];
 	}
 
 	/**
@@ -99,29 +97,35 @@ trait Features {
 	public function Update ($connNameOrIndex, $tableName, $keyColumns, $dataColumns) {
 		$setSqlItems = [];
 		$whereSqlItems = [];
-		$operationParams = [];
+		$params = [];
 		$conn = self::GetConnection($connNameOrIndex);
 
 		foreach ($dataColumns as $dataColumnName => $dataColumnValue) {
 			$setSqlItems[] = $conn->QuoteName($dataColumnName) . " = :p{$this->paramsCounter}";
-			$operationParams[":p{$this->paramsCounter}"] = $dataColumnValue;
+			$params[":p{$this->paramsCounter}"] = $dataColumnValue;
 			$this->paramsCounter++;
 		}
 		foreach ($keyColumns as $keyColumnName => $keyColumnValue) {
 			$whereSqlItems[] = $conn->QuoteName($keyColumnName) . " = :p{$this->paramsCounter}";
-			$operationParams[":p{$this->paramsCounter}"] = $keyColumnValue;
+			$params[":p{$this->paramsCounter}"] = $keyColumnValue;
 			$this->paramsCounter++;
 		}
 
 		$tableName = $conn->QuoteName($tableName);
-		$operationSql = "UPDATE {$tableName}"
+		$sql = "UPDATE {$tableName}"
 			. " SET " . implode(", ", $setSqlItems)
 			. " WHERE " . implode(" AND ", $whereSqlItems) . ";";
 		
-		$editHandler = $this->editHandler;
-		$editHandler($operationSql, $operationParams);
+		/*$editHandler = $this->editHandler;
+		$editHandler(
+			\MvcCore\Ext\Models\Db\IBatch::OPERATION_UPDATE, $sql, $params
+		);*/
+		call_user_func_array(
+			$this->editHandler, 
+			[\MvcCore\Ext\Models\Db\IBatch::OPERATION_UPDATE, $sql, $params]
+		);
 
-		return [TRUE, 1];
+		return [FALSE, 0];
 	}
 
 	/**
@@ -135,22 +139,28 @@ trait Features {
 	 */
 	public function Delete ($connNameOrIndex, $tableName, $keyColumns) {
 		$sqlItems = [];
-		$operationParams = [];
+		$params = [];
 		$conn = self::GetConnection($connNameOrIndex);
 
 		foreach ($keyColumns as $keyColumnName => $keyColumnValue) {
 			$sqlItems[] = $conn->QuoteName($keyColumnName) . " = :p{$this->paramsCounter}";
-			$operationParams[":p{$this->paramsCounter}"] = $keyColumnValue;
+			$params[":p{$this->paramsCounter}"] = $keyColumnValue;
 			$this->paramsCounter++;
 		}
 
 		$tableName = $conn->QuoteName($tableName);
-		$operationSql = "DELETE FROM {$tableName} "
+		$sql = "DELETE FROM {$tableName} "
 			. "WHERE " . implode(" AND ", $sqlItems) . ";";
 
-		$editHandler = $this->editHandler;
-		$editHandler($operationSql, $operationParams);
+		/*$editHandler = $this->editHandler;
+		$editHandler(
+			\MvcCore\Ext\Models\Db\IBatch::OPERATION_DELETE, $sql, $params
+		);*/
+		call_user_func_array(
+			$this->editHandler, 
+			[\MvcCore\Ext\Models\Db\IBatch::OPERATION_DELETE, $sql, $params]
+		);
 
-		return [TRUE, 1];
+		return [FALSE, 0];
 	}
 }

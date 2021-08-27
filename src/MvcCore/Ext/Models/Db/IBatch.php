@@ -19,25 +19,25 @@ interface IBatch {
 	 * Operation to insert given model instance into database.
 	 * @var int
 	 */
-	const OPERATION_INSERT	= 1;
+	const OPERATION_INSERT		= 16384;
 	
 	/**
 	 * Operation to update given model instance in database.
 	 * @var int
 	 */
-	const OPERATION_UPDATE	= 2;
+	const OPERATION_UPDATE		= 32768;
 	
 	/**
 	 * Operation to insert or update given model instance into/in database.
 	 * @var int
 	 */
-	const OPERATION_SAVE	= 3;
+	const OPERATION_SAVE		= 49152;
 	
 	/**
 	 * Operation to delete given model instance from database.
 	 * @var int
 	 */
-	const OPERATION_DELETE	= 4;
+	const OPERATION_DELETE		= 65536;
 
 
 	/**
