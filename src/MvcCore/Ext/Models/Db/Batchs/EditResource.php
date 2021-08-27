@@ -11,11 +11,11 @@
  * @license		https://mvccore.github.io/docs/mvccore/5.0.0/LICENSE.md
  */
 
-namespace MvcCore\Ext\Models\Db;
+namespace MvcCore\Ext\Models\Db\Batchs;
 
-class		Batch
-extends		\MvcCore\Ext\Models\Db\Model
-implements	\MvcCore\Ext\Models\Db\IBatch {
-
-	use \MvcCore\Ext\Models\Db\Batch\Features;
+class		EditResource
+extends		\MvcCore\Ext\Models\Db\Resource
+implements	\MvcCore\Ext\Models\Db\Resources\IEdit {
+	
+	use \MvcCore\Ext\Models\Db\Batchs\EditResource\Features;
 }

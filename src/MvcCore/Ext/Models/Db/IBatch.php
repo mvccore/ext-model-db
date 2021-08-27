@@ -38,7 +38,15 @@ interface IBatch {
 	 * @var int
 	 */
 	const OPERATION_DELETE		= 65536;
-
+	
+	
+	/**
+	 * Get automatic batch flush size. Default value is 10 items. 
+	 * If `NULL`, flushing is not called automatically 
+	 * and it's necessary to call `$batchModel->Flush()` manually.
+	 * @return int|NULL
+	 */
+	public function GetAutoFlushSize ();
 
 	/**
 	 * Set automatic batch flush size. Default value is 10 items. 
@@ -50,18 +58,23 @@ interface IBatch {
 	public function SetAutoFlushSize ($flushSize);
 	
 	/**
-	 * Get automatic batch flush size. Default value is 10 items. 
-	 * If `NULL`, flushing is not called automatically 
-	 * and it's necessary to call `$batchModel->Flush()` manually.
-	 * @return int|NULL
-	 */
-	public function GetAutoFlushSize ();
-	
-	/**
 	 * Get current count of model instances in batch.
 	 * @return int
 	 */
 	public function GetSize () ;
+
+	/**
+	 * Return affected rows by all queries in last flush call.
+	 * @return int
+	 */
+	public function GetRowsCount ();
+
+	/**
+	 * Set custom connection name or index.
+	 * @param  string|int|NULL $connection 
+	 * @return \MvcCore\Ext\Models\Db\IBatch
+	 */
+	public function SetConnectionName ($connectionName = NULL);
 
 	/**
 	 * Add model instance into batch. When batch model 
@@ -85,8 +98,14 @@ interface IBatch {
 	public function Flush ();
 
 	/**
-	 * Return affected rows for all queries in last flush call.
-	 * @return int
+	 * Handle prepared INSERT/UPDATE/DELETE operation, SQL query and params
+	 * from model instance edit resource and store it into local array for 
+	 * later execution.
+	 * @inheritDocs
+	 * @param  int    $sqlOperation 
+	 * @param  string $sqlCode 
+	 * @param  array  $params 
+	 * @return void
 	 */
-	public function GetAllResultsRowsCount ();
+	public function BatchEditResourceHandler ($sqlOperation, $sqlCode, $params);
 }

@@ -11,10 +11,10 @@
  * @license		https://mvccore.github.io/docs/mvccore/5.0.0/LICENSE.md
  */
 
-namespace MvcCore\Ext\Models\Db\Batches\EditResource;
+namespace MvcCore\Ext\Models\Db\Batchs\EditResource;
 
 /**
- * @mixin \MvcCore\Ext\Models\Db\Batches\EditResource
+ * @mixin \MvcCore\Ext\Models\Db\Batchs\EditResource
  */
 trait Features {
 	

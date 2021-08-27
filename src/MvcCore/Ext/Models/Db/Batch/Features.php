@@ -11,11 +11,16 @@
  * @license		https://mvccore.github.io/docs/mvccore/5.0.0/LICENSE.md
  */
 
-namespace MvcCore\Ext\Models\Db\Batches;
+namespace MvcCore\Ext\Models\Db\Batch;
 
-class		EditResource
-extends		\MvcCore\Ext\Models\Db\Resource
-implements	\MvcCore\Ext\Models\Db\Resources\IEdit {
+/**
+ * @mixin \MvcCore\Ext\Models\Db\Batch
+ */
+trait Features {
 	
-	use \MvcCore\Ext\Models\Db\Batches\EditResource\Features;
+	use \MvcCore\Ext\Models\Db\Batch\Props;
+	use \MvcCore\Ext\Models\Db\Batch\GettersSetters;
+	use \MvcCore\Ext\Models\Db\Batch\Flushing;
+	
+	use \MvcCore\Ext\Models\Db\Model\EditMethods;
 }
