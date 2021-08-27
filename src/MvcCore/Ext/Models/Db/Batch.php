@@ -50,6 +50,12 @@ implements	\MvcCore\Ext\Models\Db\IBatch {
 	protected $operationsFlags = [];
 
 	/**
+	 * Connection name or index.
+	 * @var string|int|NULL
+	 */
+	protected $connectionName = NULL;
+
+	/**
 	 * Connection instance.
 	 * @var \MvcCore\Ext\Models\Db\Connection|NULL
 	 */
@@ -75,11 +81,11 @@ implements	\MvcCore\Ext\Models\Db\IBatch {
 	
 	/**
 	 * Set connection instance.
-	 * @param  \MvcCore\Ext\Models\Db\Connection|NULL $connection 
+	 * @param  string|int|NULL $connection 
 	 * @return \MvcCore\Ext\Models\Db\Batch
 	 */
-	public function AddConnection (\MvcCore\Ext\Models\Db\Connection $connection = NULL) {
-		$this->connection = $connection;
+	public function SetConnectionName ($connectionName = NULL) {
+		$this->connectionName = $connectionName;
 		return $this;
 	}
 	
@@ -138,7 +144,7 @@ implements	\MvcCore\Ext\Models\Db\IBatch {
 	 */
 	public function Flush () {
 		if ($this->connection === NULL)
-			$this->connection = self::GetConnection();
+			$this->connection = self::GetConnection($this->connectionName);
 		
 		$this->flushPrepare();
 		$this->flushExecute();
