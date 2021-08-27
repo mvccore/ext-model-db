@@ -11,12 +11,12 @@
  * @license		https://mvccore.github.io/docs/mvccore/5.0.0/LICENSE.md
  */
 
-namespace MvcCore\Ext\Models\Db\Providers\Resources;
+namespace MvcCore\Ext\Models\Db\Resources\Edit;
 
 /**
- * @mixin \MvcCore\Ext\Models\Db\Providers\Resource
+ * @mixin \MvcCore\Ext\Models\Db\Resources\Edit
  */
-trait Edit {
+trait Features {
 	
 	/**
 	 * @inheritDocs

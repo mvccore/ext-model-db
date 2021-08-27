@@ -16,8 +16,8 @@ namespace MvcCore\Ext\Models\Db\Model;
 /**
  * @mixin \MvcCore\Ext\Models\Db\Model
  */
-trait Manipulation {
-
+trait EditMethods {
+	
 	/**
 	 * @inheritDocs
 	 * @param  bool|NULL $createNew
@@ -83,7 +83,30 @@ trait Manipulation {
 			$this, $propsFlags, static::getEditMetaDataCollections($propsFlags)
 		);
 	}
+	
+	/**
+	 * @inheritDocs
+	 * @param  bool $autoCreate
+	 * @return \MvcCore\Ext\Models\Db\Resources\Edit|NULL
+	 */
+	public function GetEditResource ($autoCreate = TRUE) {
+		if ($autoCreate && $this->editResource === NULL) {
+			$providerEditResourceClass = static::$providerEditResourceClass;
+			$this->editResource = new $providerEditResourceClass;
+		}
+		return $this->editResource;
+	}
 
+	/**
+	 * @inheritDocs
+	 * @param  \MvcCore\Ext\Models\Db\Resources\Edit|NULL
+	 * @return \MvcCore\Ext\Models\Db\Model
+	 */
+	public function SetEditResource (\MvcCore\Ext\Models\Db\Resources\IEdit $editResource = NULL) {
+		/** @var \MvcCore\Ext\Models\Db\Model $this */
+		$this->editResource = $editResource;
+		return $this;
+	}
 
 
 	/**

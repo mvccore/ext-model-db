@@ -46,4 +46,10 @@ trait Props {
 	 * @var int
 	 */
 	protected static $defaultPropsFlags		= \MvcCore\IModel::PROPS_INHERIT_PROTECTED;
+	
+	/**
+	 * Database provider specific resource class instance with universal SQL statements.
+	 * @var \MvcCore\Ext\Models\Db\Resources\Edit|NULL
+	 */
+	protected $editResource = NULL;
 }

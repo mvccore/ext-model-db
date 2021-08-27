@@ -11,43 +11,23 @@
  * @license		https://mvccore.github.io/docs/mvccore/5.0.0/LICENSE.md
  */
 
-namespace MvcCore\Ext\Models\Db\Model;
+namespace MvcCore\Ext\Models\Db\Resource;
 
 /**
- * @mixin \MvcCore\Ext\Models\Db\Model
+ * @mixin \MvcCore\Ext\Models\Db\Resource
  */
 trait Features {
 	
-	use \MvcCore\Model\CommonResource;
 	use \MvcCore\Model\Comparers;
 	use \MvcCore\Model\Config;
 	use \MvcCore\Model\Converters;
 	use \MvcCore\Model\Props;
-
-	use \MvcCore\Ext\Models\Db\Model\DataMethods;
-	use \MvcCore\Ext\Models\Db\Model\EditMethods;
-	use \MvcCore\Ext\Models\Db\Model\Props;
-	use \MvcCore\Ext\Models\Db\Model\Provider;
-	
-	use \MvcCore\Model\MagicMethods,
-		\MvcCore\Ext\Models\Db\Model\MagicMethods {
-			\MvcCore\Ext\Models\Db\Model\MagicMethods::jsonSerialize insteadof \MvcCore\Model\MagicMethods;
-			\MvcCore\Model\MagicMethods::jsonSerialize as jsonSerializeBase;
-		}
 
 	use \MvcCore\Model\Connection, 
 		\MvcCore\Ext\Models\Db\Model\Connection {
 			\MvcCore\Ext\Models\Db\Model\Connection::GetConnection insteadof \MvcCore\Model\Connection;
 			\MvcCore\Model\Connection::GetConnection as GetProviderConnection;
 		}
-
-	use \MvcCore\Model\MetaData,
-		\MvcCore\Ext\Models\Db\Model\MetaData {
-			\MvcCore\Ext\Models\Db\Model\MetaData::GetMetaData insteadof \MvcCore\Model\MetaData;
-			\MvcCore\Ext\Models\Db\Model\MetaData::parseMetaData insteadof \MvcCore\Model\MetaData;
-			\MvcCore\Ext\Models\Db\Model\MetaData::parseMetaDataProperty insteadof \MvcCore\Model\MetaData;
-			\MvcCore\Model\MetaData::parseMetaDataProperty as parseMetaDataPropertyBase;
-	}
 	
 	use \MvcCore\Model\Parsers,
 		\MvcCore\Ext\Models\Db\Model\Parsers {
@@ -56,4 +36,6 @@ trait Features {
 			\MvcCore\Ext\Models\Db\Model\Parsers::parseToDateTime insteadof \MvcCore\Model\Parsers;
 			\MvcCore\Model\Parsers::parseToDateTime as parseToDateTimeDefault;
 	}
+	
+	use \MvcCore\Ext\Models\Db\Model\Provider;
 }

@@ -11,14 +11,13 @@
  * @license		https://mvccore.github.io/docs/mvccore/5.0.0/LICENSE.md
  */
 
-namespace MvcCore\Ext\Models\Db\Models;
+namespace MvcCore\Ext\Models\Db\Resources;
 
-class Resource implements \MvcCore\Ext\Models\Db\Model\IConstants {
+class		Edit
+extends		\MvcCore\Ext\Models\Db\Resource
+implements	\MvcCore\Ext\Models\Db\Resources\IEdit {
+	
+	use \MvcCore\Ext\Models\Db\Resource\Features;
 
-	use \MvcCore\Model\Props;
-	use \MvcCore\Model\Config;
-	use \MvcCore\Model\Comparers;
-	use \MvcCore\Model\Converters;
-
-	use \MvcCore\Ext\Models\Db\Models\Resources\Features;
+	use \MvcCore\Ext\Models\Db\Resources\Edit\Features;
 }

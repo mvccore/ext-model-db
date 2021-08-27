@@ -128,15 +128,15 @@ interface IModel {
 	 * Get database provider specific resource with universal SQL statements
 	 * to automatically insert, update and delete model instance.
 	 * @param  bool $autoCreate
-	 * @return \MvcCore\Ext\Models\Db\Providers\Resource|NULL
+	 * @return \MvcCore\Ext\Models\Db\Resources\IEdit|NULL
 	 */
-	public function GetProviderEditResource ($autoCreate = TRUE);
+	public function GetEditResource ($autoCreate = TRUE);
 
 	/**
 	 * Set database provider specific resource with universal SQL statements
 	 * to automatically insert, update and delete model instance.
-	 * @param  \MvcCore\Ext\Models\Db\Providers\Resource|NULL
+	 * @param  \MvcCore\Ext\Models\Db\Resources\IEdit|NULL
 	 * @return \MvcCore\Ext\Models\Db\IModel
 	 */
-	public function SetProviderEditResource ($providerEditResource);
+	public function SetEditResource (\MvcCore\Ext\Models\Db\Resources\IEdit $editResource = NULL);
 }

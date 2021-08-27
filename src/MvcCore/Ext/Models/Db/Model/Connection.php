@@ -17,7 +17,7 @@ namespace MvcCore\Ext\Models\Db\Model;
  * @mixin \MvcCore\Ext\Models\Db\Model
  */
 trait Connection {
-
+	
 	/**
 	 * @inheritDocs
 	 * @param  string|int|array|\stdClass|NULL $connectionNameOrConfig

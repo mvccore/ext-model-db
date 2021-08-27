@@ -13,18 +13,9 @@
 
 namespace MvcCore\Ext\Models\Db;
 
-class		Model 
-implements	\MvcCore\IModel,
-			\MvcCore\Ext\Models\Db\IModel, 
-			\MvcCore\Ext\Models\Db\Model\IConstants,
-			\JsonSerializable {
-
-	use \MvcCore\Ext\Models\Db\Model\Features;
+class		Resource
+implements	\MvcCore\Model\IConstants,
+			\MvcCore\Ext\Models\Db\Model\IConstants {
 	
-	/**
-	 * MvcCore Extension - Model - Db - version:
-	 * Comparison by PHP function version_compare();
-	 * @see http://php.net/manual/en/function.version-compare.php
-	 */
-	const VERSION = '5.0.22';
+	use \MvcCore\Ext\Models\Db\Resource\Features;
 }
