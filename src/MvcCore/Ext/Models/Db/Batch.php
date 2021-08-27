@@ -17,7 +17,7 @@ class		Batch
 extends		\MvcCore\Ext\Models\Db\Model
 implements	\MvcCore\Ext\Models\Db\IBatch {
 
-	use \MvcCore\Ext\Models\Db\Model\Manipulation;
+	use \MvcCore\Ext\Models\Db\Model\EditMethods;
 
 	/**
 	 * Automaticaly flush batch after flush size is exceeded.
@@ -113,15 +113,17 @@ implements	\MvcCore\Ext\Models\Db\IBatch {
 		$sql = [];
 		$params = [];
 		foreach ($this->instances as $index => $instance) {
+			$instanceEditRes = $instance->GetEditResource(FALSE);
+
 			$operation = $this->operations[$index];
 			if ($operation === \MvcCore\Ext\Models\Db\IBatch::OPERATION_SAVE) {
-				static::editSave($instance, NULL, 0, static::getEditMetaDataCollections(0));
+				static::editSave($instance, NULL, 0, $instance::getEditMetaDataCollections(0));
 			} else if ($operation === \MvcCore\Ext\Models\Db\IBatch::OPERATION_INSERT) {
-				static::editInsert($instance, 0, static::getEditMetaDataCollections(0));
+				static::editInsert($instance, 0, $instance::getEditMetaDataCollections(0));
 			} else if ($operation === \MvcCore\Ext\Models\Db\IBatch::OPERATION_UPDATE) {
-				static::editUpdate($instance, 0, static::getEditMetaDataCollections(0));
+				static::editUpdate($instance, 0, $instance::getEditMetaDataCollections(0));
 			} else if ($operation === \MvcCore\Ext\Models\Db\IBatch::OPERATION_DELETE) {
-				static::editDelete($instance, 0, static::getEditMetaDataCollections(0));
+				static::editDelete($instance, 0, $instance::getEditMetaDataCollections(0));
 			}
 		}
 		$this->allResultsRowsCount = self::GetConnection()
