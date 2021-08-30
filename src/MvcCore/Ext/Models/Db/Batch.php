@@ -13,8 +13,10 @@
 
 namespace MvcCore\Ext\Models\Db;
 
+/**
+ * @inheritDocs
+ */
 class		Batch
-extends		\MvcCore\Ext\Models\Db\Model
 implements	\MvcCore\Ext\Models\Db\IBatch {
 
 	use \MvcCore\Ext\Models\Db\Batch\Features;

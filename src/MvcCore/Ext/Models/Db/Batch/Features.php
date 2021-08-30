@@ -18,9 +18,16 @@ namespace MvcCore\Ext\Models\Db\Batch;
  */
 trait Features {
 	
+	use \MvcCore\Model\Props;
+	use \MvcCore\Model\Config;
+
 	use \MvcCore\Ext\Models\Db\Batch\Props;
 	use \MvcCore\Ext\Models\Db\Batch\GettersSetters;
 	use \MvcCore\Ext\Models\Db\Batch\Flushing;
-	
-	use \MvcCore\Ext\Models\Db\Model\EditMethods;
+
+	use \MvcCore\Model\Connection, 
+		\MvcCore\Ext\Models\Db\Model\Connection {
+			\MvcCore\Ext\Models\Db\Model\Connection::GetConnection insteadof \MvcCore\Model\Connection;
+			\MvcCore\Model\Connection::GetConnection as GetProviderConnection;
+		}
 }
