@@ -13,6 +13,11 @@
 
 namespace MvcCore\Ext\Models\Db;
 
+/**
+ * Responsibility - model instance for batch operations with entities
+ *                  extended from `\MvcCore\Ext\Models\Db\Model` without
+ *                  not extended methods `Insert()`, `Update()` or `Delete()`.
+ */
 interface IBatch {
 
 	/**
@@ -61,7 +66,13 @@ interface IBatch {
 	 * Get current count of model instances in batch.
 	 * @return int
 	 */
-	public function GetSize () ;
+	public function GetSize ();
+
+	/**
+	 * Get batch instances.
+	 * @return \MvcCore\Ext\Models\Db\IModel[]
+	 */
+	public function GetInstances ();
 
 	/**
 	 * Return affected rows by all queries in last flush call.

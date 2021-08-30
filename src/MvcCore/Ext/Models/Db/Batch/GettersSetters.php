@@ -48,6 +48,14 @@ trait GettersSetters {
 	
 	/**
 	 * @inheritDocs
+	 * @return \MvcCore\Ext\Models\Db\Model[]
+	 */
+	public function GetInstances () {
+		return $this->instances;
+	}
+	
+	/**
+	 * @inheritDocs
 	 * @return int
 	 */
 	public function GetRowsCount () {
