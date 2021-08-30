@@ -74,12 +74,12 @@ trait Flushing {
 			$instanceEditRes = $instance->GetEditResource(FALSE);
 			$instance->SetEditResource($batchEditResource);
 			$operationFlags = $this->operationsFlags[$index];
-			if (($operationFlags & \MvcCore\Ext\Models\Db\IBatch::OPERATION_SAVE) != 0) {
-				$instance->Save();
-			} else if (($operationFlags & \MvcCore\Ext\Models\Db\IBatch::OPERATION_INSERT) != 0) {
+			if (($operationFlags & \MvcCore\Ext\Models\Db\IBatch::OPERATION_INSERT) != 0) {
 				$instance->Insert();
 			} else if (($operationFlags & \MvcCore\Ext\Models\Db\IBatch::OPERATION_UPDATE) != 0) {
 				$instance->Update();
+			} else if (($operationFlags & \MvcCore\Ext\Models\Db\IBatch::OPERATION_SAVE) != 0) {
+				$instance->Save();
 			} else if (($operationFlags & \MvcCore\Ext\Models\Db\IBatch::OPERATION_DELETE) != 0) {
 				$instance->Delete();
 			}
