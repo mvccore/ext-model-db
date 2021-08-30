@@ -13,6 +13,10 @@
 
 namespace MvcCore\Ext\Models\Db;
 
+/**
+ * Responsibility - Extensible active record instance with automatic inserting, 
+ *                  updating and deleting by decorated properties.
+ */
 interface IModel {
 	
 	/**
