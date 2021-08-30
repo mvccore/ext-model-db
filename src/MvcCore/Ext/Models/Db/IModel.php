@@ -29,6 +29,33 @@ interface IModel {
 	 * @return \MvcCore\Ext\Models\Db\Connection
 	 */
 	public static function GetConnection ($connectionNameOrConfig = NULL, $strict = TRUE);
+	
+	/**
+	 * Returns (or creates if necessary) model resource instance.
+	 * Common resource instance is stored all the time in static store
+	 * under key from resource full class name and constructor arguments.
+	 * @param  array|NULL $args      Values array with variables to pass into resource `__construct()` method.
+	 *                               If `NULL`, recource class will be created without `__construct()` method call.
+	 * @param  string     $classPath Relative namespace path to resource class. It could contains `.` or `..`
+	 *                               to traverse over namespaces (directories) and it could contains `{self}` 
+	 *                               keyword, which is automatically replaced with current class name.
+	 * @thrown \InvalidArgumentException Class `{$resourceClassName}` doesn't exist.
+	 * @return \MvcCore\Ext\Models\Db\Resource
+	 */
+	public static function GetCommonResource ($args = NULL, $classPath = '{self}s\CommonResource');
+	
+	/**
+	 * Returns (or creates if doesn`t exist) model resource instance.
+	 * Resource instance is stored in protected instance property `resource`.
+	 * @param  array|NULL $args      Values array with variables to pass into resource `__construct()` method.
+	 *                               If `NULL`, recource class will be created without `__construct()` method call.
+	 * @param  string     $classPath Relative namespace path to resource class. It could contains `.` or `..`
+	 *                               to traverse over namespaces (directories) and it could contains `{self}` 
+	 *                               keyword, which is automatically replaced with current class name.
+	 * @thrown \InvalidArgumentException Class `{$resourceClassName}` doesn't exist.
+	 * @return \MvcCore\Ext\Models\Db\Resource
+	 */
+	public function GetResource ($args = NULL, $classPath = '{self}s\Resource');
 
 	/**
 	 * Return cached data about properties in current class to not create
