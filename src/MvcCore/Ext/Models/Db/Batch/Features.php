@@ -28,6 +28,6 @@ trait Features {
 	use \MvcCore\Model\Connection, 
 		\MvcCore\Ext\Models\Db\Model\Connection {
 			\MvcCore\Ext\Models\Db\Model\Connection::GetConnection insteadof \MvcCore\Model\Connection;
-			\MvcCore\Model\Connection::GetConnection as GetProviderConnection;
+			\MvcCore\Model\Connection::GetConnection as protected getProviderConnection;
 		}
 }

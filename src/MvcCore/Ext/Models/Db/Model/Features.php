@@ -37,7 +37,7 @@ trait Features {
 	use \MvcCore\Model\Connection, 
 		\MvcCore\Ext\Models\Db\Model\Connection {
 			\MvcCore\Ext\Models\Db\Model\Connection::GetConnection insteadof \MvcCore\Model\Connection;
-			\MvcCore\Model\Connection::GetConnection as GetProviderConnection;
+			\MvcCore\Model\Connection::GetConnection as protected getProviderConnection;
 		}
 
 	use \MvcCore\Model\MetaData,
@@ -52,8 +52,8 @@ trait Features {
 		\MvcCore\Ext\Models\Db\Model\Resources {
 			\MvcCore\Ext\Models\Db\Model\Resources::GetCommonResource insteadof \MvcCore\Model\Resources;
 			\MvcCore\Ext\Models\Db\Model\Resources::GetResource insteadof \MvcCore\Model\Resources;
-			\MvcCore\Model\Resources::GetCommonResource as GetCommonResourceBase;
-			\MvcCore\Model\Resources::GetResource as GetResourceBase;
+			\MvcCore\Model\Resources::GetCommonResource as protected getCommonResourceBase;
+			\MvcCore\Model\Resources::GetResource as protected getResourceBase;
 	}
 	
 	use \MvcCore\Model\Parsers,

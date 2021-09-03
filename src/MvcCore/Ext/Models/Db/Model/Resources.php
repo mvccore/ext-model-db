@@ -29,7 +29,7 @@ trait Resources {
 	 * @return \MvcCore\Ext\Models\Db\Resource
 	 */
 	public static function GetCommonResource ($args = NULL, $classPath = '{self}s\CommonResource') {
-		return static::GetCommonResourceBase($args, $classPath);
+		return static::getCommonResourceBase($args, $classPath);
 	}
 	
 	/**
@@ -43,6 +43,6 @@ trait Resources {
 	 * @return \MvcCore\Ext\Models\Db\Resource
 	 */
 	public function GetResource ($args = NULL, $classPath = '{self}s\Resource') {
-		return static::GetResourceBase($args, $classPath);
+		return static::getResourceBase($args, $classPath);
 	}
 }
