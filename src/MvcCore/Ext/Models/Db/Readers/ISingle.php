@@ -19,18 +19,21 @@ interface ISingle extends \MvcCore\Ext\Models\Db\IReader {
 	 * Read single fetched row into instances by given full class name and reading flags.
 	 * @param  string $fullClassName
 	 * @param  int    $readingFlags
+	 * @throws \PDOException|\Throwable
 	 * @return \object|NULL
 	 */
 	public function ToInstance ($fullClassName, $readingFlags = 0);
 
 	/**
 	 * Read single fetched row into associative array with keys by SQL query columns.
+	 * @throws \PDOException|\Throwable
 	 * @return array|NULL
 	 */
 	public function ToArray ();
 
 	/**
 	 * Read single fetched row into `\stdClass` object with item keys by SQL query columns.
+	 * @throws \PDOException|\Throwable
 	 * @return \stdClass|NULL
 	 */
 	public function ToObject();
@@ -39,6 +42,7 @@ interface ISingle extends \MvcCore\Ext\Models\Db\IReader {
 	 * Read single fetched row into scalar value by first row column.
 	 * @param  string|NULL $valueColumnName
 	 * @param  string|NULL $valueType
+	 * @throws \PDOException|\Throwable
 	 * @return int|float|string|bool|NULL
 	 */
 	public function ToScalar ($valueColumnName = NULL, $valueType = NULL);
@@ -50,6 +54,7 @@ interface ISingle extends \MvcCore\Ext\Models\Db\IReader {
 	 * @param  callable $valueColumnName
 	 * @param  string   $keyColumnName
 	 * @param  string   $keyType
+	 * @throws \PDOException|\Throwable
 	 * @return mixed
 	 */
 	public function ToAny (callable $valueCompleter);
@@ -57,6 +62,7 @@ interface ISingle extends \MvcCore\Ext\Models\Db\IReader {
 	/**
 	 * Returns the number of loaded rows by SQL statement,
 	 * it's always `0` or `1`.
+	 * @throws \PDOException|\Throwable
 	 * @return int
 	 */
 	public function GetRowsCount ();

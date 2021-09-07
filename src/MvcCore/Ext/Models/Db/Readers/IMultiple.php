@@ -21,6 +21,7 @@ interface IMultiple extends \MvcCore\Ext\Models\Db\IReader {
 	 * @param  int    $readingFlags
 	 * @param  string $keyColumnName
 	 * @param  string $keyType
+	 * @throws \PDOException|\Throwable
 	 * @return \object[]
 	 */
 	public function ToInstances ($fullClassName, $readingFlags = 0, $keyColumnName = NULL, $keyType = NULL);
@@ -29,6 +30,7 @@ interface IMultiple extends \MvcCore\Ext\Models\Db\IReader {
 	 * Read all fetched rows into associative arrays with item keys by SQL query columns.
 	 * @param  string $keyColumnName
 	 * @param  string $keyType
+	 * @throws \PDOException|\Throwable
 	 * @return \array[]
 	 */
 	public function ToArrays ($keyColumnName = NULL, $keyType = NULL);
@@ -37,6 +39,7 @@ interface IMultiple extends \MvcCore\Ext\Models\Db\IReader {
 	 * Read all fetched rows into `\stdClass` objects with item keys by SQL query columns.
 	 * @param  string $keyColumnName
 	 * @param  string $keyType
+	 * @throws \PDOException|\Throwable
 	 * @return \stdClass[]
 	 */
 	public function ToObjects ($keyColumnName = NULL, $keyType = NULL);
@@ -47,6 +50,7 @@ interface IMultiple extends \MvcCore\Ext\Models\Db\IReader {
 	 * @param  string $valueType
 	 * @param  string $keyColumnName
 	 * @param  string $keyType
+	 * @throws \PDOException|\Throwable
 	 * @return \int[]|\float[]|\string[]|\bool[]|NULL
 	 */
 	public function ToScalars ($valueColumnName, $valueType = NULL, $keyColumnName = NULL, $keyType = NULL);
@@ -58,6 +62,7 @@ interface IMultiple extends \MvcCore\Ext\Models\Db\IReader {
 	 * @param  callable $valueColumnName Called for each result row, 1. argument is raw result item, 2. argument is raw result key. Completer has to return created result item instance.
 	 * @param  string   $keyColumnName
 	 * @param  string   $keyType
+	 * @throws \PDOException|\Throwable
 	 * @return \mixed[]
 	 */
 	public function ToAny (callable $valueCompleter, $keyColumnName = NULL, $keyType = NULL);
@@ -65,6 +70,7 @@ interface IMultiple extends \MvcCore\Ext\Models\Db\IReader {
 	/**
 	 * Returns the number of loaded rows by SQL statement,
 	 * it could be `0` or more.
+	 * @throws \PDOException|\Throwable
 	 * @return int
 	 */
 	public function GetRowsCount ();

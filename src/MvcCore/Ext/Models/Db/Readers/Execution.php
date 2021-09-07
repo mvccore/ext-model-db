@@ -21,6 +21,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\IExecution {
 	 * @inheritDocs
 	 * @param  string|NULL $sequenceName
 	 * @param  string|NULL $targetType
+	 * @throws \PDOException|\Throwable
 	 * @return int|float|string|NULL
 	 */
 	public function LastInsertId ($sequenceName = NULL, $targetType = NULL) {
@@ -38,6 +39,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\IExecution {
 	
 	/**
 	 * @inheritDocs
+	 * @throws \PDOException|\Throwable
 	 * @return int
 	 */
 	public function GetRowsCount () {
@@ -52,6 +54,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\IExecution {
 	
 	/**
 	 * @inheritDocs
+	 * @throws \PDOException|\Throwable
 	 * @return int
 	 */
 	public function GetAllResultsRowsCount () {

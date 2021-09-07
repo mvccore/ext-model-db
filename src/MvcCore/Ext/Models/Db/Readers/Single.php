@@ -21,6 +21,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 	 * @inheritDocs
 	 * @param  string $fullClassName 
 	 * @param  int    $readingFlags 
+	 * @throws \PDOException|\Throwable
 	 * @return \object|NULL
 	 */
 	public function ToInstance ($fullClassName, $readingFlags = 0) {
@@ -45,6 +46,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 
 	/**
 	 * @inheritDocs
+	 * @throws \PDOException|\Throwable
 	 * @return array|NULL
 	 */
 	public function ToArray () {
@@ -60,6 +62,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 
 	/**
 	 * @inheritDocs
+	 * @throws \PDOException|\Throwable
 	 * @return \stdClass|NULL
 	 */
 	public function ToObject () {
@@ -77,6 +80,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 	 * @inheritDocs
 	 * @param  string|NULL $valueColumnName 
 	 * @param  string|NULL $valueType 
+	 * @throws \PDOException|\Throwable
 	 * @return bool|float|int|string|NULL
 	 */
 	public function ToScalar ($valueColumnName = NULL, $valueType = NULL) {
@@ -107,6 +111,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 	/**
 	 * @inheritDocs
 	 * @param  callable $valueCompleter 
+	 * @throws \PDOException|\Throwable
 	 * @return mixed
 	 */
 	public function ToAny (callable $valueCompleter) {
@@ -124,6 +129,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 
 	/**
 	 * @inheritDocs
+	 * @throws \PDOException|\Throwable
 	 * @return int
 	 */
 	public function GetRowsCount () {
@@ -136,6 +142,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 
 	/**
 	 * @inheritDocs
+	 * @throws \PDOException|\Throwable
 	 * @return array|NULL
 	 */
 	public function GetRawData () {

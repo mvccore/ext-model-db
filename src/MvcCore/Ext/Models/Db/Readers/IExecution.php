@@ -19,6 +19,7 @@ interface IExecution extends \MvcCore\Ext\Models\Db\IReader {
 	 * Returns the ID of the last inserted row or sequence value.
 	 * @param  string|NULL $sequenceName
 	 * @param  string|NULL $targetType
+	 * @throws \PDOException|\Throwable
 	 * @return int|float|string|NULL
 	 */
 	public function LastInsertId ($sequenceName = NULL, $targetType = NULL);
@@ -26,6 +27,7 @@ interface IExecution extends \MvcCore\Ext\Models\Db\IReader {
 	/**
 	 * Returns the number of rows affected by the last SQL statement.
 	 * (the `\PDOStatement::rowCount()` result).
+	 * @throws \PDOException|\Throwable
 	 * @return int
 	 */
 	public function GetRowsCount ();
@@ -33,6 +35,7 @@ interface IExecution extends \MvcCore\Ext\Models\Db\IReader {
 	/**
 	 * Returns the number of rows affected by all result set(s).
 	 * (the `\PDOStatement::rowCount()` result(s)).
+	 * @throws \PDOException|\Throwable
 	 * @return int
 	 */
 	public function GetAllResultsRowsCount ();

@@ -59,6 +59,7 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 
 	/**
 	 * @inheritDocs
+	 * @throws \PDOException|\Throwable
 	 * @return bool
 	 */
 	public function GetExecResult () {
@@ -90,6 +91,7 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 	 * close cursor and return the result.
 	 * @param  bool $singleRow 
 	 * @param  int  $fetchMode 
+	 * @throws \PDOException|\Throwable
 	 * @return array|NULL
 	 */
 	protected function & fetchRawData ($singleRow, $fetchMode = \PDO::FETCH_ASSOC) {
@@ -113,8 +115,7 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 	/**
 	 * Execute prepared statement. If connection is lost, reconnect and 
 	 * if query is select, try to prepare it again and execute it again.
-	 * @throws \Exception 
-	 * @throws \PDOException 
+	 * @throws \PDOException|\Throwable
 	 * @return \MvcCore\Ext\Models\Db\Reader
 	 */
 	protected function providerInvokeExecute () {
@@ -241,6 +242,7 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 	 * Execute provider specific statement to get previous statement metadata.
 	 * @param  \MvcCore\Ext\Models\Db\Connection $connection 
 	 * @param  string $metaStatement 
+	 * @throws \PDOException|\Throwable
 	 * @return array|NULL
 	 */
 	protected function getMetaData (\MvcCore\Ext\Models\Db\IConnection $connection, $metaStatement) {

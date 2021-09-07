@@ -18,6 +18,7 @@ interface IReader {
 	/**
 	 * Returns prepared statement execution result.
 	 * (the `\PDOStatement::execute()` result).
+	 * @throws \PDOException|\Throwable
 	 * @return bool
 	 */
 	public function GetExecResult ();

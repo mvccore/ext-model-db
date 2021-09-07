@@ -331,7 +331,7 @@ implements	\MvcCore\Model\IConstants,
 	 * @inheritDocs
 	 * @param  string|\string[] $statement
 	 * @param  array            $driverOptions
-	 * @throws \Throwable
+	 * @throws \PDOException|\Throwable
 	 * @return \MvcCore\Ext\Models\Db\Statement
 	 */
 	public function Prepare ($sql, $driverOptions = [\MvcCore\Ext\Models\Db\IStatement::AUTO_CLOSE]) {
@@ -342,7 +342,7 @@ implements	\MvcCore\Model\IConstants,
 	/**
 	 * @inheritDocs
 	 * @param  string|\string[] $sql
-	 * @throws \Throwable
+	 * @throws \PDOException|\Throwable
 	 * @return \MvcCore\Ext\Models\Db\Statement
 	 */
 	public function Query ($sql, $connectionIndexOrName = NULL) {
@@ -353,7 +353,7 @@ implements	\MvcCore\Model\IConstants,
 	/**
 	 * @inheritDocs
 	 * @param  string|\string[] $sql
-	 * @throws \Throwable
+	 * @throws \PDOException|\Throwable
 	 * @return \MvcCore\Ext\Models\Db\Readers\Execution
 	 */
 	public function Execute ($sql, $connectionIndexOrName = NULL) {
@@ -609,6 +609,7 @@ implements	\MvcCore\Model\IConstants,
 
 	/**
 	 * Connect into database with `\PDO` provider with possibly configured retries.
+	 * @throws \PDOException
 	 * @return \PDO
 	 */
 	protected function connect () {
@@ -653,7 +654,7 @@ implements	\MvcCore\Model\IConstants,
 	 * @param  array  $args
 	 * @param  bool   $executeProvider
 	 * @param  bool   $returnReader
-	 * @throws \Throwable
+	 * @throws \PDOException|\Throwable
 	 * @return \MvcCore\Ext\Models\Db\Statement|\MvcCore\Ext\Models\Db\Readers\Execution
 	 */
 	protected function providerInvoke (
@@ -732,7 +733,7 @@ implements	\MvcCore\Model\IConstants,
 	/**
 	 * Log given exception and print query with params on development.
 	 * @param  \Throwable $error 
-	 * @throws \Throwable 
+	 * @throws \PDOException|\Throwable
 	 */
 	protected function handleError (\Throwable $error) {
 		$app = \MvcCore\Application::GetInstance();
@@ -769,8 +770,8 @@ implements	\MvcCore\Model\IConstants,
 
 	/**
 	 * Try to reconnect, if connection has been lost.
-	 * @param  \Throwable $e
-	 * @throws \Throwable
+	 * @param  \PDOException|\Throwable $e
+	 * @throws \PDOException|\Throwable
 	 * @return \PDO|NULL
 	 */
 	protected function reConnectIfNecessaryOrThrownError (\Throwable $e) {

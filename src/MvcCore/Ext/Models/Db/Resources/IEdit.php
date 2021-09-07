@@ -36,6 +36,7 @@ interface IEdit {
 	 *                                     column names, values are column values.
 	 * @param  array      $dataColumns     Data to use in update set clause, keys are 
 	 *                                     column names, values are column values.
+	 * @throws \PDOException|\Throwable
 	 * @return array                       First item is boolean result, 
 	 *                                     second is affected rows count. 
 	 */
@@ -47,6 +48,7 @@ interface IEdit {
 	 * @param  string     $tableName       Database table name.
 	 * @param  array      $keyColumns      Data to use in where condition, keys are 
 	 *                                     column names, values are column values.
+	 * @throws \PDOException|\Throwable
 	 * @return array                       First item is boolean result, 
 	 *                                     second is affected rows count. 
 	 */

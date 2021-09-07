@@ -34,7 +34,7 @@ interface IConnection {
 	 * @param  string|NULL $username
 	 * @param  string|NULL $password
 	 * @param  array       $options
-	 * @throws \Throwable
+	 * @throws \PDOException|\Throwable
 	 */
 	public function __construct ($dsn, $username = NULL, $password = NULL, array $options = []);
 	
@@ -48,6 +48,7 @@ interface IConnection {
 	 * Prepares a statement for execution and returns a statement object.
 	 * @param  string|\string[] $sql 
 	 * @param  int|string       $connectionIndexOrName 
+	 * @throws \PDOException|\Throwable
 	 * @return \MvcCore\Ext\Models\Db\Statement
 	 */
 	public function Prepare ($sql, $connectionIndexOrName = NULL);
@@ -55,7 +56,7 @@ interface IConnection {
 	/**
 	 * Executes an SQL statement and returns a statement object.
 	 * @param  string|\string[] $sql
-	 * @throws \Throwable
+	 * @throws \PDOException|\Throwable
 	 * @return \MvcCore\Ext\Models\Db\Statement
 	 */
 	public function Query ($sql, $connectionIndexOrName = NULL);
@@ -63,7 +64,7 @@ interface IConnection {
 	/**
 	 * Execute an SQL statement and returns a reader object.
 	 * @param  string|\string[] $sql
-	 * @throws \Throwable
+	 * @throws \PDOException|\Throwable
 	 * @return \MvcCore\Ext\Models\Db\Readers\Execution
 	 */
 	public function Execute ($sql, $connectionIndexOrName = NULL);

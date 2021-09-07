@@ -34,6 +34,7 @@ interface IStatement {
 	 * @param  string|\string[]                $sql 
 	 * @param  string|int|array|\stdClass|NULL $connectionNameOrConfig
 	 * @param  array                           $driverOptions
+	 * @throws \PDOException|\Throwable
 	 * @return \MvcCore\Ext\Models\Db\Statement
 	 */
 	public static function Prepare ($sql, $connectionNameOrConfig = NULL, $driverOptions = []);
@@ -144,6 +145,7 @@ interface IStatement {
 	 * returns execution reader object.
 	 * @param  array $params Query params array, it could be sequential or associative array. 
 	 *                       This parameter can be used as an infinite argument for the function.
+	 * @throws \PDOException|\Throwable
 	 * @return \MvcCore\Ext\Models\Db\Readers\Execution
 	 */
 	public function Execute ($params = []);

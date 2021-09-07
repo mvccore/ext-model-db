@@ -22,7 +22,7 @@ trait EditMethods {
 	 * @inheritDocs
 	 * @param  bool|NULL $createNew
 	 * @param  int       $propsFlags
-	 * @throws \InvalidArgumentException|\Throwable
+	 * @throws \InvalidArgumentException|\PDOException|\Throwable
 	 * @return bool
 	 */
 	public function Save ($createNew = NULL, $propsFlags = 0) {
@@ -48,7 +48,7 @@ trait EditMethods {
 	/**
 	 * @inheritDocs
 	 * @param  int $propsFlags
-	 * @throws \InvalidArgumentException|\Throwable
+	 * @throws \InvalidArgumentException|\PDOException|\Throwable
 	 * @return bool
 	 */
 	public function Insert ($propsFlags = 0) {
@@ -61,7 +61,7 @@ trait EditMethods {
 	/**
 	 * @inheritDocs
 	 * @param  int $propsFlags
-	 * @throws \InvalidArgumentException|\Throwable
+	 * @throws \InvalidArgumentException|\PDOException|\Throwable
 	 * @return bool
 	 */
 	public function Update ($propsFlags = 0) {
@@ -74,7 +74,7 @@ trait EditMethods {
 	/**
 	 * @inheritDocs
 	 * @param  int $propsFlags 
-	 * @throws \InvalidArgumentException|\Throwable
+	 * @throws \InvalidArgumentException|\PDOException|\Throwable
 	 * @return bool
 	 */
 	public function Delete ($propsFlags = 0) {
@@ -117,7 +117,7 @@ trait EditMethods {
 	 * @param  bool|NULL                    $createNew 
 	 * @param  int                          $propsFlags 
 	 * @param  array                        $metaDataCollections 
-	 * @throws \InvalidArgumentException|\Throwable
+	 * @throws \InvalidArgumentException|\PDOException|\Throwable
 	 * @return bool
 	 */
 	protected static function editSave ($context, $createNew, $propsFlags, $metaDataCollections) {
@@ -182,7 +182,7 @@ trait EditMethods {
 	 * @param  \MvcCore\Ext\Models\Db\Model $context 
 	 * @param  int                          $propsFlags 
 	 * @param  array                        $metaDataCollections 
-	 * @throws \Throwable
+	 * @throws \PDOException|\Throwable
 	 * @return bool
 	 */
 	protected static function editInsert ($context, $propsFlags, $metaDataCollections) {
@@ -276,7 +276,7 @@ trait EditMethods {
 	 * @param  \MvcCore\Ext\Models\Db\Model $context 
 	 * @param  int                          $propsFlags 
 	 * @param  array                        $metaDataCollections 
-	 * @throws \InvalidArgumentException|\Throwable
+	 * @throws \InvalidArgumentException|\PDOException|\Throwable
 	 * @return bool
 	 */
 	protected static function editUpdate ($context, $propsFlags, $metaDataCollections) {
@@ -346,7 +346,7 @@ trait EditMethods {
 	 * @param  \MvcCore\Ext\Models\Db\Model $context 
 	 * @param  int                          $propsFlags 
 	 * @param  array                        $metaDataCollections 
-	 * @throws \InvalidArgumentException|\Throwable
+	 * @throws \InvalidArgumentException|\PDOException|\Throwable
 	 * @return bool
 	 */
 	protected static function editDelete ($context, $propsFlags, $metaDataCollections) {
@@ -375,6 +375,7 @@ trait EditMethods {
 	 * Complete all necessary meta data collections 
 	 * for any edit operation from cache, once.
 	 * @param  int $propsFlags 
+	 * @throws \InvalidArgumentException
 	 * @return array [$metaData, $autoIncrementIndex, $primaryKeyColumnsIndexes, $uniqueKeyColumnsIndexes, $connectionArgs, $tableArgs]
 	 */
 	protected static function getEditMetaDataCollections ($propsFlags = 0) {

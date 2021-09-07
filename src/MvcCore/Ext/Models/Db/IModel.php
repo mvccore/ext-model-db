@@ -29,7 +29,7 @@ interface IModel {
 	 *                                         index found, exception is thrown. `TRUE` by default.
 	 *                                         If `FALSE`, there could be returned connection by
 	 *                                         first available configuration.
-	 * @throws \InvalidArgumentException
+	 * @throws \InvalidArgumentException|\PDOException|\Throwable
 	 * @return \MvcCore\Ext\Models\Db\Connection
 	 */
 	public static function GetConnection ($connectionNameOrConfig = NULL, $strict = TRUE);
@@ -109,7 +109,7 @@ interface IModel {
 	 * `FALSE` if there is no row inserted or updated. Thrown an exception in any database error.
 	 * @param  bool|NULL $createNew 
 	 * @param  int       $propsFlags
-	 * @throws \InvalidArgumentException|\Throwable
+	 * @throws \InvalidArgumentException|\PDOException|\Throwable
 	 * @return bool
 	 */
 	public function Save ($createNew = NULL, $propsFlags = 0);
@@ -140,7 +140,7 @@ interface IModel {
 	 * Return `TRUE` if there is updated 1 or more rows or return 
 	 * `FALSE` if there is no row updated. Thrown an exception in any database error.
 	 * @param  int $propsFlags
-	 * @throws \InvalidArgumentException|\Throwable
+	 * @throws \InvalidArgumentException|\PDOException|\Throwable
 	 * @return bool
 	 */
 	public function Update ($propsFlags = 0);
@@ -150,7 +150,7 @@ interface IModel {
 	 * Return `TRUE` if there is removed more than 1 row or return 
 	 * `FALSE` if there is no row removed. Thrown an exception in any database error.
 	 * @param  int $propsFlags 
-	 * @throws \InvalidArgumentException|\Throwable
+	 * @throws \InvalidArgumentException|\PDOException|\Throwable
 	 * @return bool
 	 */
 	public function Delete ($propsFlags = 0);
