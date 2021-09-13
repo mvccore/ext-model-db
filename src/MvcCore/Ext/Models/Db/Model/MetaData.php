@@ -29,8 +29,11 @@ trait MetaData {
 		
 		/**
 		 * This is static hidden property, so it has different values 
-		 * for each static call. Structure is complicated and it's 
-		 * as brief as possible to serialize and userialize it very fast.
+		 * for each static call. The structure is complicated and 
+		 * the emphasis is on the shortest possible serialization and deserialization.
+		 * There is also class full name dimension for calls from child model class
+		 * into parent class and from there into this place and this dimension 
+		 * prevent bugs like that.
 		 * @var array
 		 */
 		static $__metaData = [];
@@ -41,16 +44,16 @@ trait MetaData {
 		list (
 			$cacheFlags, $accessModFlags, $inclInherit
 		) = static::getMetaDataFlags($propsFlags);
+		
+		$classFullName = get_called_class();
 
-		if (isset($__metaData[$cacheFlags])) {
-			list ($propsMetaData, $propsAdditionalMaps) = $__metaData[$cacheFlags];
+		if (isset($__metaData[$classFullName][$cacheFlags])) {
+			list ($propsMetaData, $propsAdditionalMaps) = $__metaData[$classFullName][$cacheFlags];
 			$result = [$propsMetaData];
 			foreach ($additionalMaps as $additionalMapIndex)
 				$result[] = $propsAdditionalMaps[$additionalMapIndex];
 			return $result;
 		}
-		
-		$classFullName = get_called_class();
 		
 		$cacheClassName = static::$metaDataCacheClass;
 		$cacheInstalled = class_exists($cacheClassName);
@@ -90,7 +93,9 @@ trait MetaData {
 			}
 		}
 		
-		$__metaData[$cacheFlags] = [$propsMetaData, $propsAdditionalMaps];
+		if (!isset($__metaData[$classFullName]))
+			$__metaData[$classFullName] = [];
+		$__metaData[$classFullName][$cacheFlags] = [$propsMetaData, $propsAdditionalMaps];
 		
 		$result = [$propsMetaData];
 		foreach ($additionalMaps as $additionalMapIndex)
