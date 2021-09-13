@@ -30,7 +30,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\IExecution {
 			$metaData = $this->getMetaData($conn, $metaStatement);
 			$result = $metaData['LastInsertId'];
 		} else {
-			$result = $this->provider->lastInsertId($sequenceName);
+			$result = $this->statement->GetProvider()->lastInsertId($sequenceName);
 		}
 		if ($result !== NULL && $targetType !== NULL)
 			settype($result, $targetType);
