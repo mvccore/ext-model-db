@@ -424,6 +424,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	 * Called once before foreach loop execution.
 	 * @return void
 	 */
+	#[\ReturnTypeWillChange]
 	public function rewind () {
 		$statementIsOpened = $this->GetStatement()->IsOpened();
 		if ($statementIsOpened === NULL && $this->index === NULL) {
@@ -452,6 +453,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	 * Called each foreach loop execution, returning foreach value.
 	 * @return mixed
 	 */
+	#[\ReturnTypeWillChange]
 	public function current () {
 		return $this->resultValue;
 	}
@@ -460,6 +462,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	 * Called each foreach loop execution, returning foreach key.
 	 * @return int|float|string|bool
 	 */
+	#[\ReturnTypeWillChange]
 	public function key () {
 		return $this->resultKey;
 	}
@@ -468,6 +471,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	 * Called before each foreach loop execution to move internal values to next step.
 	 * @return void
 	 */
+	#[\ReturnTypeWillChange]
 	public function next () {
 		$fetchResult = $this->providerStatement->fetch(\PDO::FETCH_ASSOC);
 		if ($fetchResult === FALSE) {
@@ -482,6 +486,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	 * Called before each foreach loop execution (after `next()` function) to continue in loop or not.
 	 * @return bool
 	 */
+	#[\ReturnTypeWillChange]
 	public function valid () {
 		return $this->valid;
 	}
@@ -497,6 +502,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	 * @throws \RuntimeException 
 	 * @return int
 	 */
+	#[\ReturnTypeWillChange]
 	public function count () {
 		if ($this->index !== NULL && $this->valid === FALSE) 
 			return $this->index + 1;

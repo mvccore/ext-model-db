@@ -21,7 +21,7 @@ class Format {
 	/**
 	 * Define this param for any additional value conversion 
 	 * from database to code and back.
-	 * @param string $args,...
+	 * @param mixed $args,...
 	 */
 	public function __construct ($args) {
 	}

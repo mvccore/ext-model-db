@@ -23,6 +23,7 @@ trait MagicMethods {
 	 * @param  int $propsFlags
 	 * @return mixed
 	 */
+	#[\ReturnTypeWillChange]
 	public function jsonSerialize ($propsFlags = 0) {
 		if ($propsFlags === 0) $propsFlags = static::$defaultPropsFlags;
 		$data = static::GetValues(static::$defaultPropsFlags, TRUE);
