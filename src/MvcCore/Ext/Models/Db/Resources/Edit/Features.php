@@ -33,7 +33,7 @@ trait Features {
 		$sqlItems = [];
 		$params = [];
 		$index = 0;
-		$conn = self::GetConnection($connNameOrIndex);
+		$conn = static::GetConnection($connNameOrIndex);
 
 		foreach ($dataColumns as $dataColumnName => $dataColumnValue) {
 			$sqlItems[] = $conn->QuoteName($dataColumnName);
@@ -112,7 +112,7 @@ trait Features {
 		$whereSqlItems = [];
 		$params = [];
 		$index = 0;
-		$conn = self::GetConnection($connNameOrIndex);
+		$conn = static::GetConnection($connNameOrIndex);
 
 		foreach ($dataColumns as $dataColumnName => $dataColumnValue) {
 			$setSqlItems[] = $conn->QuoteName($dataColumnName) . " = :p{$index}";
@@ -130,7 +130,7 @@ trait Features {
 			. " SET " . implode(", ", $setSqlItems)
 			. " WHERE " . implode(" AND ", $whereSqlItems) . ";";
 		
-		$reader = self::GetConnection($connNameOrIndex)
+		$reader = $conn
 			->Prepare($sql)
 			->Execute($params);
 
@@ -154,7 +154,7 @@ trait Features {
 		$sqlItems = [];
 		$params = [];
 		$index = 0;
-		$conn = self::GetConnection($connNameOrIndex);
+		$conn = static::GetConnection($connNameOrIndex);
 
 		foreach ($keyColumns as $keyColumnName => $keyColumnValue) {
 			$sqlItems[] = $conn->QuoteName($keyColumnName) . " = :p{$index}";
