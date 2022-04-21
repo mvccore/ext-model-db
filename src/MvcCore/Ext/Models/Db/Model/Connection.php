@@ -46,7 +46,6 @@ trait Connection {
 				
 				if ($connAttrArgs > 0) 
 					$connectionNameOrConfig = $connAttrArgs[0];
-			} catch (\Exception $e) { // backward compatibility
 			} catch (\Throwable $e) {
 			}
 		}

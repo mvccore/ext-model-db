@@ -187,11 +187,6 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 			if ($testRetryAttempts === 0)
 				throw new \PDOException(" server has gone away ");
 			*/
-		} catch (\Exception $e) { // backward compatibility
-			$exception = \MvcCore\Ext\Models\Db\Exception::Create($e)
-				->setQuery($providerStatement->queryString)
-				->setParams($params);
-			$this->providerExecResult = FALSE;
 		} catch (\Throwable $e) {
 			$exception = \MvcCore\Ext\Models\Db\Exception::Create($e)
 				->setQuery($providerStatement->queryString)

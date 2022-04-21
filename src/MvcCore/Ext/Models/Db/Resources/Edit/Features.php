@@ -73,12 +73,6 @@ trait Features {
 				$conn->Commit();
 
 			$success = TRUE;
-		} catch (\Exception $e) { // backward compatibility
-			$affectedRows = 0;
-			$newId = NULL;
-			$error = $e;
-			if ($execInTransaction && $conn->InTransaction())
-				$conn->RollBack();
 		} catch (\Throwable $e) {
 			$affectedRows = 0;
 			$newId = NULL;
