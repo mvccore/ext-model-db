@@ -27,7 +27,9 @@ trait MagicMethods {
 	public function jsonSerialize ($propsFlags = 0) {
 		if ($propsFlags === 0) $propsFlags = static::$defaultPropsFlags;
 		$data = static::GetValues(static::$defaultPropsFlags, TRUE);
-		return array_filter($data, function ($val) { return !is_resource($val); });
+		return array_filter($data, function ($val) {
+			return !is_resource($val) && !($val instanceof \Closure);
+		});
 	}
 
 }
