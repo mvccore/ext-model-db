@@ -569,8 +569,8 @@ implements	\MvcCore\Model\IConstants,
 	 *                                              Copy queries from previous debugger if there were any.
 	 * @return \MvcCore\Ext\Models\Db\Connection
 	 */
-	public function SetDebugger (\MvcCore\Ext\Models\Db\IDebugger $debugger, $copyPreviousQueries = TRUE) {
-		if ($copyPreviousQueries && $this->debugger !== NULL) {
+	public function SetDebugger (\MvcCore\Ext\Models\Db\IDebugger $debugger = NULL, $copyPreviousQueries = TRUE) {
+		if ($debugger !== NULL && $copyPreviousQueries && $this->debugger !== NULL) {
 			// do not use reference `&` switch here to be able to use different debuggers accross connections
 			$store = $this->debugger->GetStore();
 			$debugger->SetStore($store);
