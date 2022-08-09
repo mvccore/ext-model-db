@@ -67,7 +67,7 @@ trait MetaData {
 				$classFullName,
 				$cacheFlags
 			]);
-			/** @var \MvcCore\Ext\Cache $cache */
+			/** @var \MvcCore\Ext\ICache $cache */
 			$cache = $cacheClassName::GetStore();
 			if ($cache === NULL)
 				throw new \RuntimeException("Cache has not configured default store.");
@@ -138,8 +138,9 @@ trait MetaData {
 		$phpWithUnionTypes = PHP_VERSION_ID >= 80000;
 		$classType = new \ReflectionClass($classFullName);
 		$props = $classType->getProperties($accessModFlags);
-		$toolClass = \MvcCore\Application::GetInstance()->GetToolClass();
-		$attributesAnotation = $toolClass::GetAttributesAnotations();
+		$app = \MvcCore\Application::GetInstance();
+		$toolClass = $app->GetToolClass();
+		$attributesAnotation = $app->GetAttributesAnotations();
 		/** @var \ReflectionProperty $prop */
 		$index = 0;
 		$primaryKeysIndexes = [];
@@ -245,7 +246,7 @@ trait MetaData {
 	 * @return array
 	 */
 	protected static function parseMetaDataProperty (\ReflectionProperty $prop, $params) {
-		list ($phpWithTypes, $phpWithUnionTypes, $toolClass, $attributesAnotation, $accessModFlags) = $params;
+		list (, $phpWithUnionTypes, $toolClass, $attributesAnotation, ) = $params;
 		// array with records under sequential indexes 0, 1, 2:
 		$result = static::parseMetaDataPropertyBase($prop, $params);
 		
