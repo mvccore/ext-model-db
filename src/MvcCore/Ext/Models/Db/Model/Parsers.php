@@ -73,7 +73,7 @@ trait Parsers {
 		$typeStr = trim($typeStr, '\\');
 		if ($typeStr == 'DateTime') {
 			if (!($rawValue instanceof \DateTime)) {
-				if ($formatArgs !== NULL && count($formatArgs) > 0) {
+				if (is_array($formatArgs) && count($formatArgs) > 0) {
 					$dateTime = static::parseToDateTime($rawValue, $formatArgs);
 				} else {
 					$dateTime = static::parseToDateTimeDefault($rawValue, '+Y-m-d H:i:s');
