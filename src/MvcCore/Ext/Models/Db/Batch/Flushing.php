@@ -176,7 +176,7 @@ trait Flushing {
 		if ($hasAutoIncrColumn) {
 			list(
 				/*$autoIncrPropIsPrivate*/, /*$autoIncrPropAllowNulls*/, $autoIncrPropTypes, 
-				$autoIncrPropCodeName/*, $autoIncrPropDbName, $autoIncrPropFormatArgs,
+				$autoIncrPropCodeName/*, $autoIncrPropDbName, $autoIncrPropParserArgs, $autoIncrPropFormatArgs,
 				$autoIncrPropPrimaryKey, $autoIncrPropAutoIncrement, $autoIncrPropUniqueKey*/
 			) = $metaData[$autoIncrIndex];
 

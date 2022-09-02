@@ -22,10 +22,10 @@ trait Parsers {
 	 * Try to convert raw database value into first type in target types.
 	 * @param  mixed     $rawValue
 	 * @param  \string[] $typesString
-	 * @param  array     $formatArgs
+	 * @param  array     $parserArgs
 	 * @return mixed     Converted result.
 	 */
-	protected static function parseToTypes ($rawValue, $typesString, $formatArgs = []) {
+	protected static function parseToTypes ($rawValue, $typesString, $parserArgs = []) {
 		$targetTypeValue = NULL;
 		$value = $rawValue;
 		foreach ($typesString as $typeString) {
@@ -40,7 +40,7 @@ trait Parsers {
 				foreach ($value as $key => $item) {
 					list(
 						$conversionResultLocal, $targetTypeValueLocal
-					) = static::parseToType($item, $arrayItemTypeString, $formatArgs);
+					) = static::parseToType($item, $arrayItemTypeString, $parserArgs);
 					if ($conversionResultLocal) {
 						$targetTypeValue[$key] = $targetTypeValueLocal;
 					} else {
@@ -51,7 +51,7 @@ trait Parsers {
 			} else {
 				list(
 					$conversionResult, $targetTypeValue
-				) = static::parseToType($rawValue, $typeString, $formatArgs);
+				) = static::parseToType($rawValue, $typeString, $parserArgs);
 			}
 			if ($conversionResult) {
 				$value = $targetTypeValue;
@@ -65,16 +65,16 @@ trait Parsers {
 	 * Try to convert database value into target type.
 	 * @param  mixed  $rawValue
 	 * @param  string $typeStr
-	 * @param  array  $formatArgs
+	 * @param  array  $parserArgs
 	 * @return array  First item is conversion boolean success, second item is converted result.
 	 */
-	protected static function parseToType ($rawValue, $typeStr, $formatArgs = []) {
+	protected static function parseToType ($rawValue, $typeStr, $parserArgs = []) {
 		$conversionResult = FALSE;
 		$typeStr = trim($typeStr, '\\');
 		if ($typeStr == 'DateTime') {
 			if (!($rawValue instanceof \DateTime)) {
-				if (is_array($formatArgs) && count($formatArgs) > 0) {
-					$dateTime = static::parseToDateTime($rawValue, $formatArgs);
+				if (is_array($parserArgs) && count($parserArgs) > 0) {
+					$dateTime = static::parseToDateTime($rawValue, $parserArgs);
 				} else {
 					$dateTime = static::parseToDateTimeDefault($rawValue, '+Y-m-d H:i:s');
 				}
@@ -97,11 +97,11 @@ trait Parsers {
 	/**
 	 * Convert int, float or string value into \DateTime.
 	 * @param  int|float|string|NULL $rawValue 
-	 * @param  \string[]             $formatArgs 
+	 * @param  \string[]             $parserArgs 
 	 * @return \DateTime|bool
 	 */
-	protected static function parseToDateTime ($rawValue, $formatArgs) {
-		$dateTimeFormat = $formatArgs[0];
+	protected static function parseToDateTime ($rawValue, $parserArgs) {
+		$dateTimeFormat = $parserArgs[0];
 		if (is_numeric($rawValue)) {
 			$rawValueStr = str_replace(['+','-','.'], '', (string) $rawValue);
 			$secData = mb_substr($rawValueStr, 0, 10);
@@ -111,8 +111,8 @@ trait Parsers {
 		} else {
 			$dateTimeStr = (string) $rawValue;
 		}
-		if (isset($formatArgs[1])) {
-			$timeZone = new \DateTimeZone((string) $formatArgs[1]);
+		if (isset($parserArgs[1])) {
+			$timeZone = new \DateTimeZone((string) $parserArgs[1]);
 			$dateTime = \date_create_from_format($dateTimeFormat, $dateTimeStr, $timeZone);
 		} else {
 			$dateTime = \date_create_from_format($dateTimeFormat, $dateTimeStr);

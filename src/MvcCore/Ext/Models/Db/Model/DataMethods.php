@@ -58,7 +58,7 @@ trait DataMethods {
 		foreach ($sourceCodeNamesMap as $propertyName => $metaDataIndex) {
 			list(
 				$propIsPrivate, /*$propAllowNulls*/, /*$propTypes*/, 
-				/*$propCodeName*/, $propDbColumnName, $propFormatArgs/*,
+				/*$propCodeName*/, $propDbColumnName, $propParsingArgs/*, $propFormatArgs,
 				$propPrimaryKey, $propAutoIncrement, $propUniqueKey, $hasDefaultValue*/
 			) = $metaData[$metaDataIndex];
 
@@ -85,7 +85,7 @@ trait DataMethods {
 				if ($propDbColumnName !== NULL) {
 					$resultKey = $propDbColumnName;
 					$propValue = static::convertToScalar(
-						$propValue, $propFormatArgs
+						$propValue, $propParsingArgs
 					);
 				} else {
 					continue;
@@ -143,7 +143,7 @@ trait DataMethods {
 				$metaDataIndex = $dbColumnNamesMap[$dbKey];
 				list(
 					$propIsPrivate, $propAllowNulls, $propTypes,
-					$propCodeName, /*$propDbColumnName*/, $propFormatArgs/*,
+					$propCodeName, /*$propDbColumnName*/, $propParsingArgs/*, $propFormatArgs,
 					$propPrimaryKey, $propAutoIncrement, $propUniqueKey, $hasDefaultValue*/
 				) = $metaData[$metaDataIndex];
 
@@ -153,7 +153,7 @@ trait DataMethods {
 					$value = $dbValue;
 				} else {
 					$value = static::parseToTypes(
-						$dbValue, $propTypes, $propFormatArgs
+						$dbValue, $propTypes, $propParsingArgs
 					);
 				}
 				if ($propCodeName !== NULL) {
@@ -173,7 +173,7 @@ trait DataMethods {
 					$metaDataIndex = $sourceCodeNamesMap[$propertyName];
 					list(
 						$propIsPrivate, $propAllowNulls, $propTypes,
-						/*$propCodeName*/, /*$propDbColumnName*/, $propFormatArgs/*,
+						/*$propCodeName*/, /*$propDbColumnName*/, $propParsingArgs/*, $propFormatArgs,
 						$propPrimaryKey, $propAutoIncrement, $propUniqueKey*/
 					) = $metaData[$metaDataIndex];
 					if (!$propAllowNulls && $isNull) continue;
@@ -181,7 +181,7 @@ trait DataMethods {
 						$value = $dbValue;
 					} else {
 						$value = static::parseToTypes(
-							$dbValue, $propTypes, $propFormatArgs
+							$dbValue, $propTypes, $propParsingArgs
 						);	
 					}
 				} else {
@@ -242,7 +242,7 @@ trait DataMethods {
 		foreach ($sourceCodeNamesMap as $propertyName => $metaDataIndex) {
 			list(
 				$propIsPrivate, /*$propAllowNulls*/, /*$propTypes*/, 
-				/*$propCodeName*/, $propDbColumnName, $propFormatArgs/*,
+				/*$propCodeName*/, $propDbColumnName, $propParsingArgs/*, $propFormatArgs,
 				$propPrimaryKey, $propAutoIncrement, $propUniqueKey, $hasDefaultValue*/
 			) = $metaData[$metaDataIndex];
 
@@ -272,7 +272,7 @@ trait DataMethods {
 				if ($propDbColumnName !== NULL) {
 					$resultKey = $propDbColumnName;
 					$currentValue = static::convertToScalar(
-						$currentValue, $propFormatArgs
+						$currentValue, $propParsingArgs
 					);
 				} else {
 					continue;

@@ -14,13 +14,13 @@
 namespace MvcCore\Ext\Models\Db\Attrs;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
-class Format {
+class ParserArgs {
 	
-	const PHP_DOCS_TAG_NAME = '@format';
+	const PHP_DOCS_TAG_NAME = '@parserArgs';
 
 	/**
 	 * Define this param for any additional value conversion 
-	 * from database to code and back.
+	 * from database to code.
 	 * @param mixed $args,...
 	 */
 	public function __construct ($args) {

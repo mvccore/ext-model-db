@@ -160,7 +160,7 @@ trait MetaData {
 
 			list(
 				/*$propIsPrivate*/, /*$propAllowNulls*/, /*$propTypes*/,
-				$propCodeName, $propDbColumnName, /*$propFormatArgs*/,
+				$propCodeName, $propDbColumnName, /*$propParserArgs*/, /*$propFormatArgs*/,
 				$propPrimaryKey, $propAutoIncrement, $propUniqueKey/*, $hasDefaultValue*/
 			) = $resultItem;
 
@@ -199,7 +199,7 @@ trait MetaData {
 
 			$index++;
 		}
-		// auto increment feature by dfault for single primary key integer column:
+		// auto increment feature by default for single primary key integer column:
 		if (!$autoIncrementMatched && count($primaryKeysIndexes) === 1) {
 			$columnIndex = $primaryKeysIndexes[0];
 			$propTypes = $propsMetaData[$columnIndex][2];
@@ -224,7 +224,7 @@ trait MetaData {
 			$propsAdditionalMaps[$classConnections] = $classAttrsArgs->connections;
 		if (isset($classAttrsArgs->tables)) 
 			$propsAdditionalMaps[$classTables] = $classAttrsArgs->tables;
-
+		
 		return [$propsMetaData, $propsAdditionalMaps];
 	}
 
@@ -235,12 +235,13 @@ trait MetaData {
 	 * - `2`    `string[]`          Property types from code or from doc comments or empty array.
 	 * - `3`    `string`            PHP code property name.
 	 * - `4`    `string|NULL`	    Database column name (if defined) or `NULL`.
-	 * - `5`    `mixed`             Additional convertsion data  (if defined) or `NULL`.
-	 * - `6`    `bool`              `TRUE` if column is in primary key.
-	 * - `7`    `bool`              `TRUE` if column has auto increment feature.
-	 * - `8`    `bool|string|NULL`  `TRUE` if column is in unique key or name 
+	 * - `5`    `array|NULL`        Additional parsing data  (if defined) or `NULL`.
+	 * - `6`    `array|NULL`        Additional formating data  (if defined) or `NULL`.
+	 * - `7`    `bool`              `TRUE` if column is in primary key.
+	 * - `8`    `bool`              `TRUE` if column has auto increment feature.
+	 * - `9`    `bool|string|NULL`  `TRUE` if column is in unique key or name 
 	 *                              of the unique key in database.
-	 * - `9`    `bool`              `TRUE` if property has defined default value.
+	 * - `10`   `bool`              `TRUE` if property has defined default value.
 	 * @param  \ReflectionProperty $prop 
 	 * @param  array               $params [bool $phpWithTypes, bool $phpWithUnionTypes, string $toolClass, bool $attributesAnotation]
 	 * @return array
@@ -256,7 +257,8 @@ trait MetaData {
 		// complete extended metadata:
 		$attrsClassesNames = [
 			'columnName'	=> '\\MvcCore\\Ext\\Models\\Db\\Attrs\\Column',
-			'columnFormat'	=> '\\MvcCore\\Ext\\Models\\Db\\Attrs\\Format',
+			'columnParser'	=> '\\MvcCore\\Ext\\Models\\Db\\Attrs\\ParserArgs',
+			'columnFormat'	=> '\\MvcCore\\Ext\\Models\\Db\\Attrs\\FormatArgs',
 			'keyPrimary'	=> '\\MvcCore\\Ext\\Models\\Db\\Attrs\\KeyPrimary',
 			'keyUnique'		=> '\\MvcCore\\Ext\\Models\\Db\\Attrs\\KeyUnique',
 		];
@@ -288,44 +290,50 @@ trait MetaData {
 			: NULL;
 
 		// column format to index 5:
-		$result[5] = isset($propAttrs->columnFormat)
+		$result[5] = isset($propAttrs->columnParser)
+			? $propAttrs->columnParser
+			: NULL;
+
+		// column format to index 6:
+		$result[6] = isset($propAttrs->columnFormat)
 			? $propAttrs->columnFormat
 			: NULL;
 
-		// primary key index flag to index 6:
-		$result[6] = FALSE;
-		// auto increment feature flag to index 7:
+		// primary key index flag to index 7:
 		$result[7] = FALSE;
+
+		// auto increment feature flag to index 8:
+		$result[8] = FALSE;
 		if (isset($propAttrs->keyPrimary)) {
-			$result[6] = TRUE;
-			$result[7] = FALSE;
+			$result[7] = TRUE;
+			$result[8] = FALSE;
 			if (is_array($propAttrs->keyPrimary) && count($propAttrs->keyPrimary) === 1) {
 				$rawBool = (isset($propAttrs->keyPrimary[0]) 
 					? $propAttrs->keyPrimary[0] 
 					: $propAttrs->keyPrimary['autoIncrement']);
-				$result[7] = is_bool($rawBool)
+				$result[8] = is_bool($rawBool)
 					? $rawBool
 					: strtoupper($rawBool) === 'TRUE';
 			}
 		}
 		
-		// unique key index data to index 8:
-		$result[8] = NULL;
+		// unique key index data to index 9:
+		$result[9] = NULL;
 		
 		if (isset($propAttrs->keyUnique)) {
 			if (is_array($propAttrs->keyUnique) && count($propAttrs->keyUnique) > 0) {
 				$uKeyName = isset($propAttrs->keyUnique[0]) 
 					? $propAttrs->keyUnique[0] 
 					: $propAttrs->keyUnique['keyName'];
-				$result[8] = $uKeyName === '' 
+				$result[9] = $uKeyName === '' 
 					? TRUE 
 					: $uKeyName;
 			} else {
-				$result[8] = TRUE;
+				$result[9] = TRUE;
 			}
 		}
 
-		// property has default value to index 9:
+		// property has default value to index 10:
 		$hasDefaultValue = FALSE;
 		if ($phpWithUnionTypes) {
 			$hasDefaultValue = $prop->hasDefaultValue();
@@ -339,8 +347,8 @@ trait MetaData {
 				$hasDefaultValue = $dummyValue !== NULL;
 			}
 		}
-		$result[9] = $hasDefaultValue;
-
+		$result[10] = $hasDefaultValue;
+		
 		return $result;
 	}
 }

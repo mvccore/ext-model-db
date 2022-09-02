@@ -155,7 +155,7 @@ trait EditMethods {
 		} else {
 			list(
 				$propIsPrivate, /*$propAllowNulls*/, /*$propTypes*/, 
-				$propCodeName/*, $propDbColumnName, $propFormatArgs,
+				$propCodeName/*, $propDbColumnName, $propParserArgs, $propFormatArgs,
 				$propPrimaryKey, $propAutoIncrement, $propUniqueKey*/
 			) = $metaData[$autoIncrementIndex];
 			if ($propIsPrivate) {
@@ -208,7 +208,7 @@ trait EditMethods {
 		} else {
 			list(
 				$autoIncrPropIsPrivate, /*$autoIncrPropAllowNulls*/, $autoIncrPropTypes, 
-				$autoIncrPropCodeName, $autoIncrPropDbName/*, $autoIncrPropFormatArgs,
+				$autoIncrPropCodeName, $autoIncrPropDbName/*, $autoIncrPropParserArgs, $autoIncrPropFormatArgs,
 				$autoIncrPropPrimaryKey, $autoIncrPropAutoIncrement, $autoIncrPropUniqueKey*/
 			) = $metaData[$autoIncrIndex];
 			if (isset($allValues[$autoIncrPropDbName]))
@@ -249,7 +249,7 @@ trait EditMethods {
 					if ($metaDataIndex === $autoIncrIndex) continue;
 					list(
 						$propIsPrivate, /*$propAllowNulls*/, /*$propTypes*/, 
-						$propCodeName, /*$propDbColumnName, $propFormatArgs,
+						$propCodeName, /*$propDbColumnName, $propParserArgs, $propFormatArgs,
 						$propPrimaryKey, $propAutoIncrement, $propUniqueKey*/
 					) = $metaData[$metaDataIndex];
 					if ($propIsPrivate) {
@@ -323,7 +323,7 @@ trait EditMethods {
 				if ($metaDataIndex === $autoIncrIndex) continue;
 				list(
 					$propIsPrivate, /*$propAllowNulls*/, /*$propTypes*/, 
-					$propCodeName, /*$propDbColumnName, $propFormatArgs,
+					$propCodeName, /*$propDbColumnName, $propParserArgs, $propFormatArgs,
 					$propPrimaryKey, $propAutoIncrement, $propUniqueKey*/
 				) = $metaData[$metaDataIndex];
 				if ($propIsPrivate) {
@@ -461,7 +461,7 @@ trait EditMethods {
 		foreach ($keyColsIndexes as $primaryKeyColIndex) {
 			list(
 				$propIsPrivate, /*$propAllowNulls*/, /*$propTypes*/, 
-				$propCodeName, $propDbColumnName/*, $propFormatArgs,
+				$propCodeName, $propDbColumnName/*, $propParserArgs, $propFormatArgs,
 				$propPrimaryKey, $propAutoIncrement, $propUniqueKey*/
 			) = $metaData[$primaryKeyColIndex];
 			$propValue = NULL;
