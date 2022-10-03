@@ -20,6 +20,14 @@ trait MetaData {
 	
 	/**
 	 * @inheritDocs
+	 * @return int
+	 */
+	public static function GetDefaultPropsFlags () {
+		return static::$defaultPropsFlags;
+	}
+
+	/**
+	 * @inheritDocs
 	 * @param  int    $propsFlags
 	 * @param  \int[] $additionalMaps
 	 * @throws \RuntimeException|\InvalidArgumentException

@@ -60,6 +60,12 @@ interface IModel {
 	 * @return \MvcCore\Ext\Models\Db\Resource
 	 */
 	public function GetResource ($args = NULL, $classPath = '{self}s\Resource');
+	
+	/**
+	 * Get default model properties flags.
+	 * @return int
+	 */
+	public static function GetDefaultPropsFlags ();
 
 	/**
 	 * Return cached data about properties in current class to not create
