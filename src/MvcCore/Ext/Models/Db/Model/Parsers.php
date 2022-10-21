@@ -70,37 +70,48 @@ trait Parsers {
 	 */
 	protected static function parseToType ($rawValue, $typeStr, $parserArgs = []) {
 		$conversionResult = FALSE;
-		$typeStr = trim($typeStr, '\\');
-		if ($typeStr == 'DateTime') {
-			if (!($rawValue instanceof \DateTime)) {
+		$typeStr = trim($typeStr, '\\?');
+		if (static::parseIsTypeString($typeStr)) {
+			// string:
+			$rawValue = (string) $rawValue;
+			$conversionResult = TRUE;
+		} else if (static::parseIsTypeNumeric($typeStr)) {
+			// int or float:
+			if (settype($rawValue, $typeStr)) 
+				$conversionResult = TRUE;
+		} else if (static::parseIsTypeBoolean($typeStr)) {
+			// bool:
+			$rawValue = static::parseToBool($rawValue);
+			$conversionResult = TRUE;
+		} else if (static::parseIsTypeDateTime($typeStr)) {
+			// \DateTime, \DateTimeImmutable or it's extended class:
+			if (!($rawValue instanceof \DateTime || $rawValue instanceof \DateTimeImmutable)) {
 				if (is_array($parserArgs) && count($parserArgs) > 0) {
-					$dateTime = static::parseToDateTime($rawValue, $parserArgs);
+					$dateTime = static::parseToDateTime($typeStr, $rawValue, $parserArgs);
 				} else {
-					$dateTime = static::parseToDateTimeDefault($rawValue, '+Y-m-d H:i:s');
+					$dateTime = static::parseToDateTimeDefault($typeStr, $rawValue, ['+Y-m-d H:i:s']);
 				}
-				if ($dateTime instanceof \DateTime) {
+				if ($dateTime !== FALSE) {
 					$rawValue = $dateTime;
 					$conversionResult = TRUE;
 				}
 			}
-		} else if ($typeStr === 'bool' || $typeStr === 'boolean') {
-			$rawValue = static::parseToBool($rawValue);
-			$conversionResult = TRUE;
 		} else {
-			// int, float, string, array, object, null:
-			if (settype($rawValue, $typeStr)) 
-				$conversionResult = TRUE;
+			// array or object:
+			$rawValue = static::parseToArrayOrObject($typeStr, $rawValue, $parserArgs);
+			$conversionResult = TRUE;
 		}
 		return [$conversionResult, $rawValue];
 	}
 	
 	/**
-	 * Convert int, float or string value into \DateTime.
-	 * @param  int|float|string|NULL $rawValue 
+	 * Convert int, float or string value into \DateTime or it's extended class.
+	 * @param  string                $typeStr
+	 * @param  int|float|string|NULL $rawValue
 	 * @param  \string[]             $parserArgs 
-	 * @return \DateTime|bool
+	 * @return \DateTime|\DateTimeImmutable|bool
 	 */
-	protected static function parseToDateTime ($rawValue, $parserArgs) {
+	protected static function parseToDateTime ($typeStr, $rawValue, $parserArgs) {
 		$dateTimeFormat = $parserArgs[0];
 		if (is_numeric($rawValue)) {
 			$rawValueStr = str_replace(['+','-','.'], '', (string) $rawValue);
@@ -111,11 +122,11 @@ trait Parsers {
 		} else {
 			$dateTimeStr = (string) $rawValue;
 		}
-		if (isset($parserArgs[1])) {
-			$timeZone = new \DateTimeZone((string) $parserArgs[1]);
-			$dateTime = \date_create_from_format($dateTimeFormat, $dateTimeStr, $timeZone);
+		if (isset($parserArgs['tz'])) {
+			$timeZone = new \DateTimeZone((string) $parserArgs['tz']);
+			$dateTime = $typeStr::createFromFormat($dateTimeFormat, $dateTimeStr, $timeZone);
 		} else {
-			$dateTime = \date_create_from_format($dateTimeFormat, $dateTimeStr);
+			$dateTime = $typeStr::createFromFormat($dateTimeFormat, $dateTimeStr);
 		}
 		return $dateTime;
 	}

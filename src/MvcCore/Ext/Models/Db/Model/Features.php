@@ -32,6 +32,8 @@ trait Features {
 		\MvcCore\Ext\Models\Db\Model\MagicMethods {
 			\MvcCore\Ext\Models\Db\Model\MagicMethods::jsonSerialize insteadof \MvcCore\Model\MagicMethods;
 			\MvcCore\Model\MagicMethods::jsonSerialize as jsonSerializeBase;
+			\MvcCore\Ext\Models\Db\Model\MagicMethods::__clone insteadof \MvcCore\Model\MagicMethods;
+			\MvcCore\Model\MagicMethods::__clone as __cloneBase;
 		}
 
 	use \MvcCore\Model\Connection, 
