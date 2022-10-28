@@ -27,9 +27,11 @@ trait EditMethods {
 	 */
 	public function Save ($createNew = NULL, $propsFlags = 0) {
 		/** @var \MvcCore\Ext\Models\Db\Model $this */
-		return static::editSave(
-			$this, $createNew, $propsFlags, static::getEditMetaDataCollections($propsFlags)
-		);
+		if ($createNew || $this->IsNew($propsFlags)) {
+			return $this->Insert($propsFlags);
+		} else {
+			return $this->Update($propsFlags);
+		}
 	}
 
 	/**
