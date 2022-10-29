@@ -290,4 +290,13 @@ trait DataMethods {
 
 		return $result;
 	}
+
+	/**
+	 * @inheritDocs
+	 * @return array
+	 */
+	public function GetInitialValues () {
+		return $this->initialValues;
+	}
+
 }
