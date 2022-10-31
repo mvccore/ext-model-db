@@ -25,6 +25,7 @@ trait Flushing {
 	 */
 	public function Flush () {
 		/** @var \MvcCore\Ext\Models\Db\Batch $this */
+		if ($this->size === 0) return $this;
 		if ($this->connection === NULL)
 			$this->connection = self::GetConnection($this->connectionName);
 		$this->flushPrepare();
