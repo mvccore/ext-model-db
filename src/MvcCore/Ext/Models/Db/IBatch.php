@@ -55,7 +55,7 @@ interface IBatch {
 
 	/**
 	 * Set automatic batch flush size. Default value is 10 items. 
-	 * If `NULL`, flushing will not be called automatically 
+	 * If `NULL` or `0`, flushing will not be called automatically 
 	 * and it's necessary to call `$batchModel->Flush()` manually.
 	 * @param  int|NULL $flushSize 
 	 * @return \MvcCore\Ext\Models\Db\IBatch
