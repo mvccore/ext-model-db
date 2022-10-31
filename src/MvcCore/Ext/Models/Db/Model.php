@@ -16,6 +16,7 @@ namespace MvcCore\Ext\Models\Db;
 /**
  * @inheritDocs
  */
+#[\AllowDynamicProperties]
 class		Model 
 implements	\MvcCore\IModel,
 			\MvcCore\Ext\Models\Db\IModel, 
