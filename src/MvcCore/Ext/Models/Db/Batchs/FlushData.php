@@ -73,7 +73,7 @@ class FlushData extends \stdClass {
 	 * @param  string|NULL $metaStatement 
 	 * @return void
 	 */
-	public function __construct ($metaStatement) {
+	public function __construct ($metaStatement = NULL) {
 		$this->UseMetaStatement	= $metaStatement !== NULL;
 		$this->MetaStatement	= $metaStatement;
 	}

@@ -33,8 +33,17 @@ trait GettersSetters {
 	 */
 	public function SetAutoFlushSize ($flushSize) {
 		/** @var \MvcCore\Ext\Models\Db\Batch $this */
-		$this->flushSize = $flushSize;
-		$this->autoFlush = is_int($flushSize);
+		$flushSizeIsInt = is_int($flushSize);
+		if ($flushSizeIsInt && $flushSize > 0) {
+			$this->autoFlush = TRUE;
+			$this->flushSize = $flushSize;
+		} else {
+			$this->autoFlush = FALSE;
+			$flushSizeAbs = $flushSizeIsInt ? abs($flushSize) : 0;
+			if ($flushSizeAbs > 0)
+				$this->flushSize = $flushSizeAbs;
+
+		}
 		return $this;
 	}
 	

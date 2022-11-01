@@ -15,6 +15,7 @@ namespace MvcCore\Ext\Models\Db\Batch;
 
 /**
  * @mixin \MvcCore\Ext\Models\Db\Batch
+ * @property $flushData \MvcCore\Ext\Models\Db\Batchs\FlushData
  */
 trait Flushing {
 	
@@ -28,9 +29,12 @@ trait Flushing {
 		if ($this->size === 0) return $this;
 		if ($this->connection === NULL)
 			$this->connection = self::GetConnection($this->connectionName);
-		$this->flushPrepare();
-		$this->flushExecute();
-		$this->flushCleanUp();
+		$this->rowsCount = 0;
+		while ($this->size > 0) {
+			$this->flushPrepare();
+			$this->flushExecute();
+			$this->flushCleanUp();
+		}
 		return $this;
 	}
 	
@@ -61,8 +65,6 @@ trait Flushing {
 	 */
 	protected function flushPrepare () {
 		/** @var \MvcCore\Ext\Models\Db\Batch $this */
-		$this->rowsCount = 0;
-
 		$metaStatement = $this->connection->GetMetaDataStatement();
 
 		$this->flushData = new \MvcCore\Ext\Models\Db\Batchs\FlushData($metaStatement);
@@ -86,6 +88,9 @@ trait Flushing {
 			}
 			$instance->SetEditResource($instanceEditRes);
 			$this->flushData->InstanceIndex++;
+			if (!$this->autoFlush && $this->flushData->InstanceIndex === $this->flushSize) {
+				break;
+			}
 		}
 	}
 
@@ -142,11 +147,13 @@ trait Flushing {
 	 * @return void
 	 */
 	protected function flushCleanUp () {
+		$instanceIndex = $this->flushData->InstanceIndex;
+		$this->instances = array_slice($this->instances, $instanceIndex);
+		$this->operationsFlags = array_slice($this->operationsFlags, $instanceIndex);
+		$this->size = count($this->instances);
+		if ($this->size === 0)
+			$this->instancesMetaData = [];
 		$this->flushData = NULL;
-		$this->instances = [];
-		$this->operationsFlags = [];
-		$this->size = 0;
-		$this->instancesMetaData = [];
 	}
 
 	/**
