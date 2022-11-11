@@ -27,10 +27,14 @@ trait EditMethods {
 	 */
 	public function Save ($createNew = NULL, $propsFlags = 0) {
 		/** @var \MvcCore\Ext\Models\Db\Model $this */
-		if ($createNew || $this->IsNew($propsFlags)) {
-			return $this->Insert($propsFlags);
+		if ($createNew !== NULL) {
+			return $createNew
+				? $this->Insert($propsFlags)
+				: $this->Update($propsFlags);
 		} else {
-			return $this->Update($propsFlags);
+			return $this->IsNew($propsFlags)
+				? $this->Insert($propsFlags)
+				: $this->Update($propsFlags);
 		}
 	}
 
