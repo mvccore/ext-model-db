@@ -253,7 +253,7 @@ implements	\MvcCore\Model\IConstants,
 		if ($this->retryAttemptsTotal === NULL) {
 			$this->retryAttemptsTotal = 0;
 			$configClass = \MvcCore\Application::GetInstance()->GetConfigClass();
-			$sysCfg = $configClass::GetSystem();
+			$sysCfg = $configClass::GetConfigSystem();
 			if ($sysCfg !== NULL) {
 				$sysCfgDbSection = $sysCfg->{$sysCfgProps->sectionName};
 				if ($sysCfgDbSection !== NULL) {
