@@ -255,7 +255,7 @@ trait MetaData {
 	 * @return array
 	 */
 	protected static function parseMetaDataProperty (\ReflectionProperty $prop, $params) {
-		list (, $phpWithUnionTypes, $toolClass, $attributesAnotation, ) = $params;
+		list (, $phpWithUnionTypes, $toolClass, $attributesAnotation) = $params;
 		// array with records under sequential indexes 0, 1, 2:
 		$result = static::parseMetaDataPropertyBase($prop, $params);
 		
@@ -315,13 +315,17 @@ trait MetaData {
 		if (isset($propAttrs->keyPrimary)) {
 			$result[7] = TRUE;
 			$result[8] = FALSE;
-			if (is_array($propAttrs->keyPrimary) && count($propAttrs->keyPrimary) === 1) {
-				$rawBool = (isset($propAttrs->keyPrimary[0]) 
-					? $propAttrs->keyPrimary[0] 
-					: $propAttrs->keyPrimary['autoIncrement']);
-				$result[8] = is_bool($rawBool)
-					? $rawBool
-					: strtoupper($rawBool) === 'TRUE';
+			if (is_array($propAttrs->keyPrimary)) {
+				if (count($propAttrs->keyPrimary) === 0) {
+					$result[8] = TRUE; // if no param defined, autoincrement is by default
+				} else {
+					$rawBool = (isset($propAttrs->keyPrimary[0]) 
+						? $propAttrs->keyPrimary[0] 
+						: $propAttrs->keyPrimary['autoIncrement']);
+					$result[8] = is_bool($rawBool)
+						? $rawBool
+						: strtoupper($rawBool) === 'TRUE';
+				}
 			}
 		}
 		
