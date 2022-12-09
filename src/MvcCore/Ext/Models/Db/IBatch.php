@@ -88,6 +88,22 @@ interface IBatch {
 	public function SetConnectionName ($connectionName = NULL);
 
 	/**
+	 * Get if batch has given model instance already or not.
+	 * When batch model is flushed, all model instance references are unset.
+	 * @param  \MvcCore\Ext\Models\Db\Model $modelInstance 
+	 * @return bool
+	 */
+	public function HasInBatch (\MvcCore\Ext\Models\Db\IModel $modelInstance);
+	
+	/**
+	 * Remove model instance from batch if there is any.
+	 * When batch model is flushed, all model instance references are unset.
+	 * @param  \MvcCore\Ext\Models\Db\Model $modelInstance 
+	 * @return \MvcCore\Ext\Models\Db\IBatch
+	 */
+	public function RemoveFromBatch (\MvcCore\Ext\Models\Db\IModel $modelInstance);
+
+	/**
 	 * Add model instance into batch. When batch model 
 	 * is flushed, all model instance references are unset.
 	 * Default operation is to save model instance, it means 

@@ -81,6 +81,30 @@ trait GettersSetters {
 		$this->connectionName = $connectionName;
 		return $this;
 	}
+
+	/**
+	 * @inheritDocs
+	 * @param  \MvcCore\Ext\Models\Db\Model $modelInstance 
+	 * @return bool
+	 */
+	public function HasInBatch (\MvcCore\Ext\Models\Db\IModel $modelInstance) {
+		return in_array($modelInstance, $this->instances, TRUE);
+	}
+
+	/**
+	 * @inheritDocs
+	 * @param  \MvcCore\Ext\Models\Db\Model $modelInstance 
+	 * @return \MvcCore\Ext\Models\Db\Batch
+	 */
+	public function RemoveFromBatch (\MvcCore\Ext\Models\Db\IModel $modelInstance) {
+		$instanceIndex = array_search($modelInstance, $this->instances, TRUE);
+		if ($instanceIndex !== NULL) {
+			array_splice($this->instances, $instanceIndex, 1);
+			array_splice($this->operationsFlags, $instanceIndex, 1);
+			$this->size -= 1;
+		}
+		return $this;
+	}
 	
 	/**
 	 * @inheritDocs
@@ -92,10 +116,23 @@ trait GettersSetters {
 	 */
 	public function AddToBatch (\MvcCore\Ext\Models\Db\IModel $modelInstance, $operationFlags = \MvcCore\Ext\Models\Db\IBatch::OPERATION_SAVE) {
 		/** @var \MvcCore\Ext\Models\Db\Batch $this */
-		if (in_array($modelInstance, $this->instances, TRUE)) 
+		if (in_array($modelInstance, $this->instances, TRUE)) {
+			try {
+				$modelInstanceStr = (string) $modelInstance;
+				if ($modelInstanceStr === get_class($modelInstance))
+					throw new \Exception($modelInstanceStr);
+			} catch (\Throwable $e1) {
+				try {
+					$toolsClass = \MvcCore\Application::GetInstance()->GetToolClass();
+					$modelInstanceStr = $toolsClass::JsonEncode($modelInstance->GetValues());
+				} catch (\Throwable $e2) {
+					$modelInstanceStr = $e1->getMessage();
+				}
+			}
 			throw new \InvalidArgumentException(
-				"[".get_class($this)."] Model instance is already in batch."
+				"Model instance is already in batch ({$modelInstanceStr})."
 			);
+		}
 		$this->instances[] = $modelInstance;
 		$this->operationsFlags[] = $operationFlags;
 		$this->size += 1;
