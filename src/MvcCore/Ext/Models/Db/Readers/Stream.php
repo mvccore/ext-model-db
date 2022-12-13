@@ -18,6 +18,12 @@ extends		\MvcCore\Ext\Models\Db\Reader
 implements	\MvcCore\Ext\Models\Db\Readers\IStream {
 
 	/**
+	 * Stream iterator object.
+	 * @var \MvcCore\Ext\Models\Db\Readers\Streams\Iterator
+	 */
+	protected $iterator;
+
+	/**
 	 * @inheritDocs
 	 * @param  string $fullClassName 
 	 * @param  int    $readingFlags 
