@@ -32,10 +32,10 @@ trait DataMethods {
 		$keysByCode = NULL;
 		if (($propsFlags & \MvcCore\IModel::PROPS_NAMES_BY_CODE) != 0) {
 			$keysByCode = TRUE;
-			$propsFlags = ~((~$propsFlags) | \MvcCore\IModel::PROPS_NAMES_BY_CODE);
+			$propsFlags = $propsFlags ^ \MvcCore\IModel::PROPS_NAMES_BY_CODE;
 		} else if (($propsFlags & \MvcCore\IModel::PROPS_NAMES_BY_DATABASE) != 0) {
 			$keysByCode = FALSE;
-			$propsFlags = ~((~$propsFlags) | \MvcCore\IModel::PROPS_NAMES_BY_DATABASE);
+			$propsFlags = $propsFlags ^ \MvcCore\IModel::PROPS_NAMES_BY_DATABASE;
 		}
 
 		list ($metaData, $sourceCodeNamesMap) = static::GetMetaData(
@@ -113,9 +113,14 @@ trait DataMethods {
 	 */
 	public function SetValues ($data = [], $propsFlags = 0) {
 		$completeInitialValues = FALSE;
+		$setOnlyDefinedProps = FALSE;
 		if (($propsFlags & \MvcCore\IModel::PROPS_INITIAL_VALUES) != 0) {
 			$completeInitialValues = TRUE;
-			$propsFlags = ~((~$propsFlags) | \MvcCore\IModel::PROPS_INITIAL_VALUES);
+			$propsFlags = $propsFlags ^ \MvcCore\IModel::PROPS_INITIAL_VALUES;
+		}
+		if (($propsFlags & \MvcCore\IModel::PROPS_SET_DEFINED_ONLY) != 0) {
+			$setOnlyDefinedProps = TRUE;
+			$propsFlags = $propsFlags ^ \MvcCore\IModel::PROPS_SET_DEFINED_ONLY;
 		}
 		
 		list ($metaData, $sourceCodeNamesMap, $dbColumnNamesMap) = static::GetMetaData(
@@ -185,6 +190,7 @@ trait DataMethods {
 						);	
 					}
 				} else {
+					if ($setOnlyDefinedProps) continue;
 					$value = $dbValue;
 				}
 			}
@@ -216,10 +222,10 @@ trait DataMethods {
 		$keysByCode = NULL;
 		if (($propsFlags & \MvcCore\IModel::PROPS_NAMES_BY_CODE) != 0) {
 			$keysByCode = TRUE;
-			$propsFlags = ~((~$propsFlags) | \MvcCore\IModel::PROPS_NAMES_BY_CODE);
+			$propsFlags = $propsFlags ^ \MvcCore\IModel::PROPS_NAMES_BY_CODE;
 		} else if (($propsFlags & \MvcCore\IModel::PROPS_NAMES_BY_DATABASE) != 0) {
 			$keysByCode = FALSE;
-			$propsFlags = ~((~$propsFlags) | \MvcCore\IModel::PROPS_NAMES_BY_DATABASE);
+			$propsFlags = $propsFlags ^ \MvcCore\IModel::PROPS_NAMES_BY_DATABASE;
 		}
 
 		list ($metaData, $sourceCodeNamesMap) = static::GetMetaData(
