@@ -255,7 +255,7 @@ trait MetaData {
 	 * @return array
 	 */
 	protected static function parseMetaDataProperty (\ReflectionProperty $prop, $params) {
-		list (, $phpWithUnionTypes, $toolClass, $attributesAnotation) = $params;
+		list (/*$phpWithTypes*/, $phpWithUnionTypes, $toolClass, $attributesAnotation, /*$accessModFlags*/) = $params;
 		// array with records under sequential indexes 0, 1, 2:
 		$result = static::parseMetaDataPropertyBase($prop, $params);
 		
