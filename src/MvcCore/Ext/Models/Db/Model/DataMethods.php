@@ -22,19 +22,27 @@ trait DataMethods {
 	 * @inheritDocs
 	 * @param  int  $propsFlags    All properties flags are available except flags: 
 	 *                             - `\MvcCore\IModel::PROPS_INITIAL_VALUES`,
-	 *                             - `\MvcCore\IModel::PROPS_CONVERT_CASE_INSENSITIVE`.
+	 *                             - `\MvcCore\IModel::PROPS_CONVERT_CASE_INSENSITIVE`,
+	 *                             - `\MvcCore\IModel::PROPS_GET_SCALAR_VALUES`.
 	 * @param  bool $getNullValues If `TRUE`, include also values with `NULL`s, 
 	 *                             `FALSE` by default.
 	 * @throws \InvalidArgumentException
 	 * @return array
 	 */
 	public function GetValues ($propsFlags = 0, $getNullValues = FALSE) {
+		$getScalarValues = NULL;
 		$keysByCode = NULL;
+		if (($propsFlags & \MvcCore\IModel::PROPS_GET_SCALAR_VALUES) != 0) {
+			$getScalarValues = TRUE;
+			$propsFlags = $propsFlags ^ \MvcCore\IModel::PROPS_GET_SCALAR_VALUES;
+		}
 		if (($propsFlags & \MvcCore\IModel::PROPS_NAMES_BY_CODE) != 0) {
 			$keysByCode = TRUE;
+			$getScalarValues = $getScalarValues ?: FALSE;
 			$propsFlags = $propsFlags ^ \MvcCore\IModel::PROPS_NAMES_BY_CODE;
 		} else if (($propsFlags & \MvcCore\IModel::PROPS_NAMES_BY_DATABASE) != 0) {
 			$keysByCode = FALSE;
+			$getScalarValues = $getScalarValues ?: TRUE;
 			$propsFlags = $propsFlags ^ \MvcCore\IModel::PROPS_NAMES_BY_DATABASE;
 		}
 
@@ -76,7 +84,8 @@ trait DataMethods {
 				$propValue = $this->{$propertyName};
 			}
 
-			if (!$getNullValues && $propValue === NULL)
+			$propValueIsNull = $propValue === NULL;
+			if (!$getNullValues && $propValueIsNull)
 				continue;
 			
 			if ($keysByCode === TRUE) {
@@ -84,9 +93,6 @@ trait DataMethods {
 			} else if ($keysByCode === FALSE) {
 				if ($propDbColumnName !== NULL) {
 					$resultKey = $propDbColumnName;
-					$propValue = static::convertToScalar(
-						$propValue, $propParsingArgs
-					);
 				} else {
 					continue;
 				}
@@ -96,7 +102,13 @@ trait DataMethods {
 					$resultKey = static::{$keyConversionsMethod}(
 						$resultKey, $toolsClass, $caseSensitiveKeysMap
 					);
+				
 			}
+
+			if ($getScalarValues && !$propValueIsNull)
+				$propValue = static::convertToScalar(
+					$propValue, $propParsingArgs
+				);
 			
 			$result[$resultKey] = $propValue;
 		}
@@ -129,7 +141,7 @@ trait DataMethods {
 				\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_BY_DATABASE
 			]
 		);
-
+		
 		$keyConversionsMethod = NULL;
 		$caseSensitiveKeysMap = '';
 		$stringKeyConversions = $propsFlags > 127;
@@ -214,17 +226,25 @@ trait DataMethods {
 	 * @inheritDocs
 	 * @param  int $propsFlags All properties flags are available except flags: 
 	 *                         - `\MvcCore\IModel::PROPS_INITIAL_VALUES`,
-	 *                         - `\MvcCore\IModel::PROPS_CONVERT_CASE_INSENSITIVE`.
+	 *                         - `\MvcCore\IModel::PROPS_CONVERT_CASE_INSENSITIVE`,
+	 *                         - `\MvcCore\IModel::PROPS_GET_SCALAR_VALUES`.
 	 * @throws \InvalidArgumentException
 	 * @return array 
 	 */
 	public function GetTouched ($propsFlags = 0) {
+		$getScalarValues = NULL;
 		$keysByCode = NULL;
+		if (($propsFlags & \MvcCore\IModel::PROPS_GET_SCALAR_VALUES) != 0) {
+			$getScalarValues = TRUE;
+			$propsFlags = $propsFlags ^ \MvcCore\IModel::PROPS_GET_SCALAR_VALUES;
+		}
 		if (($propsFlags & \MvcCore\IModel::PROPS_NAMES_BY_CODE) != 0) {
 			$keysByCode = TRUE;
+			$getScalarValues = $getScalarValues ?: FALSE;
 			$propsFlags = $propsFlags ^ \MvcCore\IModel::PROPS_NAMES_BY_CODE;
 		} else if (($propsFlags & \MvcCore\IModel::PROPS_NAMES_BY_DATABASE) != 0) {
 			$keysByCode = FALSE;
+			$getScalarValues = $getScalarValues ?: TRUE;
 			$propsFlags = $propsFlags ^ \MvcCore\IModel::PROPS_NAMES_BY_DATABASE;
 		}
 
@@ -277,9 +297,6 @@ trait DataMethods {
 			} else if ($keysByCode === FALSE) {
 				if ($propDbColumnName !== NULL) {
 					$resultKey = $propDbColumnName;
-					$currentValue = static::convertToScalar(
-						$currentValue, $propParsingArgs
-					);
 				} else {
 					continue;
 				}
@@ -290,6 +307,11 @@ trait DataMethods {
 						$resultKey, $toolsClass, $caseSensitiveKeysMap
 					);
 			}
+
+			if ($getScalarValues && $currentValue !== NULL)
+				$currentValue = static::convertToScalar(
+					$currentValue, $propParsingArgs
+				);
 			
 			$result[$resultKey] = $currentValue;
 		}
