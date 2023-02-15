@@ -188,7 +188,7 @@ trait Flushing {
 				$autoIncrPropPrimaryKey, $autoIncrPropAutoIncrement, $autoIncrPropUniqueKey*/
 			) = $metaData[$autoIncrIndex];
 
-			$newId = static::parseToTypes($rawNewId, $autoIncrPropTypes);
+			$newId = $insertedInstance::ParseToTypes($rawNewId, $autoIncrPropTypes);
 						
 			$prop = new \ReflectionProperty($insertedInstance, $autoIncrPropCodeName);
 			$prop->setAccessible(TRUE);

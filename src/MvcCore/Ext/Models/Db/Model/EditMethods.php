@@ -234,10 +234,10 @@ trait EditMethods {
 				$connectionNameOrIndex, $tableArgs[0], $allValues, get_class($context), $autoIncrPropDbName
 			);
 		}
-
+		
 		if ($success && $affectedRows > 0) {
 			if ($hasAutoIncrColumn) {
-				$newId = static::parseToTypes($rawNewId, $autoIncrPropTypes);
+				$newId = static::ParseToTypes($rawNewId, $autoIncrPropTypes);
 				if ($autoIncrPropIsPrivate) {
 					$prop = new \ReflectionProperty($context, $autoIncrPropCodeName);
 					$prop->setAccessible(TRUE);

@@ -25,7 +25,7 @@ trait Parsers {
 	 * @param  array     $parserArgs
 	 * @return mixed     Converted result.
 	 */
-	protected static function parseToTypes ($rawValue, $typesString, $parserArgs = []) {
+	public static function ParseToTypes ($rawValue, $typesString, $parserArgs = []) {
 		$targetTypeValue = NULL;
 		$value = $rawValue;
 		foreach ($typesString as $typeString) {

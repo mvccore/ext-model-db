@@ -169,7 +169,7 @@ trait DataMethods {
 				if ($isNull) {
 					$value = $dbValue;
 				} else {
-					$value = static::parseToTypes(
+					$value = static::ParseToTypes(
 						$dbValue, $propTypes, $propParsingArgs
 					);
 				}
@@ -197,7 +197,7 @@ trait DataMethods {
 					if ($isNull) {
 						$value = $dbValue;
 					} else {
-						$value = static::parseToTypes(
+						$value = static::ParseToTypes(
 							$dbValue, $propTypes, $propParsingArgs
 						);	
 					}

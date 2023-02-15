@@ -110,6 +110,15 @@ interface IModel {
 	public static function GetMetaData ($propsFlags = 0, $additionalMaps = []);
 
 	/**
+	 * Try to convert raw database value into first type in target types.
+	 * @param  mixed     $rawValue
+	 * @param  \string[] $typesString
+	 * @param  array     $parserArgs
+	 * @return mixed     Converted result.
+	 */
+	public static function ParseToTypes ($rawValue, $typesString, $parserArgs = []);
+
+	/**
 	 * Process instance database SQL INSERT or UPDATE by automaticly founded key data.
 	 * Return `TRUE` if there is inserted or updated 1 or more rows or return 
 	 * `FALSE` if there is no row inserted or updated. Thrown an exception in any database error.

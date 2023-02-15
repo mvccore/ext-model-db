@@ -20,4 +20,5 @@ class		Batch
 implements	\MvcCore\Ext\Models\Db\IBatch {
 
 	use \MvcCore\Ext\Models\Db\Batch\Features;
+
 }

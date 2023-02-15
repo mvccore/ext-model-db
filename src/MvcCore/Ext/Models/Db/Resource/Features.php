@@ -31,7 +31,7 @@ trait Features {
 	
 	use \MvcCore\Model\Parsers,
 		\MvcCore\Ext\Models\Db\Model\Parsers {
-			\MvcCore\Ext\Models\Db\Model\Parsers::parseToTypes insteadof \MvcCore\Model\Parsers;
+			\MvcCore\Ext\Models\Db\Model\Parsers::ParseToTypes insteadof \MvcCore\Model\Parsers;
 			\MvcCore\Ext\Models\Db\Model\Parsers::parseToType insteadof \MvcCore\Model\Parsers;
 			\MvcCore\Ext\Models\Db\Model\Parsers::parseToDateTime insteadof \MvcCore\Model\Parsers;
 			\MvcCore\Model\Parsers::parseToDateTime as parseToDateTimeDefault;
