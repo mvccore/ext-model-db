@@ -732,7 +732,8 @@ implements	\MvcCore\Model\IConstants,
 	protected function handleError (\Throwable $error) {
 		$app = \MvcCore\Application::GetInstance();
 		$isDev = $app->GetEnvironment()->IsDevelopment();
-		if ($isDev && $error instanceof \MvcCore\Ext\Models\Db\Exception) {
+		$isCli = $app->GetRequest()->IsCli();
+		if (!$isCli && $isDev && $error instanceof \MvcCore\Ext\Models\Db\Exception) {
 			$query = $error->getQuery();
 			$params = array_merge([], $error->getParams() ?: []);
 			$debugClass = $app->GetDebugClass();
