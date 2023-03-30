@@ -78,7 +78,7 @@ implements	\MvcCore\Model\IConstants,
 	 * to get last inserted id after INSERT statement.
 	 * @var string|NULL
 	 */
-	protected $metaDataStatement = NULL;
+	protected $metaDataStatement = \MvcCore\Ext\Models\Db\IConnection::METADATA_STATEMENT;
 	
 	/**
 	 * `TRUE` for transcode from/to database encoding 

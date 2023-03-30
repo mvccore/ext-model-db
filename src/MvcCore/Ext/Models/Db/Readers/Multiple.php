@@ -19,10 +19,10 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 
 	/**
 	 * @inheritDocs
-	 * @param  string $fullClassName 
-	 * @param  int    $readingFlags 
-	 * @param  string $keyColumnName 
-	 * @param  string $keyType 
+	 * @param  string      $fullClassName 
+	 * @param  int         $readingFlags 
+	 * @param  string|NULL $keyColumnName 
+	 * @param  string|NULL $keyType 
 	 * @throws \PDOException|\Throwable
 	 * @return \object[]
 	 */
@@ -63,8 +63,8 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 
 	/**
 	 * @inheritDocs
-	 * @param  string $keyColumnName 
-	 * @param  string $keyType 
+	 * @param  string|NULL $keyColumnName 
+	 * @param  string|NULL $keyType 
 	 * @throws \PDOException|\Throwable
 	 * @return \array[]
 	 */
@@ -95,8 +95,8 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 
 	/**
 	 * @inheritDocs
-	 * @param  string $keyColumnName 
-	 * @param  string $keyType 
+	 * @param  string|NULL $keyColumnName 
+	 * @param  string|NULL $keyType 
 	 * @throws \PDOException|\Throwable
 	 * @return \stdClass[]
 	 */
@@ -127,10 +127,10 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 
 	/**
 	 * @inheritDocs
-	 * @param  string $valueColumnName 
-	 * @param  string $valueType 
-	 * @param  string $keyColumnName 
-	 * @param  string $keyType 
+	 * @param  string      $valueColumnName 
+	 * @param  string|NULL $valueType 
+	 * @param  string|NULL $keyColumnName 
+	 * @param  string|NULL $keyType 
 	 * @throws \PDOException|\Throwable
 	 * @return \int[]|\float[]|\string[]|\bool[]|NULL
 	 */
@@ -167,9 +167,9 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 
 	/**
 	 * @inheritDocs
-	 * @param  callable $valueColumnName Called for each result row, 1. argument is raw result item, 2. argument is raw result key. Completer has to return created result item instance.
-	 * @param  string   $keyColumnName 
-	 * @param  string   $keyType 
+	 * @param  callable    $valueColumnName Called for each result row, 1. argument is raw result item, 2. argument is raw result key. Completer has to return created result item instance.
+	 * @param  string|NULL $keyColumnName 
+	 * @param  string|NULL $keyType 
 	 * @throws \PDOException|\Throwable
 	 * @return array
 	 */

@@ -68,12 +68,22 @@ class FlushData extends \stdClass {
 	public $MetaStatement		= NULL;
 
 	/**
-	 * Database metadata statement for affected rows 
-	 * and last inserted id if provider doesn|t support it.
-	 * @param  string|NULL $metaStatement 
-	 * @return void
+	 * Database connection to complete database metadata statement 
+	 * for affected rows and last inserted id if provider doesn|t support it.
+	 * @param  \MvcCore\Ext\Models\Db\IConnection $connection 
+	 * @return \MvcCore\Ext\Models\Db\Batchs\FlushData
 	 */
-	public function __construct ($metaStatement = NULL) {
+	public static function CreateInstance (\MvcCore\Ext\Models\Db\IConnection $connection) {
+		return new static($connection);
+	}
+
+	/**
+	 * Database connection to complete database metadata statement 
+	 * for affected rows and last inserted id if provider doesn|t support it.
+	 * @param \MvcCore\Ext\Models\Db\IConnection $connection 
+	 */
+	protected function __construct (\MvcCore\Ext\Models\Db\IConnection $connection) {
+		$metaStatement = $connection::METADATA_STATEMENT;
 		$this->UseMetaStatement	= $metaStatement !== NULL;
 		$this->MetaStatement	= $metaStatement;
 	}

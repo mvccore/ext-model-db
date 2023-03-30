@@ -17,10 +17,10 @@ interface IMultiple extends \MvcCore\Ext\Models\Db\IReader {
 
 	/**
 	 * Read all fetched rows into instances by given full class name and reading flags.
-	 * @param  string $fullClassName
-	 * @param  int    $readingFlags
-	 * @param  string $keyColumnName
-	 * @param  string $keyType
+	 * @param  string      $fullClassName
+	 * @param  int	       $readingFlags
+	 * @param  string|NULL $keyColumnName
+	 * @param  string|NULL $keyType
 	 * @throws \PDOException|\Throwable
 	 * @return \object[]
 	 */
@@ -28,8 +28,8 @@ interface IMultiple extends \MvcCore\Ext\Models\Db\IReader {
 
 	/**
 	 * Read all fetched rows into associative arrays with item keys by SQL query columns.
-	 * @param  string $keyColumnName
-	 * @param  string $keyType
+	 * @param  string|NULL $keyColumnName
+	 * @param  string|NULL $keyType
 	 * @throws \PDOException|\Throwable
 	 * @return \array[]
 	 */
@@ -37,8 +37,8 @@ interface IMultiple extends \MvcCore\Ext\Models\Db\IReader {
 
 	/**
 	 * Read all fetched rows into `\stdClass` objects with item keys by SQL query columns.
-	 * @param  string $keyColumnName
-	 * @param  string $keyType
+	 * @param  string|NULL $keyColumnName
+	 * @param  string|NULL $keyType
 	 * @throws \PDOException|\Throwable
 	 * @return \stdClass[]
 	 */
@@ -46,10 +46,10 @@ interface IMultiple extends \MvcCore\Ext\Models\Db\IReader {
 
 	/**
 	 * Read all fetched rows into scalar values by each first row column.
-	 * @param  string $valueColumnName
-	 * @param  string $valueType
-	 * @param  string $keyColumnName
-	 * @param  string $keyType
+	 * @param  string      $valueColumnName
+	 * @param  string|NULL $valueType
+	 * @param  string|NULL $keyColumnName
+	 * @param  string|NULL $keyType
 	 * @throws \PDOException|\Throwable
 	 * @return \int[]|\float[]|\string[]|\bool[]|NULL
 	 */
@@ -59,9 +59,9 @@ interface IMultiple extends \MvcCore\Ext\Models\Db\IReader {
 	 * Read all fetched rows into array with custom items created by given callable completer called for each row.
 	 * Callable has to accept two arguments, first as raw row result and second is raw result key.
 	 * Callable completer has to return created result item instance.
-	 * @param  callable $valueColumnName Called for each result row, 1. argument is raw result item, 2. argument is raw result key. Completer has to return created result item instance.
-	 * @param  string   $keyColumnName
-	 * @param  string   $keyType
+	 * @param  callable    $valueColumnName Called for each result row, 1. argument is raw result item, 2. argument is raw result key. Completer has to return created result item instance.
+	 * @param  string|NULL $keyColumnName
+	 * @param  string|NULL $keyType
 	 * @throws \PDOException|\Throwable
 	 * @return \mixed[]
 	 */

@@ -65,9 +65,7 @@ trait Flushing {
 	 */
 	protected function flushPrepare () {
 		/** @var \MvcCore\Ext\Models\Db\Batch $this */
-		$metaStatement = $this->connection->GetMetaDataStatement();
-
-		$this->flushData = new \MvcCore\Ext\Models\Db\Batchs\FlushData($metaStatement);
+		$this->flushData = \MvcCore\Ext\Models\Db\Batchs\FlushData::CreateInstance($this->connection);
 		
 		$batchEditResource = new \MvcCore\Ext\Models\Db\Batchs\EditResource;
 		$batchEditResource->ResetParamsCounter();

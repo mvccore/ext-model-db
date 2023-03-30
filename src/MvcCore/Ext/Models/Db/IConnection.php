@@ -21,6 +21,11 @@ interface IConnection {
 	 */
 	const DEBUGGER_INTERFACE		= '\\MvcCore\\Ext\\Models\\Db\\IDebugger';
 	
+	/**
+	 * SQL metadata statement with fields `AffectedRows` and `LastInsertId`.
+	 */
+	const METADATA_STATEMENT		= NULL;
+
 	
 	/**
 	 * Return an array of available `\PDO` drivers.
