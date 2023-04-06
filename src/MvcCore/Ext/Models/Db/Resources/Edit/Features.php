@@ -57,7 +57,7 @@ trait Features {
 		$transName = 'insert_'.str_replace('\\', '_', $className);
 		try {
 			if ($execInTransaction)
-				$conn->BeginTransaction(8 | 16, $transName); // 8 means serializable, 16 means read write
+				$conn->BeginTransaction(0, $transName); // 0 means do not change isolation
 
 			$reader = $conn
 				->Prepare($sql)
