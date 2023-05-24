@@ -107,7 +107,7 @@ trait DataMethods {
 
 			if ($getScalarValues && !$propValueIsNull)
 				$propValue = static::convertToScalar(
-					$propValue, $propParsingArgs
+					$propertyName, $propValue, $propParsingArgs
 				);
 			
 			$result[$resultKey] = $propValue;
@@ -310,7 +310,7 @@ trait DataMethods {
 
 			if ($getScalarValues && $currentValue !== NULL)
 				$currentValue = static::convertToScalar(
-					$currentValue, $propParsingArgs
+					$propertyName, $currentValue, $propParsingArgs
 				);
 			
 			$result[$resultKey] = $currentValue;
