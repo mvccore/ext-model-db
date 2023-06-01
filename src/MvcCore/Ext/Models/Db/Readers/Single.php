@@ -98,7 +98,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 			$rawDataKeys = array_keys($this->rawData);
 			$itemValue = $this->rawData[$rawDataKeys[0]];
 		}
-		if ($valueType !== NULL)
+		if ($valueType !== NULL && $itemValue !== NULL)
 			settype($itemValue, $valueType);
 		if (is_string($itemValue)) {
 			$conn = $this->statement->GetConnection();

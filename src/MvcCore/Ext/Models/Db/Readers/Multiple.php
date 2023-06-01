@@ -152,7 +152,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 			$itemValue = array_key_exists($valueColumnName, $rawItem)
 				? $rawItem[$valueColumnName]
 				: NULL;
-			if ($retypeValue)
+			if ($retypeValue && $itemValue !== NULL)
 				settype($itemValue, $valueType);
 			if ($transcode) {
 				if (!$useRawKey && is_string($itemKey)) 
