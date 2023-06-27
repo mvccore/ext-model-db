@@ -214,10 +214,10 @@ trait EditMethods {
 		} else {
 			list(
 				$autoIncrPropIsPrivate, /*$autoIncrPropAllowNulls*/, $autoIncrPropTypes, 
-				$autoIncrPropCodeName, $autoIncrPropDbName/*, $autoIncrPropParserArgs, $autoIncrPropFormatArgs,
-				$autoIncrPropPrimaryKey, $autoIncrPropAutoIncrement, $autoIncrPropUniqueKey*/
+				$autoIncrPropCodeName, $autoIncrPropDbName, /*$autoIncrPropParserArgs*/, /*$autoIncrPropFormatArgs*/,
+				/*$autoIncrPropPrimaryKey*/, $autoIncrPropAutoIncrement, /*$autoIncrPropUniqueKey*/
 			) = $metaData[$autoIncrIndex];
-			if (isset($allValues[$autoIncrPropDbName]))
+			if ($autoIncrPropAutoIncrement && isset($allValues[$autoIncrPropDbName]))
 				unset($allValues[$autoIncrPropDbName]);
 		}
 		

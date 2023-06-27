@@ -207,13 +207,6 @@ trait MetaData {
 
 			$index++;
 		}
-		// auto increment feature by default for single primary key integer column:
-		if (!$autoIncrementMatched && count($primaryKeysIndexes) === 1) {
-			$columnIndex = $primaryKeysIndexes[0];
-			$propTypes = $propsMetaData[$columnIndex][2];
-			if (in_array('int', $propTypes, true) || in_array('integer', $propTypes, true))
-				$propsAdditionalMaps[$propsAutoIncrement] = $columnIndex;
-		}
 
 		// complete class extended metadata:
 		$attrsClassesNames = [
@@ -317,7 +310,10 @@ trait MetaData {
 			$result[8] = FALSE;
 			if (is_array($propAttrs->keyPrimary)) {
 				if (count($propAttrs->keyPrimary) === 0) {
-					$result[8] = TRUE; // if no param defined, autoincrement is by default
+					// if no param defined, autoincrement is by default
+					$propTypes = $result[2];
+					if (in_array('int', $propTypes, true) || in_array('integer', $propTypes, true))
+						$result[8] = TRUE;
 				} else {
 					$rawBool = (isset($propAttrs->keyPrimary[0]) 
 						? $propAttrs->keyPrimary[0] 
