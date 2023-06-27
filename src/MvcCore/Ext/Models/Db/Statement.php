@@ -225,6 +225,17 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 		return $this->providerStatement->nextRowset();
 	}
 
+	/**
+	 * @inheritDocs
+	 * @throws \RuntimeException
+	 * @return int
+	 */
+	public function GetColumnsCount () {
+		if ($this->opened !== TRUE)
+			throw new \RuntimeException("Statement hasn't been executed yet.");
+		return $this->providerStatement->columnCount();
+	}
+
 
 
 	/**
@@ -238,7 +249,10 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 			$params = func_get_args();
 		if (is_array($params))
 			$this->params = & $params;
+		$prevReader = $this->reader;
 		$this->reader = new \MvcCore\Ext\Models\Db\Readers\Multiple($this);
+		if ($prevReader !== NULL)
+			$this->reader->SetExecResult($prevReader->GetExecResult());
 		return $this->reader;
 	}
 
@@ -253,7 +267,10 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 			$params = func_get_args();
 		if (is_array($params))
 			$this->params = & $params;
+		$prevReader = $this->reader;
 		$this->reader = new \MvcCore\Ext\Models\Db\Readers\Stream($this);
+		if ($prevReader !== NULL)
+			$this->reader->SetExecResult($prevReader->GetExecResult());
 		return $this->reader;
 	}
 
@@ -268,7 +285,10 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 			$params = func_get_args();
 		if (is_array($params))
 			$this->params = & $params;
+		$prevReader = $this->reader;
 		$this->reader = new \MvcCore\Ext\Models\Db\Readers\Single($this);
+		if ($prevReader !== NULL)
+			$this->reader->SetExecResult($prevReader->GetExecResult());
 		return $this->reader;
 	}
 
@@ -284,7 +304,10 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 			$params = func_get_args();
 		if (is_array($params))
 			$this->params = & $params;
+		$prevReader = $this->reader;
 		$this->reader = new \MvcCore\Ext\Models\Db\Readers\Execution($this);
+		if ($prevReader !== NULL)
+			$this->reader->SetExecResult($prevReader->GetExecResult());
 		$this->reader->GetExecResult();
 		if (array_search(\MvcCore\Ext\Models\Db\IStatement::AUTO_CLOSE, $this->driverOptions) !== FALSE) 
 			$this->Close();

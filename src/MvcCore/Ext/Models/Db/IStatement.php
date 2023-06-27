@@ -108,6 +108,12 @@ interface IStatement {
 	 */
 	public function NextResultSet ();
 
+	/**
+	 * Returns the number of columns in the result set.
+	 * @throws \RuntimeException
+	 * @return int
+	 */
+	public function GetColumnsCount ();
 
 
 	/**

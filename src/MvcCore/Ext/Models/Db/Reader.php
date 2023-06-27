@@ -70,6 +70,16 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 
 	/**
 	 * @inheritDocs
+	 * @param  bool|NULL $execResult
+	 * @return \MvcCore\Ext\Models\Db\Reader
+	 */
+	public function SetExecResult ($execResult) {
+		$this->providerExecResult = $execResult;
+		return $this;
+	}
+
+	/**
+	 * @inheritDocs
 	 * @return array|NULL
 	 */
 	public function GetRawData () {
