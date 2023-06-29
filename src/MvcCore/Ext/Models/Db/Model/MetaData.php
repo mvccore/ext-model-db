@@ -152,7 +152,8 @@ trait MetaData {
 		/** @var \ReflectionProperty $prop */
 		$index = 0;
 		$primaryKeysIndexes = [];
-		$autoIncrementMatched = FALSE;
+		$uniqueKeysIndexes = [];
+		$autoIncrementIndex = NULL;
 		foreach ($props as $prop) {
 			if (
 				$prop->isStatic() ||
@@ -181,12 +182,12 @@ trait MetaData {
 				$propsAdditionalMaps[$propsPrimaryKey][] = $index;
 				$primaryKeysIndexes[] = $index;
 				if ($propAutoIncrement) {
-					$autoIncrementMatched = TRUE;
+					$autoIncrementIndex = $index;
 					if ($propsAdditionalMaps[$propsAutoIncrement] !== NULL) {
 						$propMetaDataIndex = $propsAdditionalMaps[$propsAutoIncrement];
 						$propMetaData = $propsMetaData[$propMetaDataIndex];
 						throw new \InvalidArgumentException(
-							"[".get_class()."] Class `{$classFullName}` has defined ".
+							"Class `{$classFullName}` has defined ".
 							"multiple properties with autoincrement column feature: ".
 							"`{$propMetaData[3]}`, `{$prop->name}`."
 						);
@@ -195,18 +196,22 @@ trait MetaData {
 				}
 			}
 			if ($propUniqueKey) {
-				$uniqueKeyProps = & $propsAdditionalMaps[$propsUniqueKey];
+				$uniqueKeysIndexes = & $propsAdditionalMaps[$propsUniqueKey];
 				if (is_bool($propUniqueKey)) {
-					$uniqueKeyProps[] = $index;
+					$uniqueKeysIndexes[] = $index;
 				} else if (is_string($propUniqueKey)) {
-					if (!isset($uniqueKeyProps[$propUniqueKey]))
-						$uniqueKeyProps[$propUniqueKey] = [];
-					$uniqueKeyProps[$propUniqueKey][] = $index;
+					if (!isset($uniqueKeysIndexes[$propUniqueKey]))
+						$uniqueKeysIndexes[$propUniqueKey] = [];
+					$uniqueKeysIndexes[$propUniqueKey][] = $index;
 				}
 			}
 
 			$index++;
 		}
+
+		static::parseMetaDataCheckNullableProps(
+			$classFullName, $propsMetaData, $autoIncrementIndex, $primaryKeysIndexes, $uniqueKeysIndexes
+		);
 
 		// complete class extended metadata:
 		$attrsClassesNames = [
@@ -227,6 +232,75 @@ trait MetaData {
 			$propsAdditionalMaps[$classTables] = $classAttrsArgs->tables;
 		
 		return [$propsMetaData, $propsAdditionalMaps];
+	}
+	
+	/**
+	 * Check autoincrement property, primary key properties or unique key properties nullable types.
+	 * @param  string                 $classFullName 
+	 * @param  array                  $propsMetaData 
+	 * @param  int|NULL               $autoIncrementIndex 
+	 * @param  array|\int[]           $primaryKeysIndexes 
+	 * @param  array|\int[]|\string[] $uniqueKeysIndexes 
+	 * @return void
+	 */
+	protected static function parseMetaDataCheckNullableProps ($classFullName, $propsMetaData, $autoIncrementIndex, $primaryKeysIndexes, $uniqueKeysIndexes) {
+		if ($autoIncrementIndex !== NULL) {
+			list(
+				/*$propIsPrivate*/, $propAllowNulls, /*$propTypes*/, $propCodeName
+			) = $propsMetaData[$autoIncrementIndex];
+			if (!$propAllowNulls)
+				throw new \InvalidArgumentException(
+					"Class `{$classFullName}` has defined auto increment attribute on property "
+					."`{$propCodeName}`, but it doesn't allow NULL value in PHP code."
+				);
+		} else {
+			if (count($primaryKeysIndexes) > 0) {
+				$nonNullProps = [];
+				foreach ($primaryKeysIndexes as $primaryKeyIndex) {
+					list(
+						/*$propIsPrivate*/, $propAllowNulls, /*$propTypes*/, $propCodeName
+					) = $propsMetaData[$primaryKeyIndex];
+					if (!$propAllowNulls) $nonNullProps[] = $propCodeName;
+				}
+				if (count($nonNullProps) > 0) {
+					$primKeyProps = [];
+					foreach ($primaryKeysIndexes as $primaryKeyIndex) {
+						list(
+							/*$propIsPrivate*/, /*$propAllowNulls*/, /*$propTypes*/, $propCodeName
+						) = $propsMetaData[$primaryKeyIndex];
+						$primKeyProps[] = $propCodeName;
+					}
+					$primKeyPropsStr = implode("`, `", $primKeyProps);
+					throw new \InvalidArgumentException(
+						"Class `{$classFullName}` has defined primary key attribute on properties "
+						."`{$primKeyPropsStr}`, but some of those properties doesn't allow NULL value in PHP code."
+					);
+				}
+			} else if (count($uniqueKeysIndexes) > 0) {
+				$uniqueKeysIndexesPrioritized = static::parseMetaDataGetPrimaryUniqueKeys($uniqueKeysIndexes);
+				$nonNullProps = [];
+				foreach ($uniqueKeysIndexesPrioritized as $uniqueKeyIndex) {
+					list(
+						/*$propIsPrivate*/, $propAllowNulls, /*$propTypes*/, $propCodeName
+					) = $propsMetaData[$uniqueKeyIndex];
+					if (!$propAllowNulls) $nonNullProps[] = $propCodeName;
+				}
+				if (count($nonNullProps) > 0) {
+					$uniqueKeyProps = [];
+					foreach ($uniqueKeysIndexesPrioritized as $uniqueKeyIndex) {
+						list(
+							/*$propIsPrivate*/, /*$propAllowNulls*/, /*$propTypes*/, $propCodeName
+						) = $propsMetaData[$uniqueKeyIndex];
+						$uniqueKeyProps[] = $propCodeName;
+					}
+					$uniqueKeyPropsStr = implode("`, `", $uniqueKeyProps);
+					throw new \InvalidArgumentException(
+						"Class `{$classFullName}` has defined unique key attribute on properties "
+						."`{$uniqueKeyPropsStr}`, but some of those properties doesn't allow NULL value in PHP code."
+					);
+				}
+			}
+		}
 	}
 
 	/**
@@ -358,5 +432,37 @@ trait MetaData {
 		$result[10] = $hasDefaultValue;
 		
 		return $result;
+	}
+
+	/**
+	 * Return the most prioritized property/properties unique key(s) index(es).
+	 * @param  array $uniqueKeysIndexes 
+	 * @return array
+	 */
+	protected static function parseMetaDataGetPrimaryUniqueKeys ($uniqueKeysIndexes) {
+		$uniquePropsIndexes = [];
+		$uniquePropsNamedIndexes = [];
+		$uniquePropsGroupsIndexes = [];
+		foreach ($uniqueKeysIndexes as $key => $uniqueKeyIndexOrIndexes) {
+			if (is_array($uniqueKeyIndexOrIndexes)) {
+				if (count($uniqueKeyIndexOrIndexes) === 1) {
+					$uniquePropsNamedIndexes[$key] = $uniqueKeyIndexOrIndexes;
+				} else {
+					$uniquePropsGroupsIndexes[$key] = $uniqueKeyIndexOrIndexes;
+				}
+			} else {
+				$uniquePropsIndexes[] = $uniqueKeyIndexOrIndexes;
+			}
+		}
+		if (count($uniquePropsIndexes) > 0) {
+			return [$uniquePropsIndexes[0]];
+		} else if (count($uniquePropsNamedIndexes) > 0) {
+			$uniquePropsNamedIndexesKeys = array_keys($uniquePropsNamedIndexes);
+			return $uniquePropsNamedIndexes[$uniquePropsNamedIndexesKeys[0]];
+		} else if (count($uniquePropsGroupsIndexes) > 0) {
+			$uniquePropsGroupsIndexesKeys = array_keys($uniquePropsGroupsIndexes);
+			return $uniquePropsGroupsIndexes[$uniquePropsGroupsIndexesKeys[0]];
+		}
+		return $uniqueKeysIndexes;
 	}
 }

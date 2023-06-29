@@ -32,4 +32,45 @@ trait MagicMethods {
 		});
 	}
 
+	/**
+	 * @return void
+	 */
+	public function __clone () {
+		$this->__cloneBase();
+		// set NULL value into auto increment property or into primary/unique key(s) property/properties
+		$metaDataCollections = static::GetMetaData(
+			static::$defaultPropsFlags, [
+				\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_AUTO_INCREMENT,
+				\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_PRIMARY_KEY,
+				\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_UNIQUE_KEY
+			]
+		);
+		list (
+			$metaData, $autoIncrIndex, $primaryKeyColumnsIndexes, $uniqueKeyColumnsIndexes
+		) = $metaDataCollections;
+		$propsIndexesToSetNull = [];
+		$hasAutoIncrColumn = isset($metaData[$autoIncrIndex]);
+		if ($hasAutoIncrColumn) {
+			$propsIndexesToSetNull = [$autoIncrIndex];
+		} else if (count($primaryKeyColumnsIndexes) > 0) {
+			$propsIndexesToSetNull = $primaryKeyColumnsIndexes;
+		} else if (count($uniqueKeyColumnsIndexes) > 0) {
+			$propsIndexesToSetNull = static::parseMetaDataGetPrimaryUniqueKeys($uniqueKeyColumnsIndexes);
+		}
+		foreach ($propsIndexesToSetNull as $propIndexToSetNull) {
+			list(
+				$autoIncrPropIsPrivate, /*$autoIncrPropAllowNulls*/, 
+				/*$autoIncrPropTypes*/, $autoIncrPropCodeName
+			) = $metaData[$propIndexToSetNull];
+			if ($autoIncrPropIsPrivate) {
+				$prop = new \ReflectionProperty($this, $autoIncrPropCodeName);
+				$prop->setAccessible(TRUE);
+				$prop->setValue($this, NULL);
+			} else {
+				$this->{$autoIncrPropCodeName} = NULL;
+			}
+			if (isset($this->initialValues[$autoIncrPropCodeName]))
+				unset($this->initialValues[$autoIncrPropCodeName]);
+		}
+	}
 }
