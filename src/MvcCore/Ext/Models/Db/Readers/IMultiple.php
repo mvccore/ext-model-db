@@ -57,9 +57,13 @@ interface IMultiple extends \MvcCore\Ext\Models\Db\IReader {
 
 	/**
 	 * Read all fetched rows into array with custom items created by given callable completer called for each row.
-	 * Callable has to accept two arguments, first as raw row result and second is raw result key.
-	 * Callable completer has to return created result item instance.
-	 * @param  callable    $valueColumnName Called for each result row, 1. argument is raw result item, 2. argument is raw result key. Completer has to return created result item instance.
+	 * Callable has to accept two arguments, first as raw row result, second is raw result key and third as bool
+	 * reference for `TRUE` to continue and `FALSE` to break loop. Callable completer has to return created result 
+	 * item instance.
+	 * @param  callable    $valueColumnName Called for each result row, 1. argument is raw result item, 
+	 *                                      2. argument is raw result key, 3. argument is reference for 
+	 *                                      boolean `TRUE` to continue, `FALSE` to break loop. Completer 
+	 *                                      has to return created result item instance.
 	 * @param  string|NULL $keyColumnName
 	 * @param  string|NULL $keyType
 	 * @throws \PDOException|\Throwable

@@ -167,7 +167,10 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 
 	/**
 	 * @inheritDocs
-	 * @param  callable    $valueColumnName Called for each result row, 1. argument is raw result item, 2. argument is raw result key. Completer has to return created result item instance.
+	 * @param  callable    $valueColumnName Called for each result row, 1. argument is raw result item, 
+	 *                                      2. argument is raw result key, 3. argument is reference for 
+	 *                                      boolean `TRUE` to continue, `FALSE` to break loop. Completer 
+	 *                                      has to return created result item instance.
 	 * @param  string|NULL $keyColumnName 
 	 * @param  string|NULL $keyType 
 	 * @throws \PDOException|\Throwable
@@ -194,7 +197,13 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 			} else {
 				$itemValues = $rawItem;
 			}
-			$result[$itemKey] = $valueCompleter($itemValues, $itemKey);
+			$continueOrBreak = NULL;
+			$item = $valueCompleter($itemValues, $itemKey, $continueOrBreak);
+			if ($continueOrBreak === NULL) {
+				$result[$itemKey] = $item;
+			} else if ($continueOrBreak === FALSE) {
+				break;
+			}
 		}
 		return $result;
 	}

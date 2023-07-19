@@ -52,9 +52,10 @@ interface IStream extends \MvcCore\Ext\Models\Db\IReader {
 	public function ToScalars ($valueColumnName, $valueType = NULL, $keyColumnName = NULL, $keyType = NULL);
 
 	/**
-	 * Stream and read rows one by one into array with custom items created by given callable completer called for each row.
-	 * Callable has to accept two arguments, first as raw row result and second is raw result key.
-	 * Callable completer has to return created result item instance.
+	 * Stream and read rows one by one into array with custom items created by given 
+	 * callable completer called for each row. Callable has to accept two arguments, 
+	 * first as raw row result and second is raw result key. Callable completer has 
+	 * to return created result item instance.
 	 * @param  callable $valueColumnName
 	 * @param  string   $keyColumnName
 	 * @param  string   $keyType
