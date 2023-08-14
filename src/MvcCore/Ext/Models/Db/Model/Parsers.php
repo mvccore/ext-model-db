@@ -113,6 +113,7 @@ trait Parsers {
 	 */
 	protected static function parseToDateTime ($typeStr, $rawValue, $parserArgs) {
 		$dateTimeFormat = $parserArgs[0];
+		$dateTimeFormat = '!' . ltrim($dateTimeFormat, '!'); // to reset all other values not included in format into zeros
 		if (is_numeric($rawValue)) {
 			$rawValueStr = str_replace(['+','-','.'], '', (string) $rawValue);
 			$secData = mb_substr($rawValueStr, 0, 10);
@@ -126,7 +127,7 @@ trait Parsers {
 			$timeZone = new \DateTimeZone((string) $parserArgs['tz']);
 			$dateTime = $typeStr::createFromFormat($dateTimeFormat, $dateTimeStr, $timeZone);
 		} else {
-			$dateTime = $typeStr::createFromFormat($dateTimeFormat, $dateTimeStr);
+			$dateTime = @$typeStr::createFromFormat($dateTimeFormat, $dateTimeStr);
 		}
 		return $dateTime;
 	}
