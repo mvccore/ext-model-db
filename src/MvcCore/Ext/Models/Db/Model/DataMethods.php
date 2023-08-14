@@ -226,8 +226,7 @@ trait DataMethods {
 	 * @inheritDocs
 	 * @param  int $propsFlags All properties flags are available except flags: 
 	 *                         - `\MvcCore\IModel::PROPS_INITIAL_VALUES`,
-	 *                         - `\MvcCore\IModel::PROPS_CONVERT_CASE_INSENSITIVE`,
-	 *                         - `\MvcCore\IModel::PROPS_GET_SCALAR_VALUES`.
+	 *                         - `\MvcCore\IModel::PROPS_CONVERT_CASE_INSENSITIVE`.
 	 * @throws \InvalidArgumentException
 	 * @return array 
 	 */
@@ -321,10 +320,82 @@ trait DataMethods {
 
 	/**
 	 * @inheritDocs
+	 * @param  int $propsFlags All properties flags are available except flags: 
+	 *                         - `\MvcCore\IModel::PROPS_INITIAL_VALUES`,
+	 *                         - `\MvcCore\IModel::PROPS_CONVERT_CASE_INSENSITIVE`,
+	 *                         - `\MvcCore\IModel::PROPS_SET_DEFINED_ONLY`.
 	 * @return array
 	 */
-	public function GetInitialValues () {
-		return $this->initialValues;
+	public function GetInitialValues ($propsFlags = 0) {
+		$getScalarValues = NULL;
+		$keysByCode = NULL;
+		if (($propsFlags & \MvcCore\IModel::PROPS_GET_SCALAR_VALUES) != 0) {
+			$getScalarValues = TRUE;
+			$propsFlags = $propsFlags ^ \MvcCore\IModel::PROPS_GET_SCALAR_VALUES;
+		}
+		if (($propsFlags & \MvcCore\IModel::PROPS_NAMES_BY_CODE) != 0) {
+			$keysByCode = TRUE;
+			$getScalarValues = $getScalarValues ?: FALSE;
+			$propsFlags = $propsFlags ^ \MvcCore\IModel::PROPS_NAMES_BY_CODE;
+		} else if (($propsFlags & \MvcCore\IModel::PROPS_NAMES_BY_DATABASE) != 0) {
+			$keysByCode = FALSE;
+			$getScalarValues = $getScalarValues ?: TRUE;
+			$propsFlags = $propsFlags ^ \MvcCore\IModel::PROPS_NAMES_BY_DATABASE;
+		}
+
+		$keyConversionsMethod = NULL;
+		$caseSensitiveKeysMap = '';
+		$stringKeyConversions = $propsFlags > 127;
+
+		list ($metaData, $sourceCodeNamesMap) = static::GetMetaData(
+			$propsFlags, [\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_BY_CODE]
+		);
+
+		if ($stringKeyConversions) {
+			$keyConversionsMethod = static::getKeyConversionMethod($propsFlags);
+			$toolsClass = \MvcCore\Application::GetInstance()->GetToolClass();
+			if ($propsFlags > 8191)
+				$caseSensitiveKeysMap = ','.implode(',', array_keys($sourceCodeNamesMap)).',';
+		};
+
+		$result = [];
+
+		foreach ($sourceCodeNamesMap as $propertyName => $metaDataIndex) {
+			list(
+				/*$propIsPrivate*/, /*$propAllowNulls*/, /*$propTypes*/, 
+				/*$propCodeName*/, $propDbColumnName, $propParsingArgs/*, $propFormatArgs,
+				$propPrimaryKey, $propAutoIncrement, $propUniqueKey, $hasDefaultValue*/
+			) = $metaData[$metaDataIndex];
+
+			$initialValue = NULL;
+			if (array_key_exists($propertyName, $this->initialValues))
+				$initialValue = $this->initialValues[$propertyName];
+
+			if ($keysByCode === TRUE) {
+				$resultKey = $propertyName;
+			} else if ($keysByCode === FALSE) {
+				if ($propDbColumnName !== NULL) {
+					$resultKey = $propDbColumnName;
+				} else {
+					continue;
+				}
+			} else {
+				$resultKey = $propertyName;
+				if ($stringKeyConversions)
+					$resultKey = static::{$keyConversionsMethod}(
+						$resultKey, $toolsClass, $caseSensitiveKeysMap
+					);
+			}
+
+			if ($getScalarValues && $initialValue !== NULL)
+				$initialValue = static::convertToScalar(
+					$propertyName, $initialValue, $propParsingArgs
+				);
+			
+			$result[$resultKey] = $initialValue;
+		}
+
+		return $result;
 	}
 
 }
