@@ -43,7 +43,19 @@ interface IBatch {
 	 * @var int
 	 */
 	const OPERATION_DELETE		= 65536;
-	
+
+
+	/**
+	 * Default batch instance edit resource type.
+	 * @var string
+	 */
+	const BATCH_INSTANCE_EDIT_RESOURCE_TYPE = 'MvcCore\\Ext\\Models\\Db\\Batchs\\EditResource';
+
+	/**
+	 * Batch instance edit resource interface.
+	 * @var string
+	 */
+	const BATCH_INSTANCE_EDIT_RESOURCE_INTERFACE = 'MvcCore\\Ext\\Models\\Db\\Batchs\\IEditResource';
 	
 	/**
 	 * Get automatic batch flush size. Default value is 10 items. 
@@ -135,4 +147,34 @@ interface IBatch {
 	 * @return void
 	 */
 	public function BatchEditResourceHandler ($sqlOperation, $sqlCode, $params);
+
+	/**
+	 * Set editing resource type of the model instance in the batch. 
+	 * An instance of this type is inserted into each instance of the model 
+	 * in the batch before the command is executed to the database.
+	 * @param  string $instanceEditResourceType 
+	 * @return \MvcCore\Ext\Models\Db\Batch
+	 */
+	public function SetInstanceEditResourceType ($instanceEditResourceType);
+
+	/**
+	 * Get editing resource type of the model instance in the batch. 
+	 * An instance of this type is inserted into each instance of the model 
+	 * in the batch before the command is executed to the database.
+	 * @return \Reflection
+	 */
+	public function GetInstanceEditResourceType ();
+
+	/**
+	 * Set constructor arguments for new instance of editing resource.
+	 * @param  array $ctorArgs 
+	 * @return \MvcCore\Ext\Models\Db\Batch
+	 */
+	public function SetInstanceEditResourceCtorArgs (array $ctorArgs);
+
+	/**
+	 * Get constructor arguments for new instance of editing resource.
+	 * @return array
+	 */
+	public function GetInstanceEditResourceCtorArgs ();
 }

@@ -97,6 +97,7 @@ trait GettersSetters {
 	 * @return \MvcCore\Ext\Models\Db\Batch
 	 */
 	public function RemoveFromBatch (\MvcCore\Ext\Models\Db\IModel $modelInstance) {
+		/** @var \MvcCore\Ext\Models\Db\Batch $this */
 		$instanceIndex = array_search($modelInstance, $this->instances, TRUE);
 		if ($instanceIndex !== NULL) {
 			array_splice($this->instances, $instanceIndex, 1);
@@ -140,4 +141,55 @@ trait GettersSetters {
 			return $this->Flush();
 		return $this;
 	}
+
+	/**
+	 * @inheritDocs
+	 * @param  string $instanceEditResourceType 
+	 * @return \MvcCore\Ext\Models\Db\Batch
+	 */
+	public function SetInstanceEditResourceType ($instanceEditResourceType) {
+		/** @var \MvcCore\Ext\Models\Db\Batch $this */
+		$type = new \ReflectionClass($instanceEditResourceType);
+		if (!$type->implementsInterface(static::BATCH_INSTANCE_EDIT_RESOURCE_INTERFACE))
+			throw new \RuntimeException(
+				"Class `{$instanceEditResourceType}` doesn't implement "
+				."interface `".static::BATCH_INSTANCE_EDIT_RESOURCE_INTERFACE."`."
+			);
+		$this->instanceEditResourceType = $type;
+		return $this;
+	}
+
+	/**
+	 * @inheritDocs
+	 * @return \ReflectionClass
+	 */
+	public function GetInstanceEditResourceType () {
+		/** @var \MvcCore\Ext\Models\Db\Batch $this */
+		if ($this->instanceEditResourceType !== NULL)
+			return $this->instanceEditResourceType;
+		return $this->instanceEditResourceType = new \ReflectionClass(
+			static::BATCH_INSTANCE_EDIT_RESOURCE_TYPE
+		);
+	}
+
+	/**
+	 * @inheritDocs
+	 * @param  array $ctorArgs 
+	 * @return \MvcCore\Ext\Models\Db\Batch
+	 */
+	public function SetInstanceEditResourceCtorArgs (array $ctorArgs) {
+		/** @var \MvcCore\Ext\Models\Db\Batch $this */
+		$this->instanceEditResourceCtorArgs = $ctorArgs;
+		return $this;
+	}
+
+	/**
+	 * @inheritDocs
+	 * @return array
+	 */
+	public function GetInstanceEditResourceCtorArgs () {
+		/** @var \MvcCore\Ext\Models\Db\Batch $this */
+		return $this->instanceEditResourceCtorArgs;
+	}
+
 }

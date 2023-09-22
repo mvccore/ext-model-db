@@ -20,23 +20,34 @@ trait Features {
 	
 	/**
 	 * Batch params counter.
+	 * @var int
 	 */
 	protected $paramsCounter = 0;
 	
 	/**
-	 * @var `\Closure` function returning void and with arguments:
-	 *  - string $operationSql
-	 *  - array  $operationParams
-	 *  - string $fetchSql
-	 *  - array  $fetchParams
+	 * Batch edit handler to handle completed operation type, SQL and params.
+	 * `\Closure` function returning void and accepting arguments:
+	 *  - int $sqlOperation - type of SQL operation by enum `IBatch::OPERATION_*`,
+	 *  - string $sqlCode   - raw sql code to execute operation,
+	 *  - array $params     - database operation params.
+	 * @var callable|\Closure
 	 */
 	protected $editHandler;
 	
+	/**
+	 * @inheritDocs
+	 * @return \MvcCore\Ext\Models\Db\Batchs\EditResource
+	 */
 	public function ResetParamsCounter () {
 		$this->paramsCounter = 0;
 		return $this;
 	}
 
+	/**
+	 * @inheritDocs
+	 * @param  callable|\Closure $editHandler 
+	 * @return \MvcCore\Ext\Models\Db\Batchs\EditResource
+	 */
 	public function SetEditHandler ($editHandler) {
 		$this->editHandler = $editHandler;
 		return $this;
@@ -71,10 +82,6 @@ trait Features {
 			. implode(", ", array_keys($params)) 
 			. ");";
 
-		/*$editHandler = $this->editHandler;
-		$editHandler(
-			\MvcCore\Ext\Models\Db\IBatch::OPERATION_INSERT, $sql, $params
-		);*/
 		call_user_func_array(
 			$this->editHandler, 
 			[\MvcCore\Ext\Models\Db\IBatch::OPERATION_INSERT, $sql, $params]
@@ -116,10 +123,6 @@ trait Features {
 			. " SET " . implode(", ", $setSqlItems)
 			. " WHERE " . implode(" AND ", $whereSqlItems) . ";";
 		
-		/*$editHandler = $this->editHandler;
-		$editHandler(
-			\MvcCore\Ext\Models\Db\IBatch::OPERATION_UPDATE, $sql, $params
-		);*/
 		call_user_func_array(
 			$this->editHandler, 
 			[\MvcCore\Ext\Models\Db\IBatch::OPERATION_UPDATE, $sql, $params]
@@ -152,10 +155,6 @@ trait Features {
 		$sql = "DELETE FROM {$tableName} "
 			. "WHERE " . implode(" AND ", $sqlItems) . ";";
 
-		/*$editHandler = $this->editHandler;
-		$editHandler(
-			\MvcCore\Ext\Models\Db\IBatch::OPERATION_DELETE, $sql, $params
-		);*/
 		call_user_func_array(
 			$this->editHandler, 
 			[\MvcCore\Ext\Models\Db\IBatch::OPERATION_DELETE, $sql, $params]

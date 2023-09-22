@@ -77,5 +77,19 @@ trait Props {
 	 * @var array
 	 */
 	protected $instancesMetaData = [];
+	
+	/**
+	 * The editing resource type of the model instance in the batch. 
+	 * An instance of this type is inserted into each instance of the model 
+	 * in the batch before the command is executed to the database.
+	 * @var \ReflectionClass|NULL
+	 */
+	protected $instanceEditResourceType = NULL;
+	
+	/**
+	 * Constructor arguments for new instance of editing resource.
+	 * @var array
+	 */
+	protected $instanceEditResourceCtorArgs = [];
 
 }

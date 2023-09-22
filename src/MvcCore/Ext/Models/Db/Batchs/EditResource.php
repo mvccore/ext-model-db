@@ -15,7 +15,7 @@ namespace MvcCore\Ext\Models\Db\Batchs;
 
 class		EditResource
 extends		\MvcCore\Ext\Models\Db\Resource
-implements	\MvcCore\Ext\Models\Db\Resources\IEdit {
+implements	\MvcCore\Ext\Models\Db\Batchs\IEditResource {
 	
 	use \MvcCore\Ext\Models\Db\Batchs\EditResource\Features;
 }

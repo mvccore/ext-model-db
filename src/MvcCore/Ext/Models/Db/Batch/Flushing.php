@@ -67,9 +67,7 @@ trait Flushing {
 		/** @var \MvcCore\Ext\Models\Db\Batch $this */
 		$this->flushData = \MvcCore\Ext\Models\Db\Batchs\FlushData::CreateInstance($this->connection);
 		
-		$batchEditResource = new \MvcCore\Ext\Models\Db\Batchs\EditResource;
-		$batchEditResource->ResetParamsCounter();
-		$batchEditResource->SetEditHandler([$this, 'BatchEditResourceHandler']);
+		$batchEditResource = $this->createBatchEditResource();
 		
 		foreach ($this->instances as $index => $instance) {
 			$instanceEditRes = $instance->GetEditResource(FALSE);
@@ -153,6 +151,19 @@ trait Flushing {
 			$this->instancesMetaData = [];
 		$this->flushData = NULL;
 	}
+	
+	/**
+	 * Return new instance of edit resource for new batch queue.
+	 * @return \MvcCore\Ext\Models\Db\Batchs\EditResource
+	 */
+	protected function createBatchEditResource () {
+		$batchEditResource = $this->GetInstanceEditResourceType()->newInstanceArgs(
+			$this->instanceEditResourceCtorArgs	
+		);
+		$batchEditResource->ResetParamsCounter();
+		$batchEditResource->SetEditHandler([$this, 'BatchEditResourceHandler']);
+		return $batchEditResource;
+	}
 
 	/**
 	 * If model instance in batch has been inserted
@@ -201,4 +212,5 @@ trait Flushing {
 			}
 		}
 	}
+
 }
