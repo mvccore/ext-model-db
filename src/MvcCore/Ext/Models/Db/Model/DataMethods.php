@@ -19,7 +19,7 @@ namespace MvcCore\Ext\Models\Db\Model;
 trait DataMethods {
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  int  $propsFlags    All properties flags are available except flags: 
 	 *                             - `\MvcCore\IModel::PROPS_INITIAL_VALUES`,
 	 *                             - `\MvcCore\IModel::PROPS_CONVERT_CASE_INSENSITIVE`,
@@ -117,7 +117,7 @@ trait DataMethods {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  array $data       Raw data from database (row) or from form fields.
 	 * @param  int   $propsFlags All properties flags are available.
 	 * @throws \InvalidArgumentException
@@ -223,7 +223,7 @@ trait DataMethods {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  int $propsFlags All properties flags are available except flags: 
 	 *                         - `\MvcCore\IModel::PROPS_INITIAL_VALUES`,
 	 *                         - `\MvcCore\IModel::PROPS_CONVERT_CASE_INSENSITIVE`.
@@ -319,7 +319,7 @@ trait DataMethods {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  int $propsFlags All properties flags are available except flags: 
 	 *                         - `\MvcCore\IModel::PROPS_INITIAL_VALUES`,
 	 *                         - `\MvcCore\IModel::PROPS_CONVERT_CASE_INSENSITIVE`,

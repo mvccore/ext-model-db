@@ -18,7 +18,7 @@ extends		\MvcCore\Ext\Models\Db\Reader
 implements	\MvcCore\Ext\Models\Db\Readers\IExecution {
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  string|NULL $sequenceName
 	 * @param  string|NULL $targetType
 	 * @throws \PDOException|\Throwable
@@ -38,7 +38,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\IExecution {
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @throws \PDOException|\Throwable
 	 * @return int
 	 */
@@ -53,7 +53,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\IExecution {
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @throws \PDOException|\Throwable
 	 * @return int
 	 */

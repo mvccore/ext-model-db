@@ -14,7 +14,7 @@
 namespace MvcCore\Ext\Models\Db;
 
 /**
- * @inheritDocs
+ * @inheritDoc
  */
 #[\AllowDynamicProperties]
 class		Model 

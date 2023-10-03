@@ -140,7 +140,7 @@ interface IBatch {
 	 * Handle prepared INSERT/UPDATE/DELETE operation, SQL query and params
 	 * from model instance edit resource and store it into local array for 
 	 * later execution.
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  int    $sqlOperation 
 	 * @param  string $sqlCode 
 	 * @param  array  $params 

@@ -19,7 +19,7 @@ namespace MvcCore\Ext\Models\Db\Resources\Edit;
 trait Features {
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  int|string  $connNameOrIndex    Connection name or index in system config.
 	 * @param  string      $tableName          Database table name.
 	 * @param  array       $dataColumns        Data to use in insert clause, keys are 
@@ -90,7 +90,7 @@ trait Features {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  int|string $connNameOrIndex Connection name or index in system config.
 	 * @param  string     $tableName       Database table name.
 	 * @param  array      $keyColumns      Data to use in where condition, keys are 
@@ -135,7 +135,7 @@ trait Features {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  int|string $connNameOrIndex Connection name or index in system config.
 	 * @param  string     $tableName       Database table name.
 	 * @param  array      $keyColumns      Data to use in where condition, keys are 

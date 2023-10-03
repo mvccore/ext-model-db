@@ -59,7 +59,7 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  string|\string[]                $sql 
 	 * @param  string|int|array|\stdClass|NULL $connectionNameOrConfig
 	 * @param  array                           $driverOptions
@@ -133,7 +133,7 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return \MvcCore\Ext\Models\Db\Connection
 	 */
 	public function GetConnection () {
@@ -141,7 +141,7 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return \PDO
 	 */
 	public function GetProvider () {
@@ -149,7 +149,7 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return \PDOStatement
 	 */
 	public function GetProviderStatement () {
@@ -157,7 +157,7 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return array
 	 */
 	public function GetDriverOptions () {
@@ -165,7 +165,7 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return array Query params array, it could be sequential or associative array. 
 	 */
 	public function & GetParams () {
@@ -173,7 +173,7 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param   array $params Query params array, it could be sequential or associative array. 
 	 *                        This parameter can be used as an infinite argument for the function.
 	 * @return \MvcCore\Ext\Models\Db\Statement
@@ -187,7 +187,7 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @throws \RuntimeException
 	 * @return bool
 	 */
@@ -198,7 +198,7 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return bool
 	 */
 	public function Close () {
@@ -207,7 +207,7 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return bool|NULL
 	 */
 	public function IsOpened () {
@@ -215,7 +215,7 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @throws \RuntimeException
 	 * @return bool
 	 */
@@ -226,7 +226,7 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @throws \RuntimeException
 	 * @return int
 	 */
@@ -239,7 +239,7 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  array $params Query params array, it could be sequential or associative array. 
 	 *                       This parameter can be used as an infinite argument for the function.
 	 * @return \MvcCore\Ext\Models\Db\Readers\Multiple
@@ -257,7 +257,7 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  array $params Query params array, it could be sequential or associative array. 
 	 *                       This parameter can be used as an infinite argument for the function.
 	 * @return \MvcCore\Ext\Models\Db\Readers\Stream
@@ -275,7 +275,7 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  array $params Query params array, it could be sequential or associative array. 
 	 *                       This parameter can be used as an infinite argument for the function.
 	 * @return \MvcCore\Ext\Models\Db\Readers\Single
@@ -293,7 +293,7 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  array $params Query params array, it could be sequential or associative array. 
 	 *                       This parameter can be used as an infinite argument for the function.
 	 * @throws \PDOException|\Throwable

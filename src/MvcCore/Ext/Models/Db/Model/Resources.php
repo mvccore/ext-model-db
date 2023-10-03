@@ -19,7 +19,7 @@ namespace MvcCore\Ext\Models\Db\Model;
 trait Resources {
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  array|NULL $args      Values array with variables to pass into resource `__construct()` method.
 	 *                               If `NULL`, recource class will be created without `__construct()` method call.
 	 * @param  string     $classPath Relative namespace path to resource class. It could contains `.` or `..`
@@ -33,7 +33,7 @@ trait Resources {
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  array|NULL $args      Values array with variables to pass into resource `__construct()` method.
 	 *                               If `NULL`, recource class will be created without `__construct()` method call.
 	 * @param  string     $classPath Relative namespace path to resource class. It could contains `.` or `..`

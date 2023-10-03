@@ -19,7 +19,7 @@ namespace MvcCore\Ext\Models\Db\Model;
 trait Connection {
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  string|int|array|\stdClass|NULL $connectionNameOrConfig
 	 * @param  bool                            $strict
 	 *                                         If `TRUE` and no connection under given name or given

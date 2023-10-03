@@ -19,7 +19,7 @@ namespace MvcCore\Ext\Models\Db\Model;
 trait MetaData {
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return int
 	 */
 	public static function GetDefaultPropsFlags () {
@@ -27,7 +27,7 @@ trait MetaData {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  int    $propsFlags
 	 * @param  \int[] $additionalMaps
 	 * @throws \RuntimeException|\InvalidArgumentException

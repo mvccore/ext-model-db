@@ -18,7 +18,7 @@ extends		\MvcCore\Ext\Models\Db\Reader
 implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  string $fullClassName 
 	 * @param  int    $readingFlags 
 	 * @throws \PDOException|\Throwable
@@ -45,7 +45,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @throws \PDOException|\Throwable
 	 * @return array|NULL
 	 */
@@ -61,7 +61,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @throws \PDOException|\Throwable
 	 * @return \stdClass|NULL
 	 */
@@ -77,7 +77,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  string|NULL $valueColumnName 
 	 * @param  string|NULL $valueType 
 	 * @throws \PDOException|\Throwable
@@ -109,7 +109,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  callable $valueCompleter 
 	 * @throws \PDOException|\Throwable
 	 * @return mixed
@@ -128,7 +128,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @throws \PDOException|\Throwable
 	 * @return int
 	 */
@@ -141,7 +141,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @throws \PDOException|\Throwable
 	 * @return array|NULL
 	 */

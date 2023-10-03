@@ -137,7 +137,7 @@ implements	\MvcCore\Model\IConstants,
 	
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return array
 	 */
 	public static function GetAvailableDrivers () {
@@ -145,7 +145,7 @@ implements	\MvcCore\Model\IConstants,
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  \PDO   $provider
 	 * @param  string $query 
 	 * @param  array  $params 
@@ -301,7 +301,7 @@ implements	\MvcCore\Model\IConstants,
 
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  \stdClass $config 
 	 * @return \MvcCore\Ext\Models\Db\Connection
 	 */
@@ -318,7 +318,7 @@ implements	\MvcCore\Model\IConstants,
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return \stdClass
 	 */
 	public function GetConfig () {
@@ -326,7 +326,7 @@ implements	\MvcCore\Model\IConstants,
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  string|\string[] $statement
 	 * @param  array            $driverOptions
 	 * @throws \PDOException|\Throwable
@@ -338,7 +338,7 @@ implements	\MvcCore\Model\IConstants,
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  string|\string[] $sql
 	 * @throws \PDOException|\Throwable
 	 * @return \MvcCore\Ext\Models\Db\Statement
@@ -349,7 +349,7 @@ implements	\MvcCore\Model\IConstants,
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  string|\string[] $sql
 	 * @throws \PDOException|\Throwable
 	 * @return \MvcCore\Ext\Models\Db\Readers\Execution
@@ -362,7 +362,7 @@ implements	\MvcCore\Model\IConstants,
 
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  string|NULL $sequenceName
 	 * @param  string|NULL $targetType
 	 * @return int|float|string|NULL
@@ -375,7 +375,7 @@ implements	\MvcCore\Model\IConstants,
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  string $string
 	 * @param  int    $paramType
 	 * @return string
@@ -385,7 +385,7 @@ implements	\MvcCore\Model\IConstants,
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  string $identifierName
 	 * @return string
 	 */
@@ -401,7 +401,7 @@ implements	\MvcCore\Model\IConstants,
 
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  int $attribute
 	 * @return mixed
 	 */
@@ -410,7 +410,7 @@ implements	\MvcCore\Model\IConstants,
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  int   $attribute
 	 * @param  mixed $value
 	 * @return bool
@@ -420,7 +420,7 @@ implements	\MvcCore\Model\IConstants,
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return bool
 	 */
 	public function GetTranscode () {
@@ -428,7 +428,7 @@ implements	\MvcCore\Model\IConstants,
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return \stdClass
 	 */
 	public function GetTranscodingCharsets () {
@@ -436,7 +436,7 @@ implements	\MvcCore\Model\IConstants,
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  string $str 
 	 * @return string
 	 */
@@ -451,7 +451,7 @@ implements	\MvcCore\Model\IConstants,
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  array $rowData 
 	 * @return array
 	 */
@@ -473,7 +473,7 @@ implements	\MvcCore\Model\IConstants,
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return string|NULL
 	 */
 	public function GetVersion () {
@@ -481,7 +481,7 @@ implements	\MvcCore\Model\IConstants,
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return bool|NULL
 	 */
 	public function IsMutliStatements () {
@@ -489,7 +489,7 @@ implements	\MvcCore\Model\IConstants,
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return \PDO
 	 */
 	public function GetProvider () {
@@ -497,7 +497,7 @@ implements	\MvcCore\Model\IConstants,
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return array
 	 */
 	public function GetCtorArguments () {
@@ -510,7 +510,7 @@ implements	\MvcCore\Model\IConstants,
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return bool
 	 */
 	public function InTransaction () {
@@ -518,7 +518,7 @@ implements	\MvcCore\Model\IConstants,
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  int    $flags
 	 * @param  string $name
 	 * @return bool
@@ -531,7 +531,7 @@ implements	\MvcCore\Model\IConstants,
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  int $flags
 	 * @return bool
 	 */
@@ -543,7 +543,7 @@ implements	\MvcCore\Model\IConstants,
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  int $flags
 	 * @return bool
 	 */
@@ -555,7 +555,7 @@ implements	\MvcCore\Model\IConstants,
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return \MvcCore\Ext\Models\Db\Debugger|NULL
 	 */
 	public function GetDebugger () {
@@ -563,7 +563,7 @@ implements	\MvcCore\Model\IConstants,
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  \MvcCore\Ext\Models\Db\Debugger|NULL $debugger
 	 * @param  bool                                 $copyPreviousQueries
 	 *                                              Copy queries from previous debugger if there were any.
@@ -581,7 +581,7 @@ implements	\MvcCore\Model\IConstants,
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return bool
 	 */
 	public function GetUsingOdbcDriver () {
@@ -589,7 +589,7 @@ implements	\MvcCore\Model\IConstants,
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return string|NULL
 	 */
 	public function GetMetaDataStatement () {

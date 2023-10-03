@@ -24,7 +24,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\IStream {
 	protected $iterator;
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  string $fullClassName 
 	 * @param  int    $readingFlags 
 	 * @param  string $keyColumnName 
@@ -41,7 +41,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\IStream {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  string $keyColumnName 
 	 * @param  string $keyType 
 	 * @return \MvcCore\Ext\Models\Db\Readers\Streams\Iterator
@@ -56,7 +56,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\IStream {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  string $keyColumnName 
 	 * @param  string $keyType 
 	 * @return \MvcCore\Ext\Models\Db\Readers\Streams\Iterator
@@ -71,7 +71,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\IStream {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  string $valueColumnName 
 	 * @param  string $valueType 
 	 * @param  string $keyColumnName 
@@ -88,7 +88,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\IStream {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  callable $valueCompleter 
 	 * @param  string   $keyColumnName 
 	 * @param  string   $keyType 

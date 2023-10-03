@@ -18,7 +18,7 @@ extends		\MvcCore\Ext\Models\Db\Reader
 implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  string      $fullClassName 
 	 * @param  int         $readingFlags 
 	 * @param  string|NULL $keyColumnName 
@@ -62,7 +62,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  string|NULL $keyColumnName 
 	 * @param  string|NULL $keyType 
 	 * @throws \PDOException|\Throwable
@@ -94,7 +94,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  string|NULL $keyColumnName 
 	 * @param  string|NULL $keyType 
 	 * @throws \PDOException|\Throwable
@@ -126,7 +126,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  string      $valueColumnName 
 	 * @param  string|NULL $valueType 
 	 * @param  string|NULL $keyColumnName 
@@ -166,7 +166,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  callable    $valueColumnName Called for each result row, 1. argument is raw result item, 
 	 *                                      2. argument is raw result key, 3. argument is reference for 
 	 *                                      boolean `TRUE` to continue, `FALSE` to break loop. Completer 
@@ -209,7 +209,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @throws \PDOException|\Throwable
 	 * @return int
 	 */
@@ -222,7 +222,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @throws \PDOException|\Throwable
 	 * @return array
 	 */

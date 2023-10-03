@@ -100,7 +100,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return \MvcCore\Ext\Models\Db\Readers\Stream
 	 */
 	public function GetReader () {
@@ -108,7 +108,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return \MvcCore\Ext\Models\Db\Statement
 	 */
 	public function GetStatement () {
@@ -116,7 +116,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return \MvcCore\Ext\Models\Db\Connection
 	 */
 	public function GetConnection () {
@@ -124,7 +124,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return void
 	 */
 	public function Close () {

@@ -19,7 +19,7 @@ namespace MvcCore\Ext\Models\Db\Model;
 trait MagicMethods {
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  int $propsFlags
 	 * @return mixed
 	 */

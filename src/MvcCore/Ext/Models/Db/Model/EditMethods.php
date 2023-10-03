@@ -19,7 +19,7 @@ namespace MvcCore\Ext\Models\Db\Model;
 trait EditMethods {
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  bool|NULL $createNew
 	 * @param  int       $propsFlags
 	 * @throws \InvalidArgumentException|\PDOException|\Throwable
@@ -39,7 +39,7 @@ trait EditMethods {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  int $propsFlags
 	 * @throws \InvalidArgumentException 
 	 * @return bool
@@ -52,7 +52,7 @@ trait EditMethods {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  int $propsFlags
 	 * @throws \InvalidArgumentException|\PDOException|\Throwable
 	 * @return bool
@@ -65,7 +65,7 @@ trait EditMethods {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  int $propsFlags
 	 * @throws \InvalidArgumentException|\PDOException|\Throwable
 	 * @return bool
@@ -78,7 +78,7 @@ trait EditMethods {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  int $propsFlags 
 	 * @throws \InvalidArgumentException|\PDOException|\Throwable
 	 * @return bool
@@ -91,7 +91,7 @@ trait EditMethods {
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  bool $autoCreate
 	 * @return \MvcCore\Ext\Models\Db\Resources\Edit|NULL
 	 */
@@ -104,7 +104,7 @@ trait EditMethods {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  \MvcCore\Ext\Models\Db\Resources\Edit|NULL
 	 * @return \MvcCore\Ext\Models\Db\Model
 	 */

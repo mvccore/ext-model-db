@@ -20,7 +20,7 @@ namespace MvcCore\Ext\Models\Db\Batch;
 trait Flushing {
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @throws \Exception Database execution exception.
 	 * @return \MvcCore\Ext\Models\Db\Batch
 	 */
@@ -39,7 +39,7 @@ trait Flushing {
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  int    $sqlOperation 
 	 * @param  string $sqlCode 
 	 * @param  array  $params 

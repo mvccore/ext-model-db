@@ -58,7 +58,7 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @throws \PDOException|\Throwable
 	 * @return bool
 	 */
@@ -69,7 +69,7 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  bool|NULL $execResult
 	 * @return \MvcCore\Ext\Models\Db\Reader
 	 */
@@ -79,7 +79,7 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return array|NULL
 	 */
 	public function GetRawData () {
@@ -87,7 +87,7 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return \MvcCore\Ext\Models\Db\Statement
 	 */
 	public function GetStatement () {

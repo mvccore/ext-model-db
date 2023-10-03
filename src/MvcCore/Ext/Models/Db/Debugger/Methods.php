@@ -19,7 +19,7 @@ namespace MvcCore\Ext\Models\Db\Debugger;
 trait Methods {
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return \MvcCore\Ext\Models\Db\Debugger
 	 */
 	public static function GetInstance () {
@@ -36,7 +36,7 @@ trait Methods {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  string                            $query 
 	 * @param  array                             $params 
 	 * @param  float                             $reqTime
@@ -78,7 +78,7 @@ trait Methods {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return array
 	 */
 	public function & GetStore () {
@@ -87,7 +87,7 @@ trait Methods {
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  \stdClass[] $store
 	 * @return \MvcCore\Ext\Models\Db\Debugger
 	 */
@@ -98,7 +98,7 @@ trait Methods {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return \MvcCore\Ext\Models\Db\Debugger
 	 */
 	public function Dispose () {

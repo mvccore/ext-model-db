@@ -19,7 +19,7 @@ namespace MvcCore\Ext\Models\Db\Batch;
 trait GettersSetters {
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return int|NULL
 	 */
 	public function GetAutoFlushSize () {
@@ -27,7 +27,7 @@ trait GettersSetters {
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  int|NULL $flushSize 
 	 * @return \MvcCore\Ext\Models\Db\Batch
 	 */
@@ -48,7 +48,7 @@ trait GettersSetters {
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return int
 	 */
 	public function GetSize () {
@@ -56,7 +56,7 @@ trait GettersSetters {
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return \MvcCore\Ext\Models\Db\Model[]
 	 */
 	public function GetInstances () {
@@ -64,7 +64,7 @@ trait GettersSetters {
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return int
 	 */
 	public function GetRowsCount () {
@@ -72,7 +72,7 @@ trait GettersSetters {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  string|int|NULL $connection 
 	 * @return \MvcCore\Ext\Models\Db\Batch
 	 */
@@ -83,7 +83,7 @@ trait GettersSetters {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  \MvcCore\Ext\Models\Db\Model $modelInstance 
 	 * @return bool
 	 */
@@ -92,7 +92,7 @@ trait GettersSetters {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  \MvcCore\Ext\Models\Db\Model $modelInstance 
 	 * @return \MvcCore\Ext\Models\Db\Batch
 	 */
@@ -108,7 +108,7 @@ trait GettersSetters {
 	}
 	
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  \MvcCore\Ext\Models\Db\Model $modelInstance 
 	 * @param  int                          $operationFlags 
 	 * @throws \InvalidArgumentException    Model instance is already in batch.
@@ -143,7 +143,7 @@ trait GettersSetters {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  string $instanceEditResourceType 
 	 * @return \MvcCore\Ext\Models\Db\Batch
 	 */
@@ -160,7 +160,7 @@ trait GettersSetters {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return \ReflectionClass
 	 */
 	public function GetInstanceEditResourceType () {
@@ -173,7 +173,7 @@ trait GettersSetters {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @param  array $ctorArgs 
 	 * @return \MvcCore\Ext\Models\Db\Batch
 	 */
@@ -184,7 +184,7 @@ trait GettersSetters {
 	}
 
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 * @return array
 	 */
 	public function GetInstanceEditResourceCtorArgs () {
