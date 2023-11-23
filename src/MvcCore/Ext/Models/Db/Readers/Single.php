@@ -27,7 +27,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 	public function ToInstance ($fullClassName, $readingFlags = 0) {
 		if ($this->rawData === NULL)
 			$this->fetchRawData(TRUE);
-		if (!$this->rawData) return NULL;
+		if ($this->rawData === FALSE) return NULL;
 		$type = new \ReflectionClass($fullClassName);
 		if (!$type->hasMethod('SetValues'))
 			throw new \InvalidArgumentException(
@@ -52,7 +52,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 	public function ToArray () {
 		if ($this->rawData === NULL)
 			$this->fetchRawData(TRUE);
-		if (!$this->rawData) return NULL;
+		if ($this->rawData === FALSE) return NULL;
 		$conn = $this->statement->GetConnection();
 		$result = $conn->GetTranscode()
 			? $conn->TranscodeResultRowValues($this->rawData)
@@ -68,7 +68,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 	public function ToObject () {
 		if ($this->rawData === NULL)
 			$this->fetchRawData(TRUE);
-		if (!$this->rawData) return NULL;
+		if ($this->rawData === FALSE) return NULL;
 		$conn = $this->statement->GetConnection();
 		$result = $conn->GetTranscode()
 			? (object) $conn->TranscodeResultRowValues($this->rawData)
@@ -87,7 +87,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 		if ($this->rawData === NULL)
 			$this->fetchRawData(TRUE);
 		if (
-			!$this->rawData || (
+			$this->rawData === FALSE || (
 				$valueColumnName !== NULL && 
 				!array_key_exists($valueColumnName, $this->rawData)
 			)
@@ -117,6 +117,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 	public function ToAny (callable $valueCompleter) {
 		if ($this->rawData === NULL)
 			$this->fetchRawData(TRUE);
+		if ($this->rawData === FALSE) return NULL;
 		$conn = $this->statement->GetConnection();
 		if ($conn->GetTranscode()) {
 			$itemValues = $conn->TranscodeResultRowValues($this->rawData);
