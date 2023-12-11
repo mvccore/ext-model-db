@@ -222,6 +222,18 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 	public function NextResultSet () {
 		if ($this->opened !== TRUE)
 			throw new \RuntimeException("Statement hasn't been executed yet.");
+		if (
+			$this->reader instanceof \MvcCore\Ext\Models\Db\Readers\Single &&
+			$this->providerStatement->rowCount() === -1 &&
+			$this->connection->GetConfig()->driver === 'sqlsrv'
+		) {
+			/**
+			 * For current single row statement and for next statement of any type 
+			 * is necessary to call fetch one more time to close cursor for next result set.
+			 * This mostly happend with Microsoft SQL Server connection.
+			 */
+			$this->providerStatement->fetchAll();
+		}
 		return $this->providerStatement->nextRowset();
 	}
 
