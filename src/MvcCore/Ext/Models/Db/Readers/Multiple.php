@@ -35,7 +35,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 		$type = new \ReflectionClass($fullClassName);
 		if (!$type->hasMethod('SetValues'))
 			throw new \InvalidArgumentException(
-				"[".get_class()."] Class `{$fullClassName}` has no public method ".
+				"[".get_class($this)."] Class `{$fullClassName}` has no public method ".
 				"`SetValues (\$data = [], \$propsFlags = 0): \MvcCore\Model`."
 			);
 		$conn = $this->statement->GetConnection();

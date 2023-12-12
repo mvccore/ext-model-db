@@ -153,7 +153,7 @@ trait EditMethods {
 		) = $metaDataCollections;
 		if ($autoIncrementIndex === NULL) {
 			throw new \InvalidArgumentException(
-				"[".get_class()."] There was not possible to recognize ".
+				"[".get_called_class()."] There was not possible to recognize ".
 				"if database model instance is new or already existing ".
 				"in database. Please define property with primary key ".
 				"column attribute anotation."
@@ -440,7 +440,7 @@ trait EditMethods {
 		}
 		if (!$identified) {
 			throw new \InvalidArgumentException(
-				"[".get_class()."] There was not possible to recognize ".
+				"[".get_called_class()."] There was not possible to recognize ".
 				"key columns to update/delete model instance. Please define ".
 				"property or properties with primary key or unique key(s) ".
 				"column(s) attribute(s) anotation(s), where current instance ".
