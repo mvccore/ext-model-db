@@ -40,12 +40,14 @@ trait Connection {
 				);
 			try {
 				$callerClass = '\\' . ltrim($callerInfo['class'], '\\');
-				list(/*$metaData*/, $connAttrArgs) = $callerClass::GetMetaData(
-					0, [\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_CONNECTIONS]
-				);
-				
-				if ($connAttrArgs > 0) 
-					$connectionNameOrConfig = $connAttrArgs[0];
+				$callerInterfaces = array_fill_keys(class_implements($callerClass), TRUE);
+				if (isset($callerInterfaces['MvcCore\\IModel'])) {
+					list(/*$metaData*/, $connAttrArgs) = $callerClass::GetMetaData(
+						0, [\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_CONNECTIONS]
+					);
+					if ($connAttrArgs > 0) 
+						$connectionNameOrConfig = $connAttrArgs[0];
+				}
 			} catch (\Throwable $e) {
 			}
 		}
