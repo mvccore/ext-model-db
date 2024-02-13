@@ -396,7 +396,7 @@ trait EditMethods {
 				\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_UNIQUE_KEY,
 				\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_CONNECTIONS,
 				\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_TABLES,
-				\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_BY_DATABASE,
+				\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_BY_DATABASE
 			]
 		);
 		if (!isset($metaDataCollections[5]))

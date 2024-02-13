@@ -77,8 +77,7 @@ trait Parsers {
 			$conversionResult = TRUE;
 		} else if (static::parseIsTypeNumeric($typeStr)) {
 			// int or float:
-			if (settype($rawValue, $typeStr)) 
-				$conversionResult = TRUE;
+			$conversionResult = settype($rawValue, $typeStr);
 		} else if (static::parseIsTypeBoolean($typeStr)) {
 			// bool:
 			$rawValue = static::parseToBool($rawValue);
@@ -112,6 +111,7 @@ trait Parsers {
 	 * @return \DateTime|\DateTimeImmutable|bool
 	 */
 	protected static function parseToDateTime ($typeStr, $rawValue, $parserArgs) {
+		/** @var string $dateTimeFormat */
 		$dateTimeFormat = $parserArgs[0];
 		$dateTimeFormat = '!' . ltrim($dateTimeFormat, '!'); // to reset all other values not included in format into zeros
 		if (is_numeric($rawValue)) {
