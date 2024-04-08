@@ -111,10 +111,10 @@ interface IModel {
 
 	/**
 	 * Try to convert raw database value into first type in target types.
-	 * @param  mixed     $rawValue
-	 * @param  \string[] $typesString
-	 * @param  array     $parserArgs
-	 * @return mixed     Converted result.
+	 * @param  mixed              $rawValue
+	 * @param  array<int, string> $typesString
+	 * @param  array              $parserArgs
+	 * @return mixed              Converted result.
 	 */
 	public static function ParseToTypes ($rawValue, $typesString, $parserArgs = []);
 
