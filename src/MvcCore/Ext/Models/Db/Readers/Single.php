@@ -22,7 +22,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 	 * @param  string $fullClassName 
 	 * @param  int    $readingFlags 
 	 * @throws \PDOException|\Throwable
-	 * @return \object|NULL
+	 * @return object|NULL
 	 */
 	public function ToInstance ($fullClassName, $readingFlags = 0) {
 		if ($this->rawData === NULL)
