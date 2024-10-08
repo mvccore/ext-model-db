@@ -182,7 +182,8 @@ interface IModel {
 	 * Set database provider specific resource with universal SQL statements
 	 * to automatically insert, update and delete model instance.
 	 * @param  \MvcCore\Ext\Models\Db\Resources\IEdit|NULL
+	 * @throws \Exception Edit resource doesn't implement \MvcCore\Ext\Models\Db\Resources\IEdit interface.
 	 * @return \MvcCore\Ext\Models\Db\IModel
 	 */
-	public function SetEditResource (\MvcCore\Ext\Models\Db\Resources\IEdit $editResource = NULL);
+	public function SetEditResource ($editResource = NULL);
 }

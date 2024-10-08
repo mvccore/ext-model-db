@@ -207,9 +207,10 @@ interface IConnection {
 	 * @param  \MvcCore\Ext\Models\Db\IDebugger|NULL $debugger
 	 * @param  bool                                  $copyPreviousQueries
 	 *                                               Copy queries from previous debugger if there were any.
+	 * @throws \Exception Debugger doesn't implement \MvcCore\Ext\Models\Db\IDebugger interface.
 	 * @return \MvcCore\Ext\Models\Db\IConnection
 	 */
-	public function SetDebugger (\MvcCore\Ext\Models\Db\IDebugger $debugger, $copyPreviousQueries = TRUE);
+	public function SetDebugger ($debugger = NULL, $copyPreviousQueries = TRUE);
 
 	/**
 	 * Get `TRUE` if connection uses ODBC connection driver, `FALSE` otherwise for most cases.

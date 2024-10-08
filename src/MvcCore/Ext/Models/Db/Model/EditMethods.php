@@ -106,10 +106,13 @@ trait EditMethods {
 	/**
 	 * @inheritDoc
 	 * @param  \MvcCore\Ext\Models\Db\Resources\Edit|NULL
+	 * @throws \Exception Edit resource doesn't implement \MvcCore\Ext\Models\Db\Resources\IEdit interface.
 	 * @return \MvcCore\Ext\Models\Db\Model
 	 */
-	public function SetEditResource (\MvcCore\Ext\Models\Db\Resources\IEdit $editResource = NULL) {
+	public function SetEditResource ($editResource = NULL) {
 		/** @var \MvcCore\Ext\Models\Db\Model $this */
+		if ($editResource !== NULL && !($editResource instanceof \MvcCore\Ext\Models\Db\Resources\IEdit))
+			throw new \Exception("[" . get_class($this) . "] Edit resource doesn't implement \MvcCore\Ext\Models\Db\Resources\IEdit interface.");
 		$this->editResource = $editResource;
 		return $this;
 	}

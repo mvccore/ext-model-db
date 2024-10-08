@@ -567,14 +567,19 @@ implements	\MvcCore\Model\IConstants,
 	 * @param  \MvcCore\Ext\Models\Db\Debugger|NULL $debugger
 	 * @param  bool                                 $copyPreviousQueries
 	 *                                              Copy queries from previous debugger if there were any.
+	 * @throws \Exception Debugger doesn't implement \MvcCore\Ext\Models\Db\IDebugger interface.
 	 * @return \MvcCore\Ext\Models\Db\Connection
 	 */
-	public function SetDebugger (\MvcCore\Ext\Models\Db\IDebugger $debugger = NULL, $copyPreviousQueries = TRUE) {
-		if ($debugger !== NULL && $copyPreviousQueries && $this->debugger !== NULL) {
-			// do not use reference `&` switch here to be able to use different debuggers accross connections
-			$store = $this->debugger->GetStore();
-			$debugger->SetStore($store);
-			unset($store);
+	public function SetDebugger ($debugger = NULL, $copyPreviousQueries = TRUE) {
+		if ($debugger !== NULL) {
+			if (!($debugger instanceof \MvcCore\Ext\Models\Db\IDebugger))
+				throw new \Exception("[" . get_class($this) . "] Debugger doesn't implement \MvcCore\Ext\Models\Db\IDebugger interface.");
+			if ($copyPreviousQueries && $this->debugger !== NULL) {
+				// do not use reference `&` switch here to be able to use different debuggers accross connections
+				$store = $this->debugger->GetStore();
+				$debugger->SetStore($store);
+				unset($store);
+			}
 		}
 		$this->debugger = $debugger;
 		return $this;
