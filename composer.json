@@ -37,5 +37,6 @@
 			"src/MvcCore/Ext/Models/Db/FuncHelpers/Columns.php"
 		]
 	},
-	"minimum-stability": "dev"
+	"minimum-stability": "dev",
+	"prefer-stable": true
 }
