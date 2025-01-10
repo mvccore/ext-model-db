@@ -29,7 +29,20 @@ trait MetaData {
 	/**
 	 * @inheritDoc
 	 * @param  int    $propsFlags
-	 * @param  \int[] $additionalMaps
+	 * Possible reading flags:
+	 *  - `\MvcCore\IModel::PROPS_INHERIT`,
+	 *  - `\MvcCore\IModel::PROPS_PRIVATE`,
+	 *  - `\MvcCore\IModel::PROPS_PROTECTED`,
+	 *  - `\MvcCore\IModel::PROPS_PUBLIC`,
+	 * @param  array<int> $additionalMaps
+	 * Possible additional maps flags:
+	 *  - `\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_BY_CODE`,
+	 *  - `\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_BY_DATABASE`,
+	 *  - `\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_PRIMARY_KEY`,
+	 *  - `\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_UNIQUE_KEY`,
+	 *  - `\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_AUTO_INCREMENT`,
+	 *  - `\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_CONNECTIONS`,
+	 *  - `\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_TABLES`
 	 * @throws \RuntimeException|\InvalidArgumentException
 	 * @return array
 	 */
