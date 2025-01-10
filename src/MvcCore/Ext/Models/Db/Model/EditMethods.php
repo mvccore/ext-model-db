@@ -402,10 +402,14 @@ trait EditMethods {
 				\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_BY_DATABASE
 			]
 		);
-		if (!isset($metaDataCollections[5]))
+		if (!isset($metaDataCollections[5])) {
+			$currentClass = get_called_class();
 			throw new \InvalidArgumentException(
-				"[".get_called_class()."] No database table name decorated."
+				"[".get_called_class()."] No database table name decorated by:\n".
+				"  - PHP attribute: `#[\MvcCore\Ext\Models\Db\Attrs\Table('my_table')]`,\n".
+				"  - PHP Docs: `/** @table my_table */`."
 			);
+		}
 		return $metaDataCollections;
 	}
 
