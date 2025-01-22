@@ -98,6 +98,8 @@ trait Flushing {
 	protected function flushExecute () {
 		/** @var \MvcCore\Ext\Models\Db\Batch $this */
 		$flushData = & $this->flushData;
+		if (count($flushData->SqlCodes) === 0)
+			return; // there could be added model instances without any touched propeties...
 		$multiStatement = $this->connection->Prepare(
 			$flushData->SqlCodes, 
 			[\MvcCore\Ext\Models\Db\IStatement::DO_NOT_AUTO_CLOSE]
