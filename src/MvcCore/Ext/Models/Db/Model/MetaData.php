@@ -15,6 +15,7 @@ namespace MvcCore\Ext\Models\Db\Model;
 
 /**
  * @mixin \MvcCore\Ext\Models\Db\Model
+ * @phpstan-type ColumnMetaRaw array{"0":bool,"1":bool,"2":array<string>,"3":string,"4":?string,"5":?array<mixed>,"6":?array<mixed>,"7":bool,"8":bool,"9":bool|string|null,"10":bool}
  */
 trait MetaData {
 	
@@ -44,7 +45,7 @@ trait MetaData {
 	 *  - `\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_CONNECTIONS`,
 	 *  - `\MvcCore\Ext\Models\Db\Model\IConstants::METADATA_TABLES`
 	 * @throws \RuntimeException|\InvalidArgumentException
-	 * @return array
+	 * @return array<int,ColumnMetaRaw>
 	 */
 	public static function GetMetaData ($propsFlags = 0, $additionalMaps = []) {
 		
@@ -332,7 +333,7 @@ trait MetaData {
 	 * - `10`   `bool`              `TRUE` if property has defined default value.
 	 * @param  \ReflectionProperty $prop 
 	 * @param  array               $params [bool $phpWithTypes, bool $phpWithUnionTypes, string $toolClass, bool $attributesAnotation]
-	 * @return array
+	 * @return ColumnMetaRaw
 	 */
 	protected static function parseMetaDataProperty (\ReflectionProperty $prop, $params) {
 		list (/*$phpWithTypes*/, $phpWithUnionTypes, $toolClass, $attributesAnotation, /*$accessModFlags*/) = $params;
