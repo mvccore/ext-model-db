@@ -564,9 +564,9 @@ implements	\MvcCore\Model\IConstants,
 	
 	/**
 	 * @inheritDoc
-	 * @param  \MvcCore\Ext\Models\Db\Debugger|NULL $debugger
-	 * @param  bool                                 $copyPreviousQueries
-	 *                                              Copy queries from previous debugger if there were any.
+	 * @param  ?\MvcCore\Ext\Models\Db\IDebugger $debugger
+	 * @param  bool                              $copyPreviousQueries
+	 *                                           Copy queries from previous debugger if there were any.
 	 * @throws \Exception Debugger doesn't implement \MvcCore\Ext\Models\Db\IDebugger interface.
 	 * @return \MvcCore\Ext\Models\Db\Connection
 	 */
