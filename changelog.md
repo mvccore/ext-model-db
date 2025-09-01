@@ -1,2 +1,2 @@
-### Fixed
-- Batch model execution when added some model isntances without any touched property.
+### Updated
+- All PHP Docs types with `NULL` changed into `?` syntax.
