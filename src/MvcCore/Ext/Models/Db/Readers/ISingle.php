@@ -20,30 +20,30 @@ interface ISingle extends \MvcCore\Ext\Models\Db\IReader {
 	 * @param  string $fullClassName
 	 * @param  int    $readingFlags
 	 * @throws \PDOException|\Throwable
-	 * @return \object|NULL
+	 * @return ?\object
 	 */
 	public function ToInstance ($fullClassName, $readingFlags = 0);
 
 	/**
 	 * Read single fetched row into associative array with keys by SQL query columns.
 	 * @throws \PDOException|\Throwable
-	 * @return array|NULL
+	 * @return ?array
 	 */
 	public function ToArray ();
 
 	/**
 	 * Read single fetched row into `\stdClass` object with item keys by SQL query columns.
 	 * @throws \PDOException|\Throwable
-	 * @return \stdClass|NULL
+	 * @return ?\stdClass
 	 */
 	public function ToObject();
 
 	/**
 	 * Read single fetched row into scalar value by first row column.
-	 * @param  string|NULL $valueColumnName
-	 * @param  string|NULL $valueType
+	 * @param  ?string $valueColumnName
+	 * @param  ?string $valueType
 	 * @throws \PDOException|\Throwable
-	 * @return int|float|string|bool|NULL
+	 * @return int|float|string|bool|null
 	 */
 	public function ToScalar ($valueColumnName = NULL, $valueType = NULL);
 

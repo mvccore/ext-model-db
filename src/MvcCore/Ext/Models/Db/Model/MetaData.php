@@ -250,11 +250,11 @@ trait MetaData {
 	
 	/**
 	 * Check autoincrement property, primary key properties or unique key properties nullable types.
-	 * @param  string                 $classFullName 
-	 * @param  array                  $propsMetaData 
-	 * @param  int|NULL               $autoIncrementIndex 
-	 * @param  array|\int[]           $primaryKeysIndexes 
-	 * @param  array|\int[]|\string[] $uniqueKeysIndexes 
+	 * @param  string            $classFullName 
+	 * @param  array             $propsMetaData 
+	 * @param  ?int              $autoIncrementIndex 
+	 * @param  array<int>        $primaryKeysIndexes 
+	 * @param  array<int|string> $uniqueKeysIndexes 
 	 * @return void
 	 */
 	protected static function parseMetaDataCheckNullableProps ($classFullName, $propsMetaData, $autoIncrementIndex, $primaryKeysIndexes, $uniqueKeysIndexes) {
@@ -323,12 +323,12 @@ trait MetaData {
 	 * - `1'    `boolean`           `TRUE` to allow `NULL` values.
 	 * - `2`    `string[]`          Property types from code or from doc comments or empty array.
 	 * - `3`    `string`            PHP code property name.
-	 * - `4`    `string|NULL`	    Database column name (if defined) or `NULL`.
-	 * - `5`    `array|NULL`        Additional parsing data  (if defined) or `NULL`.
-	 * - `6`    `array|NULL`        Additional formating data  (if defined) or `NULL`.
+	 * - `4`    `?string`	        Database column name (if defined) or `NULL`.
+	 * - `5`    `?array`            Additional parsing data  (if defined) or `NULL`.
+	 * - `6`    `?array`            Additional formating data  (if defined) or `NULL`.
 	 * - `7`    `bool`              `TRUE` if column is in primary key.
 	 * - `8`    `bool`              `TRUE` if column has auto increment feature.
-	 * - `9`    `bool|string|NULL`  `TRUE` if column is in unique key or name 
+	 * - `9`    `bool|string|null`  `TRUE` if column is in unique key or name 
 	 *                              of the unique key in database.
 	 * - `10`   `bool`              `TRUE` if property has defined default value.
 	 * @param  \ReflectionProperty $prop 

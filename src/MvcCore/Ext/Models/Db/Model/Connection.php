@@ -20,7 +20,7 @@ trait Connection {
 	
 	/**
 	 * @inheritDoc
-	 * @param  string|int|array|\stdClass|NULL $connectionNameOrConfig
+	 * @param  string|int|array|\stdClass|null $connectionNameOrConfig
 	 * @param  bool                            $strict
 	 *                                         If `TRUE` and no connection under given name or given
 	 *                                         index found, exception is thrown. `TRUE` by default.

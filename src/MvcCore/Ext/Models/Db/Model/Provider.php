@@ -20,7 +20,7 @@ trait Provider {
 	
 	/**
 	 * Provider specific driver name.
-	 * @var string|NULL
+	 * @var ?string
 	 */
 	protected static $providerDriverName = NULL;
 

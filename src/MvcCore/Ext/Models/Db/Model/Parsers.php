@@ -106,8 +106,8 @@ trait Parsers {
 	/**
 	 * Convert int, float or string value into \DateTime or it's extended class.
 	 * @param  string                       $typeStr
-	 * @param  int|float|string|NULL        $rawValue
-	 * @param  array<int|string,mixed>|NULL $parserArgs 
+	 * @param  int|float|string|null        $rawValue
+	 * @param  array<int|string,mixed>|null $parserArgs 
 	 * @return \DateTime|\DateTimeImmutable|bool
 	 */
 	protected static function parseToDateTime ($typeStr, $rawValue, $parserArgs) {

@@ -32,7 +32,7 @@ interface IStatement {
 	/**
 	 * Prepares a statement for execution and returns a statement object.
 	 * @param  string|\string[]                $sql 
-	 * @param  string|int|array|\stdClass|NULL $connectionNameOrConfig
+	 * @param  string|int|array|\stdClass|null $connectionNameOrConfig
 	 * @param  array                           $driverOptions
 	 * @throws \PDOException|\Throwable
 	 * @return \MvcCore\Ext\Models\Db\Statement

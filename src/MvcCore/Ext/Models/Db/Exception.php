@@ -15,10 +15,10 @@ namespace MvcCore\Ext\Models\Db;
 
 class Exception extends \Exception {
 
-	/** @var string|NULL */
+	/** @var string|null */
 	protected $query = NULL;
 
-	/** @var array|NULL */
+	/** @var array|null */
 	protected $params = NULL;
 
 	/**
@@ -35,10 +35,10 @@ class Exception extends \Exception {
 
 	/**
 	 * @param string          $message 
-	 * @param int|NULL        $code 
-	 * @param \Throwable|NULL $previous 
-	 * @param string|NULL     $query 
-	 * @param array|NULL      $params 
+	 * @param ?int        $code 
+	 * @param ?\Throwable $previous 
+	 * @param ?string     $query 
+	 * @param ?array      $params 
 	 */
 	public function __construct ($message = "", $code = 0, $previous = NULL, $query = NULL, $params = NULL) {
 		parent::__construct($message, $code, $previous);
@@ -47,21 +47,21 @@ class Exception extends \Exception {
 	}
 
 	/**
-	 * @return string|NULL
+	 * @return ?string
 	 */
 	public function getQuery () {
 		return $this->query;
 	}
 
 	/**
-	 * @return array|NULL
+	 * @return ?array
 	 */
 	public function getParams () {
 		return $this->params;
 	}
 
 	/**
-	 * @param  string|NULL $query
+	 * @param  ?string $query
 	 * @return \MvcCore\Ext\Models\Db\Exception
 	 */
 	public function setQuery ($query) {

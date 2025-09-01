@@ -61,7 +61,7 @@ interface IBatch {
 	 * Get automatic batch flush size. Default value is 10 items. 
 	 * If `NULL`, flushing is not called automatically 
 	 * and it's necessary to call `$batchModel->Flush()` manually.
-	 * @return int|NULL
+	 * @return ?int
 	 */
 	public function GetAutoFlushSize ();
 
@@ -69,7 +69,7 @@ interface IBatch {
 	 * Set automatic batch flush size. Default value is 10 items. 
 	 * If `NULL` or `0`, flushing will not be called automatically 
 	 * and it's necessary to call `$batchModel->Flush()` manually.
-	 * @param  int|NULL $flushSize 
+	 * @param  ?int $flushSize 
 	 * @return \MvcCore\Ext\Models\Db\IBatch
 	 */
 	public function SetAutoFlushSize ($flushSize);
@@ -94,7 +94,7 @@ interface IBatch {
 
 	/**
 	 * Set custom connection name or index.
-	 * @param  string|int|NULL $connection 
+	 * @param  string|int|null $connection 
 	 * @return \MvcCore\Ext\Models\Db\IBatch
 	 */
 	public function SetConnectionName ($connectionName = NULL);

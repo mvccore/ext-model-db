@@ -50,19 +50,19 @@ trait Props {
 
 	/**
 	 * Connection name or index.
-	 * @var string|int|NULL
+	 * @var string|int|null
 	 */
 	protected $connectionName = NULL;
 
 	/**
 	 * Connection instance.
-	 * @var \MvcCore\Ext\Models\Db\Connection|NULL
+	 * @var ?\MvcCore\Ext\Models\Db\Connection
 	 */
 	protected $connection = NULL;
 
 	/**
 	 * Flush execution data store.
-	 * @var \MvcCore\Ext\Models\Db\Batchs\FlushData|NULL
+	 * @var ?\MvcCore\Ext\Models\Db\Batchs\FlushData
 	 */
 	protected $flushData = NULL;
 
@@ -82,7 +82,7 @@ trait Props {
 	 * The editing resource type of the model instance in the batch. 
 	 * An instance of this type is inserted into each instance of the model 
 	 * in the batch before the command is executed to the database.
-	 * @var \ReflectionClass|NULL
+	 * @var ?\ReflectionClass
 	 */
 	protected $instanceEditResourceType = NULL;
 	

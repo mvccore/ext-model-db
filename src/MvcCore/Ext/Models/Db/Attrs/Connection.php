@@ -22,7 +22,7 @@ class Connection {
 	 * Define this param to declare connection 
 	 * name or index for whole class, where could be 
 	 * used any static statement initializations.
-	 * @param string|int|NULL $nameOrIndex 
+	 * @param string|int|null $nameOrIndex 
 	 */
 	public function __construct ($nameOrIndex = NULL) {
 	}

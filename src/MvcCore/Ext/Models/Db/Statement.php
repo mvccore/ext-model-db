@@ -53,7 +53,7 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 	 * - `NULL` if statement is prepared and not executed yet.
 	 * - `TRUE` if statement is executed and if cursor is not closed yet.
 	 * - `FALSE` if statement cursor is closed.
-	 * @var bool|NULL
+	 * @var ?bool
 	 */
 	protected $opened = NULL;
 
@@ -61,7 +61,7 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 	/**
 	 * @inheritDoc
 	 * @param  string|\string[]                $sql 
-	 * @param  string|int|array|\stdClass|NULL $connectionNameOrConfig
+	 * @param  string|int|array|\stdClass|null $connectionNameOrConfig
 	 * @param  array                           $driverOptions
 	 * @throws \PDOException|\Throwable
 	 * @return \MvcCore\Ext\Models\Db\Statement
@@ -208,7 +208,7 @@ class Statement implements \MvcCore\Ext\Models\Db\IStatement {
 	
 	/**
 	 * @inheritDoc
-	 * @return bool|NULL
+	 * @return ?bool
 	 */
 	public function IsOpened () {
 		return $this->opened;

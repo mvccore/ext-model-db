@@ -23,7 +23,7 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 
 	/**
 	 * `\PDOstatement::execute()` result value.
-	 * @var bool|NULL
+	 * @var ?bool
 	 */
 	protected $providerExecResult = NULL;
 	
@@ -70,7 +70,7 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 
 	/**
 	 * @inheritDoc
-	 * @param  bool|NULL $execResult
+	 * @param  ?bool $execResult
 	 * @return \MvcCore\Ext\Models\Db\Reader
 	 */
 	public function SetExecResult ($execResult) {
@@ -80,7 +80,7 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 
 	/**
 	 * @inheritDoc
-	 * @return array|NULL
+	 * @return ?array
 	 */
 	public function GetRawData () {
 		return $this->rawData;
@@ -102,7 +102,7 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 	 * @param  bool $singleRow 
 	 * @param  int  $fetchMode 
 	 * @throws \PDOException|\Throwable
-	 * @return array|NULL
+	 * @return ?array
 	 */
 	protected function & fetchRawData ($singleRow, $fetchMode = \PDO::FETCH_ASSOC) {
 		if ($this->providerExecResult === NULL && $this->statement->IsOpened() !== FALSE)
@@ -145,7 +145,7 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 		$params = $this->statement->GetParams();
 		$providerStatement = $this->statement->GetProviderStatement();
 		/**
-		 * @var $exception \Throwable|NULL
+		 * @var ?$exception \Throwable
 		 * @var $dbErrorMsg string
 		 */
 		$exception = NULL;
@@ -230,7 +230,7 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 	/**
 	 * Get SQL command first word in lower case.
 	 * @param  string $sql 
-	 * @return string|NULL
+	 * @return ?string
 	 */
 	protected function getSqlCommandFirstWord ($sql) {
 		$sqlTrimmed = trim($sql, "; \t\n\r\0\x0B");
@@ -248,7 +248,7 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 	 * @param  \MvcCore\Ext\Models\Db\Connection $connection 
 	 * @param  string $metaStatement 
 	 * @throws \PDOException|\Throwable
-	 * @return array|NULL
+	 * @return ?array
 	 */
 	protected function getMetaData (\MvcCore\Ext\Models\Db\IConnection $connection, $metaStatement) {
 		if ($this->metaData === NULL) {

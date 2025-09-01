@@ -19,10 +19,10 @@ implements	\MvcCore\Ext\Models\Db\Readers\IExecution {
 	
 	/**
 	 * @inheritDoc
-	 * @param  string|NULL $sequenceName
-	 * @param  string|NULL $targetType
+	 * @param  ?string $sequenceName
+	 * @param  ?string $targetType
 	 * @throws \PDOException|\Throwable
-	 * @return int|float|string|NULL
+	 * @return int|float|string|null
 	 */
 	public function LastInsertId ($sequenceName = NULL, $targetType = NULL) {
 		$conn = $this->statement->GetConnection();

@@ -20,7 +20,7 @@ trait Props {
 
 	/**
 	 * Singleton debugger instance.
-	 * @var \MvcCore\Ext\Models\Db\Debugger|NULL
+	 * @var ?\MvcCore\Ext\Models\Db\Debugger
 	 */
 	protected static $instance = NULL;
 
@@ -38,7 +38,7 @@ trait Props {
 
 	/**
 	 * Base namespace where current extension is located.
-	 * @var \string[]|NULL
+	 * @var ?\string[]
 	 */
 	protected static $baseNamespaces = NULL;
 

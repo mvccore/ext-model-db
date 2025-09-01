@@ -26,14 +26,14 @@ interface IReader {
 	/**
 	 * Set prepared statement execution result from previous reader.
 	 * (the `\PDOStatement::execute()` result).
-	 * @param  bool|NULL $execResult
+	 * @param  ?bool $execResult
 	 * @return \MvcCore\Ext\Models\Db\Reader
 	 */
 	public function SetExecResult ($execResult);
 
 	/**
 	 * Return raw fetched data. This function returns `NULL` for stream reader.
-	 * @return array|NULL
+	 * @return ?array
 	 */
 	public function GetRawData ();
 

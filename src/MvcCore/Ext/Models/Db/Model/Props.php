@@ -49,7 +49,7 @@ trait Props {
 	
 	/**
 	 * Database provider specific resource class instance with universal SQL statements.
-	 * @var \MvcCore\Ext\Models\Db\Resources\Edit|NULL
+	 * @var ?\MvcCore\Ext\Models\Db\Resources\Edit
 	 */
 	protected $editResource = NULL;
 }

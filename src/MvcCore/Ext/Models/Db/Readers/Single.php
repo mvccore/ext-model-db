@@ -22,7 +22,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 	 * @param  string $fullClassName 
 	 * @param  int    $readingFlags 
 	 * @throws \PDOException|\Throwable
-	 * @return object|NULL
+	 * @return ?object
 	 */
 	public function ToInstance ($fullClassName, $readingFlags = 0) {
 		if ($this->rawData === NULL)
@@ -47,7 +47,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 	/**
 	 * @inheritDoc
 	 * @throws \PDOException|\Throwable
-	 * @return array|NULL
+	 * @return ?array
 	 */
 	public function ToArray () {
 		if ($this->rawData === NULL)
@@ -63,7 +63,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 	/**
 	 * @inheritDoc
 	 * @throws \PDOException|\Throwable
-	 * @return \stdClass|NULL
+	 * @return ?\stdClass
 	 */
 	public function ToObject () {
 		if ($this->rawData === NULL)
@@ -78,10 +78,10 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 
 	/**
 	 * @inheritDoc
-	 * @param  string|NULL $valueColumnName 
-	 * @param  string|NULL $valueType 
+	 * @param  ?string $valueColumnName 
+	 * @param  ?string $valueType 
 	 * @throws \PDOException|\Throwable
-	 * @return bool|float|int|string|NULL
+	 * @return bool|float|int|string|null
 	 */
 	public function ToScalar ($valueColumnName = NULL, $valueType = NULL) {
 		if ($this->rawData === NULL)
@@ -144,7 +144,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\ISingle {
 	/**
 	 * @inheritDoc
 	 * @throws \PDOException|\Throwable
-	 * @return array|NULL
+	 * @return ?array
 	 */
 	public function GetRawData () {
 		if ($this->rawData === NULL)

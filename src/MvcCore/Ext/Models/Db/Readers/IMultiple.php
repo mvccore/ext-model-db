@@ -17,10 +17,10 @@ interface IMultiple extends \MvcCore\Ext\Models\Db\IReader {
 
 	/**
 	 * Read all fetched rows into instances by given full class name and reading flags.
-	 * @param  string      $fullClassName
-	 * @param  int	       $readingFlags
-	 * @param  string|NULL $keyColumnName
-	 * @param  string|NULL $keyType
+	 * @param  string  $fullClassName
+	 * @param  int	   $readingFlags
+	 * @param  ?string $keyColumnName
+	 * @param  ?string $keyType
 	 * @throws \PDOException|\Throwable
 	 * @return \object[]
 	 */
@@ -28,8 +28,8 @@ interface IMultiple extends \MvcCore\Ext\Models\Db\IReader {
 
 	/**
 	 * Read all fetched rows into associative arrays with item keys by SQL query columns.
-	 * @param  string|NULL $keyColumnName
-	 * @param  string|NULL $keyType
+	 * @param  ?string $keyColumnName
+	 * @param  ?string $keyType
 	 * @throws \PDOException|\Throwable
 	 * @return \array[]
 	 */
@@ -37,8 +37,8 @@ interface IMultiple extends \MvcCore\Ext\Models\Db\IReader {
 
 	/**
 	 * Read all fetched rows into `\stdClass` objects with item keys by SQL query columns.
-	 * @param  string|NULL $keyColumnName
-	 * @param  string|NULL $keyType
+	 * @param  ?string $keyColumnName
+	 * @param  ?string $keyType
 	 * @throws \PDOException|\Throwable
 	 * @return \stdClass[]
 	 */
@@ -46,12 +46,12 @@ interface IMultiple extends \MvcCore\Ext\Models\Db\IReader {
 
 	/**
 	 * Read all fetched rows into scalar values by each first row column.
-	 * @param  string      $valueColumnName
-	 * @param  string|NULL $valueType
-	 * @param  string|NULL $keyColumnName
-	 * @param  string|NULL $keyType
+	 * @param  string  $valueColumnName
+	 * @param  ?string $valueType
+	 * @param  ?string $keyColumnName
+	 * @param  ?string $keyType
 	 * @throws \PDOException|\Throwable
-	 * @return \int[]|\float[]|\string[]|\bool[]|NULL
+	 * @return \int[]|\float[]|\string[]|\bool[]|null
 	 */
 	public function ToScalars ($valueColumnName, $valueType = NULL, $keyColumnName = NULL, $keyType = NULL);
 
@@ -60,12 +60,12 @@ interface IMultiple extends \MvcCore\Ext\Models\Db\IReader {
 	 * Callable has to accept two arguments, first as raw row result, second is raw result key and third as bool
 	 * reference for `TRUE` to continue and `FALSE` to break loop. Callable completer has to return created result 
 	 * item instance.
-	 * @param  callable    $valueColumnName Called for each result row, 1. argument is raw result item, 
-	 *                                      2. argument is raw result key, 3. argument is reference for 
-	 *                                      boolean `TRUE` to continue, `FALSE` to break loop. Completer 
-	 *                                      has to return created result item instance.
-	 * @param  string|NULL $keyColumnName
-	 * @param  string|NULL $keyType
+	 * @param  callable $valueColumnName Called for each result row, 1. argument is raw result item, 
+	 *                                   2. argument is raw result key, 3. argument is reference for 
+	 *                                   boolean `TRUE` to continue, `FALSE` to break loop. Completer 
+	 *                                   has to return created result item instance.
+	 * @param  ?string  $keyColumnName
+	 * @param  ?string  $keyType
 	 * @throws \PDOException|\Throwable
 	 * @return \mixed[]
 	 */

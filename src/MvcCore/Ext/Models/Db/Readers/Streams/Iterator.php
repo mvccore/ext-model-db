@@ -52,7 +52,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	
 	/**
 	 * Internal iterator index.
-	 * @var int|NULL
+	 * @var ?int
 	 */
 	protected $index = NULL;
 	
@@ -64,7 +64,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 	
 	/**
 	 * Result loop key from completer method.
-	 * @var int|float|string|bool|NULL
+	 * @var int|float|string|bool|null
 	 */
 	protected $resultKey = NULL;
 

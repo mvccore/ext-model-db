@@ -20,11 +20,11 @@ trait Resources {
 	
 	/**
 	 * @inheritDoc
-	 * @param  array|NULL $args      Values array with variables to pass into resource `__construct()` method.
-	 *                               If `NULL`, recource class will be created without `__construct()` method call.
-	 * @param  string     $classPath Relative namespace path to resource class. It could contains `.` or `..`
-	 *                               to traverse over namespaces (directories) and it could contains `{self}` 
-	 *                               keyword, which is automatically replaced with current class name.
+	 * @param  ?array $args      Values array with variables to pass into resource `__construct()` method.
+	 *                           If `NULL`, recource class will be created without `__construct()` method call.
+	 * @param  string $classPath Relative namespace path to resource class. It could contains `.` or `..`
+	 *                           to traverse over namespaces (directories) and it could contains `{self}` 
+	 *                           keyword, which is automatically replaced with current class name.
 	 * @thrown \InvalidArgumentException Class `{$resourceClassName}` doesn't exist.
 	 * @return \MvcCore\Ext\Models\Db\Resource
 	 */
@@ -34,11 +34,11 @@ trait Resources {
 	
 	/**
 	 * @inheritDoc
-	 * @param  array|NULL $args      Values array with variables to pass into resource `__construct()` method.
-	 *                               If `NULL`, recource class will be created without `__construct()` method call.
-	 * @param  string     $classPath Relative namespace path to resource class. It could contains `.` or `..`
-	 *                               to traverse over namespaces (directories) and it could contains `{self}` 
-	 *                               keyword, which is automatically replaced with current class name.
+	 * @param  ?array $args      Values array with variables to pass into resource `__construct()` method.
+	 *                           If `NULL`, recource class will be created without `__construct()` method call.
+	 * @param  string $classPath Relative namespace path to resource class. It could contains `.` or `..`
+	 *                           to traverse over namespaces (directories) and it could contains `{self}` 
+	 *                           keyword, which is automatically replaced with current class name.
 	 * @thrown \InvalidArgumentException Class `{$resourceClassName}` doesn't exist.
 	 * @return \MvcCore\Ext\Models\Db\Resource
 	 */

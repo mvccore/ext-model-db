@@ -19,10 +19,10 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 
 	/**
 	 * @inheritDoc
-	 * @param  string      $fullClassName 
-	 * @param  int         $readingFlags 
-	 * @param  string|NULL $keyColumnName 
-	 * @param  string|NULL $keyType 
+	 * @param  string  $fullClassName 
+	 * @param  int     $readingFlags 
+	 * @param  ?string $keyColumnName 
+	 * @param  ?string $keyType 
 	 * @throws \PDOException|\Throwable
 	 * @return \object[]
 	 */
@@ -63,8 +63,8 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 
 	/**
 	 * @inheritDoc
-	 * @param  string|NULL $keyColumnName 
-	 * @param  string|NULL $keyType 
+	 * @param  ?string $keyColumnName 
+	 * @param  ?string $keyType 
 	 * @throws \PDOException|\Throwable
 	 * @return \array[]
 	 */
@@ -95,8 +95,8 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 
 	/**
 	 * @inheritDoc
-	 * @param  string|NULL $keyColumnName 
-	 * @param  string|NULL $keyType 
+	 * @param  ?string $keyColumnName 
+	 * @param  ?string $keyType 
 	 * @throws \PDOException|\Throwable
 	 * @return \stdClass[]
 	 */
@@ -127,12 +127,12 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 
 	/**
 	 * @inheritDoc
-	 * @param  string      $valueColumnName 
-	 * @param  string|NULL $valueType 
-	 * @param  string|NULL $keyColumnName 
-	 * @param  string|NULL $keyType 
+	 * @param  string  $valueColumnName 
+	 * @param  ?string $valueType 
+	 * @param  ?string $keyColumnName 
+	 * @param  ?string $keyType 
 	 * @throws \PDOException|\Throwable
-	 * @return \int[]|\float[]|\string[]|\bool[]|NULL
+	 * @return \int[]|\float[]|\string[]|\bool[]|null
 	 */
 	public function ToScalars ($valueColumnName, $valueType = NULL, $keyColumnName = NULL, $keyType = NULL) {
 		if ($this->rawData === NULL)
@@ -167,12 +167,12 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 
 	/**
 	 * @inheritDoc
-	 * @param  callable    $valueColumnName Called for each result row, 1. argument is raw result item, 
-	 *                                      2. argument is raw result key, 3. argument is reference for 
-	 *                                      boolean `TRUE` to continue, `FALSE` to break loop. Completer 
-	 *                                      has to return created result item instance.
-	 * @param  string|NULL $keyColumnName 
-	 * @param  string|NULL $keyType 
+	 * @param  callable $valueColumnName Called for each result row, 1. argument is raw result item, 
+	 *                                   2. argument is raw result key, 3. argument is reference for 
+	 *                                   boolean `TRUE` to continue, `FALSE` to break loop. Completer 
+	 *                                   has to return created result item instance.
+	 * @param  ?string  $keyColumnName 
+	 * @param  ?string  $keyType 
 	 * @throws \PDOException|\Throwable
 	 * @return array
 	 */

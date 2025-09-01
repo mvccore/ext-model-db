@@ -20,7 +20,7 @@ trait EditMethods {
 	
 	/**
 	 * @inheritDoc
-	 * @param  bool|NULL $createNew
+	 * @param  ?bool $createNew
 	 * @param  int       $propsFlags
 	 * @throws \InvalidArgumentException|\PDOException|\Throwable
 	 * @return bool
@@ -93,7 +93,7 @@ trait EditMethods {
 	/**
 	 * @inheritDoc
 	 * @param  bool $autoCreate
-	 * @return \MvcCore\Ext\Models\Db\Resources\Edit|NULL
+	 * @return ?\MvcCore\Ext\Models\Db\Resources\Edit
 	 */
 	public function GetEditResource ($autoCreate = TRUE) {
 		if ($autoCreate && $this->editResource === NULL) {
@@ -105,7 +105,7 @@ trait EditMethods {
 
 	/**
 	 * @inheritDoc
-	 * @param  \MvcCore\Ext\Models\Db\Resources\Edit|NULL
+	 * @param  ?\MvcCore\Ext\Models\Db\Resources\Edit
 	 * @throws \Exception Edit resource doesn't implement \MvcCore\Ext\Models\Db\Resources\IEdit interface.
 	 * @return \MvcCore\Ext\Models\Db\Model
 	 */
@@ -123,7 +123,7 @@ trait EditMethods {
 	 * Return `TRUE` if there is inserted or updated 1 or more rows or return 
 	 * `FALSE` if there is no row inserted or updated. Thrown an exception in any database error.
 	 * @param  \MvcCore\Ext\Models\Db\Model $context 
-	 * @param  bool|NULL                    $createNew 
+	 * @param  ?bool                        $createNew 
 	 * @param  int                          $propsFlags 
 	 * @param  array                        $metaDataCollections 
 	 * @throws \InvalidArgumentException|\PDOException|\Throwable

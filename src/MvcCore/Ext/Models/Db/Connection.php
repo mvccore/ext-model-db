@@ -49,13 +49,13 @@ implements	\MvcCore\Model\IConstants,
 
 	/**
 	 * Used system configuration values.
-	 * @var \stdClass|NULL
+	 * @var ?\stdClass
 	 */
 	protected $config = NULL;
 
 	/**
 	 * Debugger instance if any class configured.
-	 * @var \MvcCore\Ext\Models\Db\IDebugger|NULL
+	 * @var ?\MvcCore\Ext\Models\Db\IDebugger
 	 */
 	protected $debugger = NULL;
 
@@ -76,7 +76,7 @@ implements	\MvcCore\Model\IConstants,
 	 * Custom statement to get affected rows count 
 	 * by INSERT, UPDATE or DELETE statement and 
 	 * to get last inserted id after INSERT statement.
-	 * @var string|NULL
+	 * @var ?string
 	 */
 	protected $metaDataStatement = \MvcCore\Ext\Models\Db\IConnection::METADATA_STATEMENT;
 	
@@ -99,7 +99,7 @@ implements	\MvcCore\Model\IConstants,
 	
 	/**
 	 *  Database server version in "PHP-standardized" version number string.
-	 * @var string|NULL
+	 * @var ?string
 	 */
 	protected $version = NULL;
 
@@ -118,7 +118,7 @@ implements	\MvcCore\Model\IConstants,
 
 	/**
 	 * Retry attemps total count to reconnect by system configuration (if implemented).
-	 * @var int|NULL
+	 * @var ?int
 	 */
 	protected $retryAttemptsTotal = NULL;
 
@@ -363,9 +363,9 @@ implements	\MvcCore\Model\IConstants,
 
 	/**
 	 * @inheritDoc
-	 * @param  string|NULL $sequenceName
-	 * @param  string|NULL $targetType
-	 * @return int|float|string|NULL
+	 * @param  ?string $sequenceName
+	 * @param  ?string $targetType
+	 * @return int|float|string|null
 	 */
 	public function LastInsertId ($sequenceName = NULL, $targetType = NULL) {
 		$result = $this->provider->lastInsertId($sequenceName);
@@ -474,7 +474,7 @@ implements	\MvcCore\Model\IConstants,
 
 	/**
 	 * @inheritDoc
-	 * @return string|NULL
+	 * @return ?string
 	 */
 	public function GetVersion () {
 		return $this->version;
@@ -482,7 +482,7 @@ implements	\MvcCore\Model\IConstants,
 	
 	/**
 	 * @inheritDoc
-	 * @return bool|NULL
+	 * @return ?bool
 	 */
 	public function IsMutliStatements () {
 		return $this->mutliStatements;
@@ -556,7 +556,7 @@ implements	\MvcCore\Model\IConstants,
 
 	/**
 	 * @inheritDoc
-	 * @return \MvcCore\Ext\Models\Db\Debugger|NULL
+	 * @return ?\MvcCore\Ext\Models\Db\Debugger
 	 */
 	public function GetDebugger () {
 		return $this->debugger;
@@ -595,7 +595,7 @@ implements	\MvcCore\Model\IConstants,
 
 	/**
 	 * @inheritDoc
-	 * @return string|NULL
+	 * @return ?string
 	 */
 	public function GetMetaDataStatement () {
 		return $this->metaDataStatement;
@@ -664,9 +664,9 @@ implements	\MvcCore\Model\IConstants,
 		$method, $args, $executeProvider = FALSE, $returnReader = FALSE
 	) {
 		/**
-		 * @var $exception \Throwable|NULL
+		 * @var ?$exception \Throwable
 		 * @var $dbErrorMsg string
-		 * @var $providerResult \PDOStatement|int|NULL
+		 * @var $providerResult \PDOStatement|int|null
 		 */
 		$exception = NULL;
 		$dbErrorMsg = NULL;
@@ -772,7 +772,7 @@ implements	\MvcCore\Model\IConstants,
 	 * Try to reconnect, if connection has been lost.
 	 * @param  \PDOException|\Throwable $e
 	 * @throws \PDOException|\Throwable
-	 * @return \PDO|NULL
+	 * @return ?\PDO
 	 */
 	protected function reConnectIfNecessaryOrThrownError (\Throwable $e) {
 		if (

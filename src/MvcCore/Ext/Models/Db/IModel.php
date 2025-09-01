@@ -23,7 +23,7 @@ interface IModel {
 	 * Returns `\MvcCore\Ext\Models\Db\Connections` database connection 
 	 * by connection name/index, usually by system config values (cached by local store)
 	 * or create new connection of no connection cached.
-	 * @param  string|int|array|\stdClass|NULL $connectionNameOrConfig
+	 * @param  string|int|array|\stdClass|null $connectionNameOrConfig
 	 * @param  bool                            $strict
 	 *                                         If `TRUE` and no connection under given name or given
 	 *                                         index found, exception is thrown. `TRUE` by default.
@@ -38,11 +38,11 @@ interface IModel {
 	 * Returns (or creates if necessary) model resource instance.
 	 * Common resource instance is stored all the time in static store
 	 * under key from resource full class name and constructor arguments.
-	 * @param  array|NULL $args      Values array with variables to pass into resource `__construct()` method.
-	 *                               If `NULL`, recource class will be created without `__construct()` method call.
-	 * @param  string     $classPath Relative namespace path to resource class. It could contains `.` or `..`
-	 *                               to traverse over namespaces (directories) and it could contains `{self}` 
-	 *                               keyword, which is automatically replaced with current class name.
+	 * @param  ?array $args      Values array with variables to pass into resource `__construct()` method.
+	 *                           If `NULL`, recource class will be created without `__construct()` method call.
+	 * @param  string $classPath Relative namespace path to resource class. It could contains `.` or `..`
+	 *                           to traverse over namespaces (directories) and it could contains `{self}` 
+	 *                           keyword, which is automatically replaced with current class name.
 	 * @thrown \InvalidArgumentException Class `{$resourceClassName}` doesn't exist.
 	 * @return \MvcCore\Ext\Models\Db\Resource
 	 */
@@ -51,11 +51,11 @@ interface IModel {
 	/**
 	 * Returns (or creates if doesn`t exist) model resource instance.
 	 * Resource instance is stored in protected instance property `resource`.
-	 * @param  array|NULL $args      Values array with variables to pass into resource `__construct()` method.
-	 *                               If `NULL`, recource class will be created without `__construct()` method call.
-	 * @param  string     $classPath Relative namespace path to resource class. It could contains `.` or `..`
-	 *                               to traverse over namespaces (directories) and it could contains `{self}` 
-	 *                               keyword, which is automatically replaced with current class name.
+	 * @param  ?array $args      Values array with variables to pass into resource `__construct()` method.
+	 *                           If `NULL`, recource class will be created without `__construct()` method call.
+	 * @param  string $classPath Relative namespace path to resource class. It could contains `.` or `..`
+	 *                           to traverse over namespaces (directories) and it could contains `{self}` 
+	 *                           keyword, which is automatically replaced with current class name.
 	 * @thrown \InvalidArgumentException Class `{$resourceClassName}` doesn't exist.
 	 * @return \MvcCore\Ext\Models\Db\Resource
 	 */
@@ -88,11 +88,11 @@ interface IModel {
 	 * - `1'    `boolean`           `TRUE` to allow `NULL` values.
 	 * - `2`    `string[]`          Property types from code or from doc comments or empty array.
 	 * - `3`    `string`            PHP code property name.
-	 * - `4`    `string|NULL`       Database column name (if defined) or `NULL`.
+	 * - `4`    `?string`           Database column name (if defined) or `NULL`.
 	 * - `5`    `mixed`             Additional convertsion data (if defined) or `NULL`.
 	 * - `6`    `bool`              `TRUE` if column is in primary key.
 	 * - `7`    `bool`              `TRUE` if column has auto increment feature.
-	 * - `8`    `bool|string|NULL`  `TRUE` if column is in unique key or name 
+	 * - `8`    `bool|string|null`  `TRUE` if column is in unique key or name 
 	 *                              of the unique key in database.
 	 *                              private properties manipulation.
 	 * - `9`    `bool`              `TRUE` if property has defined default value.
@@ -130,8 +130,8 @@ interface IModel {
 	 * Process instance database SQL INSERT or UPDATE by automaticly founded key data.
 	 * Return `TRUE` if there is inserted or updated 1 or more rows or return 
 	 * `FALSE` if there is no row inserted or updated. Thrown an exception in any database error.
-	 * @param  bool|NULL $createNew 
-	 * @param  int       $propsFlags
+	 * @param  ?bool $createNew 
+	 * @param  int   $propsFlags
 	 * @throws \InvalidArgumentException|\PDOException|\Throwable
 	 * @return bool
 	 */
@@ -182,14 +182,14 @@ interface IModel {
 	 * Get database provider specific resource with universal SQL statements
 	 * to automatically insert, update and delete model instance.
 	 * @param  bool $autoCreate
-	 * @return \MvcCore\Ext\Models\Db\Resources\IEdit|NULL
+	 * @return ?\MvcCore\Ext\Models\Db\Resources\IEdit
 	 */
 	public function GetEditResource ($autoCreate = TRUE);
 
 	/**
 	 * Set database provider specific resource with universal SQL statements
 	 * to automatically insert, update and delete model instance.
-	 * @param  \MvcCore\Ext\Models\Db\Resources\IEdit|NULL
+	 * @param  ?\MvcCore\Ext\Models\Db\Resources\IEdit
 	 * @throws \Exception Edit resource doesn't implement \MvcCore\Ext\Models\Db\Resources\IEdit interface.
 	 * @return \MvcCore\Ext\Models\Db\IModel
 	 */

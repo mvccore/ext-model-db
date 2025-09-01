@@ -20,7 +20,7 @@ trait GettersSetters {
 	
 	/**
 	 * @inheritDoc
-	 * @return int|NULL
+	 * @return ?int
 	 */
 	public function GetAutoFlushSize () {
 		return $this->flushSize;
@@ -28,7 +28,7 @@ trait GettersSetters {
 	
 	/**
 	 * @inheritDoc
-	 * @param  int|NULL $flushSize 
+	 * @param  ?int $flushSize 
 	 * @return \MvcCore\Ext\Models\Db\Batch
 	 */
 	public function SetAutoFlushSize ($flushSize) {
@@ -73,7 +73,7 @@ trait GettersSetters {
 
 	/**
 	 * @inheritDoc
-	 * @param  string|int|NULL $connection 
+	 * @param  string|int|null $connection 
 	 * @return \MvcCore\Ext\Models\Db\Batch
 	 */
 	public function SetConnectionName ($connectionName = NULL) {

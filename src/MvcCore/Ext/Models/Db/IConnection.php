@@ -36,8 +36,8 @@ interface IConnection {
 	/**
 	 * Connect into database by given dsn, credentials and options or thrown an error.
 	 * @param  string      $dsn
-	 * @param  string|NULL $username
-	 * @param  string|NULL $password
+	 * @param  ?string $username
+	 * @param  ?string $password
 	 * @param  array       $options
 	 * @throws \PDOException|\Throwable
 	 */
@@ -141,13 +141,13 @@ interface IConnection {
 	
 	/**
 	 * Return database server version in "PHP-standardized" version number string.
-	 * @return string|NULL
+	 * @return ?string
 	 */
 	public function GetVersion ();
 
 	/**
 	 * Return `TRUE` for multi statements connection type.
-	 * @return bool|NULL
+	 * @return ?bool
 	 */
 	public function IsMutliStatements ();
 
@@ -198,15 +198,15 @@ interface IConnection {
 
 	/**
 	 * Returns connection debugger instance.
-	 * @return \MvcCore\Ext\Models\Db\IDebugger|NULL
+	 * @return ?\MvcCore\Ext\Models\Db\IDebugger
 	 */
 	public function GetDebugger ();
 	
 	/**
 	 * Sets connection debugger instance.
-	 * @param  \MvcCore\Ext\Models\Db\IDebugger|NULL $debugger
-	 * @param  bool                                  $copyPreviousQueries
-	 *                                               Copy queries from previous debugger if there were any.
+	 * @param  ?\MvcCore\Ext\Models\Db\IDebugger $debugger
+	 * @param  bool                              $copyPreviousQueries
+	 *                                           Copy queries from previous debugger if there were any.
 	 * @throws \Exception Debugger doesn't implement \MvcCore\Ext\Models\Db\IDebugger interface.
 	 * @return \MvcCore\Ext\Models\Db\IConnection
 	 */
@@ -222,7 +222,7 @@ interface IConnection {
 	 * Get custom statement to get affected rows count 
 	 * by INSERT, UPDATE or DELETE statement and 
 	 * to get last inserted id after INSERT statement.
-	 * @return string|NULL
+	 * @return ?string
 	 */
 	public function GetMetaDataStatement ();
 
