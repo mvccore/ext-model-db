@@ -176,14 +176,16 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 				}
 			}
 
-			if ($debugging) $reqTime = microtime(TRUE);
+			
+			if ($debugging)
+				$debugger
+					->AddQuery($connection, $providerStatement->queryString, $params)
+					->AddLastQueryRequestTime(microtime(TRUE));
 
 			$this->providerExecResult = $providerStatement->execute($transcodedParams);
 
 			if ($debugging) 
-				$debugger->AddQuery(
-					$providerStatement->queryString, $params, $reqTime, microtime(TRUE), $connection
-				);
+				$debugger->AddLastQueryResponseTime(microtime(TRUE));
 
 			$this->stmntOpenedProp->setValue($this->statement, TRUE);
 			

@@ -37,14 +37,12 @@ trait Methods {
 
 	/**
 	 * @inheritDoc
+	 * @param  \MvcCore\Ext\Models\Db\Connection $connection
 	 * @param  string                            $query 
 	 * @param  array                             $params 
-	 * @param  float                             $reqTime
-	 * @param  float                             $resTime
-	 * @param  \MvcCore\Ext\Models\Db\Connection $connection
 	 * @return \MvcCore\Ext\Models\Db\Debugger
 	 */
-	public function AddQuery ($query, $params, $reqTime, $resTime, \MvcCore\Ext\Models\Db\IConnection $connection) {
+	public function AddQuery (\MvcCore\Ext\Models\Db\IConnection $connection, $query, $params) {
 		/** @var \MvcCore\Ext\Models\Db\Debugger $this */
 		$stack = debug_backtrace(static::$stackFlags, static::$stackLimit);
 		// remove files from this extension:
@@ -67,13 +65,33 @@ trait Methods {
 			}
 		}
 		$this->store[] = (object) [
+			'connection'=> $connection,
 			'query'		=> $query,
 			'params'	=> $params,
-			'reqTime'	=> $reqTime,
-			'resTime'	=> $resTime,
+			'reqTime'	=> NULL,
+			'resTime'	=> NULL,
 			'stack'		=> array_slice($stack, $index),
-			'connection'=> $connection,
 		];
+		return $this;
+	}
+	
+	/**
+	 * @inheritDoc
+	 * @param  float $microtime 
+	 * @return \MvcCore\Ext\Models\Db\Debugger
+	 */
+	public function AddLastQueryRequestTime ($microtime) {
+		$this->store[count($this->store) - 1]->reqTime = $microtime;
+		return $this;
+	}
+
+	/**
+	 * @inheritDoc
+	 * @param  float $microtime 
+	 * @return \MvcCore\Ext\Models\Db\Debugger
+	 */
+	public function AddLastQueryResponseTime ($microtime) {
+		$this->store[count($this->store) - 1]->resTime = $microtime;
 		return $this;
 	}
 

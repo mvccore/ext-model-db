@@ -23,14 +23,27 @@ interface IDebugger {
 
 	/**
 	 * Add query with params into local store.
+	 * @param  \MvcCore\Ext\Models\Db\IConnection $connection
 	 * @param  string                             $query 
 	 * @param  array                              $params 
-	 * @param  float                              $reqTime
-	 * @param  float                              $resTime
-	 * @param  \MvcCore\Ext\Models\Db\IConnection $connection
 	 * @return \MvcCore\Ext\Models\Db\IDebugger
 	 */
-	public function AddQuery ($query, $params, $reqTime, $resTime, \MvcCore\Ext\Models\Db\IConnection $connection);
+	public function AddQuery (\MvcCore\Ext\Models\Db\IConnection $connection, $query, $params);
+
+	
+	/**
+	 * Add request microtime into last added query.
+	 * @param  float $microtime 
+	 * @return \MvcCore\Ext\Models\Db\Debugger
+	 */
+	public function AddLastQueryRequestTime ($microtime);
+
+	/**
+	 * Add response microtime into last added query.
+	 * @param  float $microtime 
+	 * @return \MvcCore\Ext\Models\Db\Debugger
+	 */
+	public function AddLastQueryResponseTime ($microtime);
 	
 	/**
 	 * Get populated store.
