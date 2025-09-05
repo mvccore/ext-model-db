@@ -1,2 +1,2 @@
 ### Updated
-- All PHP Docs types with `NULL` changed into `?` syntax.
+- Improved debugger interface to include query before an error could occur.
