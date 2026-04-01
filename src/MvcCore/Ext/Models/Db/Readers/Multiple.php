@@ -200,6 +200,8 @@ implements	\MvcCore\Ext\Models\Db\Readers\IMultiple {
 			$continueOrBreak = NULL;
 			$item = $valueCompleter($itemValues, $itemKey, $continueOrBreak);
 			if ($continueOrBreak === NULL) {
+				if ($itemKey === NULL)
+					$itemKey = '';
 				$result[$itemKey] = $item;
 			} else if ($continueOrBreak === FALSE) {
 				break;
