@@ -628,7 +628,8 @@ implements	\MvcCore\Model\IConstants,
 	 * @return void
 	 */
 	protected function setUpConnectionSpecifics () {
-		$serverVersionConst = '\PDO::ATTR_SERVER_VERSION';
+		$connclassName = get_class($this->provider);
+		$serverVersionConst = $connclassName . '::ATTR_SERVER_VERSION';
 		$serverVersionConstVal = defined($serverVersionConst) 
 			? constant($serverVersionConst) 
 			: 0;
