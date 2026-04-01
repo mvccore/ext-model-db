@@ -64,7 +64,7 @@ trait MagicMethods {
 			) = $metaData[$propIndexToSetNull];
 			if ($autoIncrPropIsPrivate) {
 				$prop = new \ReflectionProperty($this, $autoIncrPropCodeName);
-				$prop->setAccessible(TRUE);
+				if (PHP_VERSION_ID < 80500) $prop->setAccessible(TRUE);
 				$prop->setValue($this, NULL);
 			} else {
 				$this->{$autoIncrPropCodeName} = NULL;

@@ -289,7 +289,7 @@ implements	\MvcCore\Model\IConstants,
 		);
 		$result = [];
 		foreach ($props as $prop) {
-			if (!$prop->isPublic()) 
+			if (!$prop->isPublic() && PHP_VERSION_ID < 80500) 
 				$prop->setAccessible(TRUE);
 			$propName = $prop->getName();
 			$result[$propName] = $propName === 'provider'

@@ -169,7 +169,7 @@ trait EditMethods {
 			) = $metaData[$autoIncrementIndex];
 			if ($propIsPrivate) {
 				$prop = new \ReflectionProperty($context, $propCodeName);
-				$prop->setAccessible(TRUE);
+				if (PHP_VERSION_ID < 80500) $prop->setAccessible(TRUE);
 				if (PHP_VERSION_ID >= 70400) {
 					return !(
 						$prop->isInitialized($context) && 
@@ -243,7 +243,7 @@ trait EditMethods {
 				$newId = static::ParseToTypes($rawNewId, $autoIncrPropTypes);
 				if ($autoIncrPropIsPrivate) {
 					$prop = new \ReflectionProperty($context, $autoIncrPropCodeName);
-					$prop->setAccessible(TRUE);
+					if (PHP_VERSION_ID < 80500) $prop->setAccessible(TRUE);
 					$prop->setValue($context, $newId);
 				} else {
 					$context->{$autoIncrPropCodeName} = $newId;
@@ -263,7 +263,7 @@ trait EditMethods {
 					) = $metaData[$metaDataIndex];
 					if ($propIsPrivate) {
 						$prop = new \ReflectionProperty($context, $propCodeName);
-						$prop->setAccessible(TRUE);
+						if (PHP_VERSION_ID < 80500) $prop->setAccessible(TRUE);
 						$context->initialValues[$propCodeName] = $prop->getValue($context);
 					} else {
 						$context->initialValues[$propCodeName] = $context->{$propCodeName};
@@ -337,7 +337,7 @@ trait EditMethods {
 				) = $metaData[$metaDataIndex];
 				if ($propIsPrivate) {
 					$prop = new \ReflectionProperty($context, $propCodeName);
-					$prop->setAccessible(TRUE);
+					if (PHP_VERSION_ID < 80500) $prop->setAccessible(TRUE);
 					$context->initialValues[$propCodeName] = $prop->getValue($context);
 				} else {
 					$context->initialValues[$propCodeName] = $context->{$propCodeName};
@@ -482,7 +482,7 @@ trait EditMethods {
 				$propValue = $context->initialValues[$propCodeName];
 			} else if ($propIsPrivate) {
 				$prop = new \ReflectionProperty($context, $propCodeName);
-				$prop->setAccessible(TRUE);
+				if (PHP_VERSION_ID < 80500) $prop->setAccessible(TRUE);
 				if ($phpWithTypes) {
 					if ($prop->isInitialized($context))
 						$propValue = $prop->getValue($context);

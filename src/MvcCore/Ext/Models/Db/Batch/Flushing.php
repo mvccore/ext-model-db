@@ -202,12 +202,12 @@ trait Flushing {
 			$newId = $insertedInstance::ParseToTypes($rawNewId, $autoIncrPropTypes);
 						
 			$prop = new \ReflectionProperty($insertedInstance, $autoIncrPropCodeName);
-			$prop->setAccessible(TRUE);
+			if (PHP_VERSION_ID < 80500) $prop->setAccessible(TRUE);
 			$prop->setValue($insertedInstance, $newId);
 
 			if ($completeInitialValues) {
 				$initValuesProp = new \ReflectionProperty($insertedInstance, 'initialValues');
-				$initValuesProp->setAccessible(TRUE);
+				if (PHP_VERSION_ID < 80500) $initValuesProp->setAccessible(TRUE);
 				$initialValues = $initValuesProp->getValue($insertedInstance);
 				$initialValues[$autoIncrPropCodeName] = $newId;
 				$initValuesProp->setValue($insertedInstance, $initialValues);

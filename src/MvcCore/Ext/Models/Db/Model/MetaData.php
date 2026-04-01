@@ -438,7 +438,7 @@ trait MetaData {
 			if (!$type->isAbstract()) {
 				$dummyInstance = $type->newInstanceWithoutConstructor();
 				$dummyInstanceProp = new \ReflectionProperty($prop->class, $prop->name);
-				$dummyInstanceProp->setAccessible(TRUE);
+				if (PHP_VERSION_ID < 80500) $dummyInstanceProp->setAccessible(TRUE);
 				$dummyValue = $dummyInstanceProp->getValue($dummyInstance);
 				$hasDefaultValue = $dummyValue !== NULL;
 			}

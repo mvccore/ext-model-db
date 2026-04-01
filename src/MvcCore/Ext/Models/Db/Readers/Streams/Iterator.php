@@ -91,7 +91,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 		// Store reader and it's execution method to restart iterator again if necessary:
 		$this->reader = $reader;
 		$this->executeMethod = new \ReflectionMethod($reader, 'providerInvokeExecute');
-		$this->executeMethod->setAccessible(TRUE);
+		if (PHP_VERSION_ID < 80500) $this->executeMethod->setAccessible(TRUE);
 		// Store current class completer method to call result value completing for each row:
 		$this->completerMethod = 'to' . ucfirst($completerName);
 		// Prepare row completer internal properties once:
@@ -151,7 +151,7 @@ implements	\MvcCore\Ext\Models\Db\Readers\Streams\IIterator,
 		);
 		$result = [];
 		foreach ($props as $prop) {
-			if (!$prop->isPublic()) 
+			if (!$prop->isPublic() && PHP_VERSION_ID < 80500) 
 				$prop->setAccessible(TRUE);
 			$propName = $prop->getName();
 			$result[$propName] = $propName === 'providerStatement'

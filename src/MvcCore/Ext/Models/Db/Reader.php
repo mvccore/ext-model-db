@@ -54,7 +54,7 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 	public function __construct (\MvcCore\Ext\Models\Db\Statement $statement) {
 		$this->statement = $statement;
 		$this->stmntOpenedProp = new \ReflectionProperty($statement, 'opened');
-		$this->stmntOpenedProp->setAccessible(TRUE);
+		if (PHP_VERSION_ID < 80500) $this->stmntOpenedProp->setAccessible(TRUE);
 	}
 
 	/**
@@ -133,7 +133,7 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 		$testConn = $this->statement->GetConnection();
 		$testConnType = new \ReflectionClass($testConn);
 		$testProp = $testConnType->getProperty('retryAttempts');
-		$testProp->setAccessible(TRUE);
+		if (PHP_VERSION_ID < 80500) $testProp->setAccessible(TRUE);
 		$testRetryAttempts = $testProp->getValue($testConn);
 		*/
 		if ($this->providerExecResult !== NULL) return $this;
@@ -210,7 +210,7 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 			
 			$testConnType = new \ReflectionClass($connection);
 			$retryConnectMethod = $testConnType->getMethod('reConnectIfNecessaryOrThrownError');
-			$retryConnectMethod->setAccessible(TRUE);
+			if (PHP_VERSION_ID < 80500) $retryConnectMethod->setAccessible(TRUE);
 			
 			$providerConn = $retryConnectMethod->invokeArgs(
 				$connection, [$exception]
@@ -221,7 +221,7 @@ class Reader implements \MvcCore\Ext\Models\Db\IReader {
 				$providerStatement = $providerConn->prepare($providerStatement->queryString . ';');
 				$statementType = new \ReflectionClass($this->statement);
 				$provStatementProp = $statementType->getProperty('providerStatement');
-				$provStatementProp->setAccessible(TRUE);
+				if (PHP_VERSION_ID < 80500) $provStatementProp->setAccessible(TRUE);
 				$provStatementProp->setValue($this->statement, $providerStatement);
 				return $this->providerInvokeExecute();
 			}
