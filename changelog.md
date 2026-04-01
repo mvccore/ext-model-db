@@ -1,2 +1,5 @@
-### Updated
-- Improved debugger interface to include query before an error could occur.
+### Fixed
+- PHP 8.5 compatibility:
+  - deprecated method `ReflectionProperty::setAccessible()`,
+  - deprecated `NULL` value in array index,
+  - deprecated `\PDO` class instancing for specific connection types and constants like \PDO::MYSQL_*`.
